@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+
 
 from row.models import Athlete
 
@@ -8,3 +9,8 @@ def index(request):
     athletes = Athlete.objects.all()
     context = {'athletes': athletes}
     return render(request, 'row/index.html', context)
+
+
+def detail(request, athleteId):
+    athlete = get_object_or_404(Athlete, pk=athleteId)
+    return render(request, 'row/athlete.detail.html', {'athlete':athlete})
