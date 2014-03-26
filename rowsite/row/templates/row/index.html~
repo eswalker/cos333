@@ -1,4 +1,9 @@
 {% if athletes %}
   <ul>
   {% for a in athletes %}
-    <li><a href="/athlete/{{ a.id }}/">{
+    <li><a href={% url 'row:athlete-details' a.id %}>{{ a.name }}</a></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No athletes are available</p>
+{% endif %}
