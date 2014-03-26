@@ -13,4 +13,4 @@ def index(request):
 
 def detail(request, athleteId):
     athlete = get_object_or_404(Athlete, pk=athleteId)
-    return render(request, 'row/athlete.detail.html', {'athlete':athlete})
+    return render(request, 'row/athlete/details.html', {'athlete':athlete})
