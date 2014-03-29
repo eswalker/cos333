@@ -1,0 +1,9 @@
+{% if practices %}
+  <ul>
+  {% for p in practices %}
+    <li><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No practices are available</p>
+{% endif %}

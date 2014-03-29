@@ -9,10 +9,11 @@ def athlete_index(request):
     return render(request, 'row/athlete/index.html', context)
 
 # Shows athlete details for one athlete
-def athlete_detail(request, athleteId):
-    athlete = get_object_or_404(Athlete, pk=athleteId)
-    weights = Weight.objects.filter(athlete=athleteId)
-    return render(request, 'row/athlete/details.html', {'athlete':athlete, 'weights':weights})
+def athlete_detail(request, athlete_id):
+    athlete = get_object_or_404(Athlete, pk=athlete_id)
+    weights = Weight.objects.filter(athlete=athlete_id)
+    context = {'athlete':athlete, 'weights':weights}
+    return render(request, 'row/athlete/details.html', context)
 
 # Creates a new athlete
 def athlete_new(request):
@@ -23,6 +24,11 @@ def practices_index(request):
 	practices = Practice.objects.all()
 	context = {'practices': practices}
 	return render(request, 'row/practice/index.html', context)
+
+def athlete_detail(request, practice_id):
+    athlete = get_object_or_404(Practice, pk=practice_id)
+    context = {'practice':practice}
+    return render(request, 'row/practice/details.html', context)
 
 
 
