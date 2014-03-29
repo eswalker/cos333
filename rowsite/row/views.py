@@ -11,7 +11,7 @@ def athlete_index(request):
 # Shows athlete details for one athlete
 def athlete_detail(request, athleteId):
     athlete = get_object_or_404(Athlete, pk=athleteId)
-    weights = Weight.objects.get(athlete=athleteId)
+    weights = Weight.objects.filter(athlete=athleteId)
     return render(request, 'row/athlete/details.html', {'athlete':athlete, 'weights':weights})
 
 # Creates a new athlete
