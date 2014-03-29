@@ -1,0 +1,6 @@
+from row import views
+
+
+    url(r'^$', views.index, name='index'),
+    url(r'^athlete/(?P<athleteId>\d+)/$', views.detail, name='athlete-detail'),
+    url(r'^athlete/new/', views.new, name='athlete_new')

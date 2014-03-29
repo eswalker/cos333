@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^athlete/(?P<athleteId>\d+)/$', views.detail, name='athlete-detail'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^athlete/new/', views.new, name='athlete_new')
 )
