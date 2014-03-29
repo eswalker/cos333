@@ -21,12 +21,12 @@ def athlete_new(request):
     return render(request, 'row/athlete/new.html')
 
 # Lists practices by date
-def practices_index(request):
+def practice_index(request):
 	practices = Practice.objects.all()
 	context = {'practices': practices}
 	return render(request, 'row/practice/index.html', context)
 
-def athlete_detail(request, practice_id):
+def practice_detail(request, practice_id):
     athlete = get_object_or_404(Practice, pk=practice_id)
     context = {'practice':practice}
     return render(request, 'row/practice/details.html', context)
