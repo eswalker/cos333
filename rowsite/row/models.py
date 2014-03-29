@@ -15,7 +15,7 @@ class Practice(models.Model):
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
-        return unicode(self.datetime.date())
+        return str(self.datetime.date()) + " " +  self.name
 
 class Result(models.Model):
     datetime = models.DateTimeField(auto_now=True)
@@ -34,4 +34,4 @@ class Weight(models.Model):
     weight = models.IntegerField()
 
     def __unicode__(self):
-        return self.datetime + " " + str(self.weight)
+        return str(self.datetime.date()) + " " + str(self.athlete) + " " + str(self.weight)
