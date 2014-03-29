@@ -4,18 +4,18 @@ from django.http import HttpResponse
 
 from row.models import Athlete
 
-# Create your views here.
-def index(request):
+# Lists athletes in a roster
+def athlete_index(request):
     athletes = Athlete.objects.all()
     context = {'athletes': athletes}
     return render(request, 'row/index.html', context)
 
-''' my comment '''
-def detail(request, athleteId):
+# Shows athlete details for one athlete
+def athlete_detail(request, athleteId):
     athlete = get_object_or_404(Athlete, pk=athleteId)
     return render(request, 'row/athlete/details.html', {'athlete':athlete})
 
-def new(request):
+# Creates a new athlete
+def athlete_new(request):
     return render(request, 'row/athlete/new.html')
 
-# new comment
