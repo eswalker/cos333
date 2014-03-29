@@ -10,7 +10,7 @@ def index(request):
     context = {'athletes': athletes}
     return render(request, 'row/index.html', context)
 
-
+''' my comment '''
 def detail(request, athleteId):
     athlete = get_object_or_404(Athlete, pk=athleteId)
     return render(request, 'row/athlete/details.html', {'athlete':athlete})
