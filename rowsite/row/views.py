@@ -27,7 +27,7 @@ def practice_index(request):
 	return render(request, 'row/practice/index.html', context)
 
 def practice_detail(request, practice_id):
-    athlete = get_object_or_404(Practice, pk=practice_id)
+    practice = get_object_or_404(Practice, pk=practice_id)
     context = {'practice':practice}
     return render(request, 'row/practice/details.html', context)
 
