@@ -1,3 +1,6 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'row/style.css' %}" />
+
 {% if athlete %}
   <table>
     <tr><td>Name</td><td>{{ athlete.name }}</td></tr>
