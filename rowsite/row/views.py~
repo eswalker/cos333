@@ -14,3 +14,6 @@ def index(request):
 def detail(request, athleteId):
     athlete = get_object_or_404(Athlete, pk=athleteId)
     return render(request, 'row/athlete/details.html', {'athlete':athlete})
+
+def new(request):
+    return render(request, 'row/athlete/new.html')
