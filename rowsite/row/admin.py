@@ -12,8 +12,7 @@ class ResultAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-# comment
 admin.site.register(Athlete, AthleteAdmin)
 admin.site.register(Practice)
-admin.site.register(Result)
+admin.site.register(Result, ResultAdmin)
 admin.site.register(Weight)

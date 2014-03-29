@@ -12,6 +12,7 @@ class Athlete(models.Model):
     
 class Practice(models.Model):
     datetime = models.DateTimeField(auto_now=True)
+    datetime.editable=True
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
@@ -19,6 +20,7 @@ class Practice(models.Model):
 
 class Result(models.Model):
     datetime = models.DateTimeField(auto_now=True)
+    datetime.editable=True
     distance = models.IntegerField()
     time = models.IntegerField()
     type = models.CharField(max_length=20)
@@ -30,6 +32,7 @@ class Result(models.Model):
 
 class Weight(models.Model):
     datetime = models.DateTimeField(auto_now=True)
+    datetime.editable=True
     athlete = models.ForeignKey(Athlete)
     weight = models.IntegerField()
 
