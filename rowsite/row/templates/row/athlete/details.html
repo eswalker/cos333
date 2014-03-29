@@ -5,4 +5,12 @@
     <tr><td>Year</td><td>{{ athlete.year }}</td></tr>
     <tr><td>Height</td><td>{{ athlete.height }}</td></tr>
   </table>
+  {% if weights %}
+  	<p>Weights</p>
+  	<table>
+  		{% for weight in weights %}
+  			<tr><td>{{ weight.datetime }}</td><td>{{ weight.weight }}</td></tr>
+  		{% endfor %}
+  	</table
+  {% endif %}
 {% endif %}
