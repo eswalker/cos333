@@ -30,6 +30,7 @@ class Result(models.Model):
 
 class Weight(models.Model):
     datetime = models.DateTimeField(auto_now=True)
+    athlete = models.ForeignKey(Athlete)
     weight = models.IntegerField()
 
     def __unicode__(self):

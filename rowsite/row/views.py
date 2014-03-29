@@ -17,3 +17,5 @@ def detail(request, athleteId):
 
 def new(request):
     return render(request, 'row/athlete/new.html')
+
+# new comment
