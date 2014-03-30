@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from row.models import Athlete, Weight, Practice, Result
+from row.forms import AthleteForm
 
 # Lists athletes in a roster
 def athlete_index(request):
@@ -20,6 +21,21 @@ def athlete_detail(request, athlete_id):
 def athlete_new(request):
     return render(request, 'row/athlete/new.html')
 
+# Adds a new athlete
+def athlete_add(request):
+	if request.method == 'POST':
+		form = AthleteForm(request.POST)
+		if form.is_valid():
+			form.save(commit=True)
+			return athlete_index(request)
+		else:
+			print form.errors
+	else:
+		form = AthleteForm()
+	context = {'form':form}
+	return render(request, 'row/athlete/add.html', context)
+
+
 # Lists practices by date
 def practice_index(request):
 	practices = Practice.objects.all()
@@ -30,6 +46,3 @@ def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     context = {'practice':practice}
     return render(request, 'row/practice/details.html', context)
-
-
-
