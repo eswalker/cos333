@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+
 from row.models import Athlete, Weight, Practice, Result
 from row.forms import AthleteForm, PracticeForm
 
@@ -19,16 +21,22 @@ def athlete_detail(request, athlete_id):
 
 # Adds a new athlete
 def athlete_add(request):
+	general_errors=None
 	if request.method == 'POST':
 		form = AthleteForm(request.POST)
 		if form.is_valid():
-			form.save(commit=True)
+			new_athlete = form.save(commit=False)
+			try:
+				new_athlete.full_clean()
+				new_athlete.save()
+			except ValidationError as e:
+				general_errors = e.message_dict[NON_FIELD_ERRORS]
 			return athlete_index(request)
 		else:
 			print form.errors
 	else:
 		form = AthleteForm()
-	context = {'form':form}
+	context = {'form':form, 'general_errors':general_errors}
 	return render(request, 'row/athlete/add.html', context)
 
 

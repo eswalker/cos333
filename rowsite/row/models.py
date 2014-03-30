@@ -1,12 +1,35 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
 
 # Create your models here.
 class Athlete(models.Model):
-    name = models.CharField(max_length=50)
-    side = models.CharField(max_length=20)
-    year = models.CharField(max_length=20)
-    height = models.CharField(max_length=20)
+  
+    side_choices = (
+        ('Port', 'Port'),
+        ('Starboard', 'Starboard'),
+        ('Both', 'Both'),
+        ('Coxswain', 'Coxswain'),
+        ('Coach', 'Coach'),
+        ('Other', 'Other')
+    )
+    year_choices = (
+        ('Fr', 'Freshman'),
+        ("So", 'Sophomore'),
+        ('Jr', 'Junior'),
+        ('Sr', 'Senior'),
+        ('NA', 'Not Applicable')
+    )
 
+    name = models.CharField(max_length=50)
+    side = models.CharField(max_length=9, choices=side_choices)
+    year = models.CharField(max_length=2, choices=year_choices, default='NA')
+    height = models.PositiveIntegerField()
+    
+    def clean(self):
+         if self.height > 100 or self.height < 30:
+            raise ValidationError('Height must be between 30 and 100 inches')
+    
     def __unicode__(self):
         return self.name
     

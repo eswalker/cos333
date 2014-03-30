@@ -6,7 +6,7 @@ class AthleteForm(forms.ModelForm):
     name = forms.CharField(max_length=50, help_text="Your full name.", label="name")
     side = forms.CharField(max_length=20, help_text="Port, Starboard, Cox, Coach, or Other", label="side")
     year = forms.CharField(max_length=20, help_text="Fr, So, Jr, or Sr", label="year")
-    height = forms.CharField(max_length=20, help_text="Your height in inches", label="height")
+    height = forms.IntegerField(min_value=0, help_text="Your height in inches", label="height")
 
     class Meta:
         model = Athlete

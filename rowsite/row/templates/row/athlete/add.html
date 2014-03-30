@@ -10,6 +10,14 @@
         {{ hidden }}
     {% endfor %}
 
+    {% if general_errors %}
+        <div id="errors">
+            {{ general_errors }}
+        </div>
+    {% endif %}
+
+    {{ form.errors }}
+
     <table class="form-table"> 
         {% for field in form.visible_fields %}
             <tr>
