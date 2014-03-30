@@ -41,7 +41,8 @@ def practice_index(request):
 # Shows practice details for one practice
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
-    context = {'practice':practice}
+    results = Result.objects.filter(practice=practice_id)
+    context = {'practice':practice, 'results':results}
     return render(request, 'row/practice/details.html', context)
 
 # Adds a new practice
