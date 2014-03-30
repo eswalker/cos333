@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css" />
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'row/style.css' %}" />
     <title>{% block title %}Virtual Boathouse{% endblock %}</title>
 </head>
 

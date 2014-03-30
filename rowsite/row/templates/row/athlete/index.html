@@ -1,3 +1,8 @@
+{% load staticfiles %}
+
+{% extends static 'row/base.html' %}
+
+{% block content %}
 {% if athletes %}
   <table>
  
@@ -37,3 +42,4 @@
   <p>No athletes are available</p>
 {% endif %}
 <a href="{% url 'row:athlete_add' %}">Add Athlete</a>
+{% endblock %}
