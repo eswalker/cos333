@@ -17,7 +17,7 @@
   		{% endfor %}
   	</table>
   {% endif %}
-  <a href="{% url 'row:athlete_weight_add' athlete.id %}">Add Weight</a>
+  <a href="{% url 'row:athlete_weight_add' athlete.id %}">Add Weight</a><br>
 
 
   {% if results %}
@@ -41,5 +41,6 @@
       {% endfor %}
     </table>
   {% endif %}
+  <a href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}">Add Result</a>
 
 {% endif %}

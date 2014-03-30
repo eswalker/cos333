@@ -34,5 +34,6 @@
   {% endfor %}
 </table>
 {% endif %}
+<a href="{% url 'row:practice_result_add' practice_id=practice.id %}">Add Result</a>
 
 {% endblock %}

@@ -11,5 +11,8 @@ urlpatterns = patterns('',
     url(r'^practice/add/', views.practice_add, name='practice_add'),
     url(r'^weight/add/', views.weight_add, name='weight_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/weight/add/$', views.weight_add, name='athlete_weight_add'),
+    url(r'^result/add/', views.result_add, name='result_add'),
+    url(r'^practice/(?P<practice_id>\d+)/result/add/$', views.result_add, name='practice_result_add'),
+    url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
 
 )

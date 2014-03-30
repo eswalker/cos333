@@ -29,3 +29,16 @@ class WeightForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Weight
+
+class ResultForm(forms.ModelForm):
+    datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="datetime")
+    distance = forms.IntegerField(help_text="Distance", label="distance")
+    time = forms.IntegerField(help_text="Time (in seconds)", label="time")
+    type = forms.CharField(max_length=20, help_text="Erg, Water, Bike, etc.", label="type")
+    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="athlete")
+    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="practice")
+
+     # An inline class to provide additional information on the form.
+    class Meta:
+        # Provide an association between the ModelForm and a model
+        model = Result
