@@ -2,7 +2,8 @@
 {% block title %} Practices {% endblock %} 
 {% block content %}
  
-<a href="{% url 'row:practice_add' %}">Add Practice</a>
+<a href="{% url 'row:practice_add' %}">Add Practice</a><br>
+<a href="{% url 'row:result_add' %}">Add Result</a>
 
 {% if practices %}
   <table>

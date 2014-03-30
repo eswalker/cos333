@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
 from row.models import Athlete, Weight, Practice, Result
-from row.forms import AthleteForm, PracticeForm
+from row.forms import AthleteForm, PracticeForm, WeightForm, ResultForm
 
 # Lists athletes in a roster
 def athlete_index(request):
@@ -67,3 +67,38 @@ def practice_add(request):
         form = PracticeForm()
     context = {'form':form}
     return render(request, 'row/practice/add.html', context)
+
+# Adds a new weight
+def weight_add(request, athlete_id=None):
+    if request.method == 'POST':
+        form = WeightForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return athlete_index(request)
+        else:
+            print form.errors
+    if athlete_id == None:
+        form = WeightForm()
+    else:
+        form = WeightForm(initial={'athlete': athlete_id})
+    context = {'form':form}
+    return render(request, 'row/weight/add.html', context)
+
+# Adds a new result
+def result_add(request, practice_id=None, athlete_id=None):
+    if request.method == 'POST':
+        form = ResultForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return practice_index(request)
+        else:
+            print form.errors
+
+    if practice_id != None:
+        form = ResultForm(initial={'practice': practice_id})
+    elif athlete_id != None:
+        form = ResultForm(initial={'athlete': athlete_id})
+    else:
+        form = ResultForm()
+    context = {'form':form}
+    return render(request, 'row/result/add.html', context)
