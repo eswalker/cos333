@@ -1,15 +1,26 @@
-<form id="athlete_form" method="post" action="/athlete/add/">
+{% extends 'row/base.html' %}
+{% block title %} Add Athlete {% endblock %}
 
-        {% csrf_token %}
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-        
+{% block content %}
+<h1>Add an Athlete</h1>
+<form id="athlete_form" method="post" action="/athlete/add/">
+  
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    <table> 
         {% for field in form.visible_fields %}
-            {{ field.errors }}
-            {{ field.help_text}}
-            {{ field }}
+            <tr>
+                <td>{{ field.errors }}</td>
+                <td>{{ field.help_text}}</td>
+                <td>{{ field }}</td>
+            </tr>
         {% endfor %}
+    </table>
 
      <input type="submit" name="submit" value="Add Athlete" />
 </form>
+
+{% endblock %}
