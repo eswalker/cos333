@@ -10,12 +10,13 @@
         {{ hidden }}
     {% endfor %}
 
-    <table> 
+    <table class="form-table"> 
         {% for field in form.visible_fields %}
             <tr>
-                <td>{{ field.errors }}</td>
+                <td>{{ field.label }}</td>
+                <td>{{ field }}</td>                 
                 <td>{{ field.help_text}}</td>
-                <td>{{ field }}</td>
+                <td>{{ field.errors }}</td>
             </tr>
         {% endfor %}
     </table>
