@@ -1,10 +1,11 @@
 <a href="{% url 'row:practice_add' %">Add Practice</a>
 {% if practices %}
-  <ul>
+  <table>
+  <tr><th>Date</th><th>Practice</th>
   {% for p in practices %}
-    <li><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></li>
+    <tr><td>{{ p.datetime }}</td><td><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></td>
   {% endfor %}
-  </ul>
+  </table>
 {% else %}
   <p>No practices are available</p>
 {% endif %}
