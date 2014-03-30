@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from row.models import Athlete, Weight, Practice, Result
-from row.forms import AthleteForm
+from row.forms import AthleteForm, PracticeForm
 
 # Lists athletes in a roster
 def athlete_index(request):
@@ -16,10 +16,6 @@ def athlete_detail(request, athlete_id):
     results = Result.objects.filter(athlete=athlete_id)
     context = {'athlete':athlete, 'weights':weights, 'results':results}
     return render(request, 'row/athlete/details.html', context)
-
-# Creates a new athlete
-def athlete_new(request):
-    return render(request, 'row/athlete/new.html')
 
 # Adds a new athlete
 def athlete_add(request):
@@ -42,7 +38,27 @@ def practice_index(request):
 	context = {'practices': practices}
 	return render(request, 'row/practice/index.html', context)
 
+# Shows practice details for one practice
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     context = {'practice':practice}
     return render(request, 'row/practice/details.html', context)
+
+# Adds a new practice
+def practice_add(request):
+    context = RequestContext(request)
+
+    if request.method == 'POST':
+        form = PracticeForm(request.POST)
+
+        if form.is_valid():
+            form.save(commt=True)
+            return practice_index(request)
+
+        else:
+            print form.errors
+
+    else:
+        form = PracticeForm()
+
+    return render_toPresponse('row/practice/add.html', {'form': form}, context)
