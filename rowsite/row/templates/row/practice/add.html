@@ -1,6 +1,6 @@
 <h1>Add a Practice</h1>
 
-<form id="practice_form" method="post" action="/row/practice_add">
+<form id="practice_form" method="post" action="practice/add">
 	{% csrf_token %}
     {% for hidden in form.hidden_fields %}
         {{ hidden }}

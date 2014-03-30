@@ -3,7 +3,31 @@
 {% if practice %}
   <table>
     <tr><td>Name</td><td>{{ practice.name }}</td></tr>
-    <tr><td>Time</td><td>{{ practice.datetime }}</td></tr>
+    <tr><td>Date</td><td>{{ practice.datetime }}</td></tr>
   </table>
  
+{% if results %}
+<p>Results</p>
+<table>
+
+  <tr>
+  	<th>Athlete</th>
+    <th>Date</th>
+    <th>Distance</th>
+    <th>Time</th>
+    <th>Type</th>
+  </tr>
+
+  {% for result in results %}
+    <tr>
+      <td>{{ result.athlete }}</td>
+      <td>{{ result.datetime }}</td>
+      <td>{{ result.distance }}</td>
+      <td>{{ result.time }}</td>
+      <td>{{ result.type }}</td>
+    </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
 {% endif %}

@@ -41,24 +41,21 @@ def practice_index(request):
 # Shows practice details for one practice
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
-    context = {'practice':practice}
+    results = Result.objects.filter(practice=practice_id)
+    context = {'practice':practice, 'results':results}
     return render(request, 'row/practice/details.html', context)
 
 # Adds a new practice
 def practice_add(request):
-    context = RequestContext(request)
-
     if request.method == 'POST':
         form = PracticeForm(request.POST)
-
         if form.is_valid():
-            form.save(commt=True)
+            form.save(commit=True)
             return practice_index(request)
-
         else:
             print form.errors
 
     else:
         form = PracticeForm()
-
-    return render_toPresponse('row/practice/add.html', {'form': form}, context)
+    context = {'form':form}
+    return render(request, 'row/practice/add.html', context)
