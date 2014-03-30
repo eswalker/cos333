@@ -1,3 +1,7 @@
+{% extends 'row/base.html' %}
+{% block title %} Practices {% endblock %} 
+{% block content %}
+
 <a href="{% url 'row:practice_add' %">Add Practice</a>
 {% if practices %}
   <table>
@@ -9,3 +13,5 @@
 {% else %}
   <p>No practices are available</p>
 {% endif %}
+
+{% endblock %}

@@ -1,10 +1,14 @@
-
+{% extends 'row/base.html' %}
+{% block title %} Practice Details {% endblock %}
+{% block content %}
 
 {% if practice %}
   <table>
     <tr><td>Name</td><td>{{ practice.name }}</td></tr>
     <tr><td>Date</td><td>{{ practice.datetime }}</td></tr>
   </table>
+
+{% endif %}
  
 {% if results %}
 <p>Results</p>
@@ -30,4 +34,4 @@
 </table>
 {% endif %}
 
-{% endif %}
+{% endblock %}

@@ -1,3 +1,7 @@
+{% extends 'row/base.html' %}
+{% block title %} Add Practice {% endblock %} 
+{% block content %}
+
 <h1>Add a Practice</h1>
 
 <form id="practice_form" method="post" action="practice/add">
@@ -14,3 +18,5 @@
 
     <input type="submit" name="submit" value="Create Practice" />
 </form>
+
+{% endblock %}
