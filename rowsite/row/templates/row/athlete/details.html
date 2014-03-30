@@ -17,6 +17,8 @@
   		{% endfor %}
   	</table>
   {% endif %}
+  <a href="{% url 'row:athlete_weight_add' athlete.id %}">Add Weight</a>
+
 
   {% if results %}
     <p>Results</p>

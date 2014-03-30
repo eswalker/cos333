@@ -9,4 +9,7 @@ urlpatterns = patterns('',
     url(r'^practice/(?P<practice_id>\d+)/$', views.practice_detail, name='practice_detail'),
     url(r'^practices/$', views.practice_index, name='practice_index'),
     url(r'^practice/add/', views.practice_add, name='practice_add'),
+    url(r'^weight/add/', views.weight_add, name='weight_add'),
+    url(r'^athlete/(?P<athlete_id>\d+)/weight/add/$', views.weight_add, name='athlete_weight_add'),
+
 )
