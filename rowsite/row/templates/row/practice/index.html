@@ -1,8 +1,9 @@
 {% extends 'row/base.html' %}
 {% block title %} Practices {% endblock %} 
 {% block content %}
+ 
+<a href="{% url 'row:practice_add' %}">Add Practice</a>
 
-<a href="{% url 'row:practice_add' %">Add Practice</a>
 {% if practices %}
   <table>
   <tr><th>Date</th><th>Practice</th>
