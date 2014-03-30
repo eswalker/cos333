@@ -1,9 +1,38 @@
 {% if athletes %}
-  <ul>
+  <table>
+ 
+  <tr>
+  	<th>
+  		Name
+  	</th>
+  	<th>
+  		Year
+  	</th>
+  	<th>
+  		Side
+  	</th>
+  	<th>
+  		Height
+  	</th>
+  </tr>
+
   {% for a in athletes %}
-    <li><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></li>
+    <tr>
+    	<td>
+    		<a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a>
+    	</td>
+    	<td>
+    		{{ a.year }}
+    	</td>
+    	<td>
+    		{{ a.side }}
+    	</td>
+    	<td>
+    		{{ a.height }}
+    	</td>
+    </tr>
   {% endfor %}
-  </ul>
+ 
 {% else %}
   <p>No athletes are available</p>
 {% endif %}
