@@ -59,21 +59,20 @@ def practice_add(request, id=None):
 	if id:
 		practice = get_object_or_404(Practice, pk=id)
 	if request.method == 'POST':
-    	if practice:
-        	form = PracticeForm(request.POST, initial=practice)
-        else
-        	form = PracticeForm(request.POST)
+		if practice:
+			form = PracticeForm(request.POST, initial=practice)
+		else:
+			form = PracticeForm(request.POST)
 
-        if form.is_valid():
-            form.save(commit=True)
-            return practice_index(request)
-        else:
-            print form.errors
-    else:
-        form = PracticeForm()
-
-    context = {'form':form}
-    return render(request, 'row/practice/add.html', context)
+		if form.is_valid():
+			form.save(commit=True)
+			return practice_index(request)
+		else:
+			print form.errors
+	else:
+		form = PracticeForm()
+	context = {'form':form}
+	return render(request, 'row/practice/add.html', context)
 
 
 
