@@ -56,22 +56,21 @@ def practice_detail(request, practice_id):
 
 # Adds a new practice
 def practice_add(request, id=None):
-	practice = None
-	if id:
-		practice = get_object_or_404(Practice, pk=id)
 	if request.method == 'POST':
-		if practice:
-			form = PracticeForm(request.POST, initial=practice)
-		else:
-			form = PracticeForm(request.POST)
-
+		form = PracticeForm(request.POST)
 		if form.is_valid():
 			form.save(commit=True)
 			return practice_index(request)
 		else:
 			print form.errors
 	else:
-		form = PracticeForm()
+		practice = None
+		if id:
+			practice = get_object_or_404(Practice, pk=id)
+		if practice:
+			form = PracticeForm(instance=practice)
+		else:
+			form = PracticeForm()
 	context = {'form':form}
 	return render(request, 'row/practice/add.html', context)
 
