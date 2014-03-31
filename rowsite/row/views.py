@@ -43,6 +43,11 @@ def athlete_add(request, athlete_id=None):
 	context = {'form':form}
 	return render(request, 'row/athlete/add.html', context)
 
+def athlete_delete(request, id):
+	athlete = get_object_or_404(Athlete, pk=id)
+	athlete.delete()
+	return HttpResponseRedirect(reverse('row:athlete_index'))
+
 # Lists practices by date
 def practice_index(request):
 	practices = Practice.objects.all()
@@ -106,10 +111,9 @@ def weight_add(request, athlete_id=None):
     return render(request, 'row/weight/add.html', context)
 
 def weight_delete(request, id):
-	practice = get_object_or_404(Practice, pk=id, athlete_id=None)
-	practice.delete()
-	if athlete_id:
-		return HttpResponseRedirect(reverse('row:athlete_detail'), args(athlete_id))
+	weight = get_object_or_404(Weight, pk=id)
+	weight.delete()
+	return HttpResponseRedirect(reverse('row:athlete_index'))
 
 # Adds a new result
 def result_add(request, practice_id=None, athlete_id=None):
@@ -129,3 +133,9 @@ def result_add(request, practice_id=None, athlete_id=None):
         form = ResultForm()
     context = {'form':form}
     return render(request, 'row/result/add.html', context)
+
+def result_delete(request, id):
+	result = get_object_or_404(Result, pk=id)
+	result.delete()
+	return HttpResponseRedirect(reverse('row:practice_index'))
+
