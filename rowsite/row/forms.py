@@ -20,7 +20,7 @@ class AthleteForm(forms.ModelForm):
 class PracticeForm(forms.ModelForm):
 	name = forms.CharField(max_length=20, help_text="What was the practice?", label="name")
 	datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="datetime")
-	workout = forms.ChoiceField(max_length=20, help_text="Erg, Water, Bike, etc.", label="type")
+	workout = forms.ChoiceField(choices=Practice.workout_choices, help_text="Erg, Water, Bike, etc.", label="type")
     
     # An inline class to provide additional information on the form.
 	class Meta:

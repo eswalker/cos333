@@ -12,7 +12,7 @@
     <tr>
     	<td>{{ p.datetime }}</td>
     	<td><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></td>
-    	<td>{{ p.type }}</td>
+    	<td>{{ p.workout }}</td>
     </tr>
   {% endfor %}
   </table>
