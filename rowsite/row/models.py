@@ -26,9 +26,6 @@ class Athlete(models.Model):
     year = models.CharField(max_length=2, choices=year_choices, default='NA')
     height = models.PositiveIntegerField()
     
-    def clean(self):
-         if self.height > 100 or self.height < 30:
-            raise ValidationError('Height must be between 30 and 100 inches')
     
     def __unicode__(self):
         return self.name
