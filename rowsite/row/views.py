@@ -24,13 +24,22 @@ def athlete_add(request, athlete_id=None):
     if request.method == 'POST':
         form = AthleteForm(request.POST)
         if form.is_valid():
-            form.save(commit=True)
+            if athlete_id:
+                athlete = get_object_or_404(Athlete, pk=athlete_id)
+                athlete.name = form.cleaned_data["name"]
+                athlete.side = form.cleaned_data["side"]
+                athlete.year = form.cleaned_data["height"]
+                athlete.status = form.cleaned_data["status"]
+                athlete.height = form.cleaned_data["height"]
+                athlete.save()
+            else:
+                form.save(commit=True)
             return athlete_index(request)
         else:
             print form.errors
 
     else:
-        athlete = None;
+        athlete = None
         if athlete_id:
             athlete = get_object_or_404(Athlete, pk=athlete_id)
         if athlete:
