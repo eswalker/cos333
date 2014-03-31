@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1>Add an Athlete</h1>
-<form id="athlete_form" method="post" action="/athlete/add/">
+<form id="athlete_form" method="post" action="">
   
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
