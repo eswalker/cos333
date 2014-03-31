@@ -25,7 +25,7 @@ def athlete_add(request):
         form = AthleteForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return athlete_index(request)
+            return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm()
 	context = {'form':form}
@@ -38,15 +38,20 @@ def athlete_edit(request, athlete_id=None):
         if form.is_valid():
             athlete.name = form.cleaned_data["name"]
             athlete.side = form.cleaned_data["side"]
-            athlete.year = form.cleaned_data["height"]
+            athlete.year = form.cleaned_data["year"]
             athlete.status = form.cleaned_data["status"]
             athlete.height = form.cleaned_data["height"]
             athlete.save()
-            return athlete_index(request)
+            return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm(instance=athlete)
     context = {'form': form}
     return render(request, 'row/athlete/add.html', context)
+
+def athlete_delete(request, athlete_id):
+    athlete = get_object_or_404(Athlete, pk=athlete_id)
+    athlete.delete()
+    return HttpResponseRedirect(reverse('row:athlete_index'))
 
 # Lists practices by date
 def practice_index(request):
@@ -87,6 +92,11 @@ def practice_edit(request, id):
 	context = {'form':form}
 	return render(request, 'row/practice/add.html', context)
 
+def practice_delete(request, id):
+	practice = get_object_or_404(Practice, pk=id)
+	practice.delete()
+	return HttpResponseRedirect(reverse('row:practice_index'))
+
 # Adds a new weight
 def weight_add(request, athlete_id=None):
     if request.method == 'POST':
@@ -103,6 +113,12 @@ def weight_add(request, athlete_id=None):
         	form = WeightForm(initial={'athlete': athlete_id})
     context = {'form':form}
     return render(request, 'row/weight/add.html', context)
+
+def weight_delete(request, id):
+	practice = get_object_or_404(Practice, pk=id, athlete_id=None)
+	practice.delete()
+	if athlete_id:
+		return HttpResponseRedirect(reverse('row:athlete_detail'), args(athlete_id))
 
 # Adds a new result
 def result_add(request, practice_id=None, athlete_id=None):

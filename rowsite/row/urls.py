@@ -17,5 +17,6 @@ urlpatterns = patterns('',
     url(r'^practice/(?P<id>\d+)/edit/$', views.practice_add, name='practice_edit'),
     url(r'^athlete/(?P<athlete_id>\d+)/edit/$', views.athlete_edit, name='athlete_edit'),
     url(r'^practice/(?P<id>\d+)/edit/$', views.practice_edit, name='practice_edit'),
-    url(r'^athlete/(?P<athlete_id>\d+)/edit/$', views.athlete_edit, name='athlete_edit')
+    url(r'^athlete/(?P<athlete_id>\d+)/edit/$', views.athlete_edit, name='athlete_edit'),
+    url(r'^athlete/(?P<athlete_id>\d+)/delete/$', views.athlete_delete, name='athlete_delete')
 )
