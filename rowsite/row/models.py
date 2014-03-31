@@ -21,7 +21,7 @@ class Athlete(models.Model):
         ('NA', 'Not Applicable')
     )
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     side = models.CharField(max_length=9, choices=side_choices)
     year = models.CharField(max_length=2, choices=year_choices, default='NA')
     height = models.PositiveIntegerField()

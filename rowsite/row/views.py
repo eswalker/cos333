@@ -77,10 +77,11 @@ def weight_add(request, athlete_id=None):
             return athlete_index(request)
         else:
             print form.errors
-    if athlete_id == None:
-        form = WeightForm()
     else:
-        form = WeightForm(initial={'athlete': athlete_id})
+    	if athlete_id == None:
+        	form = WeightForm()
+    	else:
+        	form = WeightForm(initial={'athlete': athlete_id})
     context = {'form':form}
     return render(request, 'row/weight/add.html', context)
 
