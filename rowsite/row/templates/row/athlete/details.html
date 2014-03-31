@@ -1,5 +1,6 @@
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'row/style.css' %}" />
+{% extends 'row/base.html' %}
+{% block title %} Athlete Details {% endblock %}
+{% block content %}
 
 {% if athlete %}
   <table>
@@ -44,3 +45,4 @@
   <a href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}">Add Result</a>
 
 {% endif %}
+{% endblock %}
