@@ -21,14 +21,16 @@ def athlete_detail(request, athlete_id):
 
 # Adds a new athlete
 def athlete_add(request, athlete_id=None):
+    athlete = None;
     if athlete_id:
-        athlete = get_object_or404(Athlete, pk=athlete_id)
-
-    else:
-        athlete = Athlete()
+        athlete = get_object_or_404(Athlete, pk=athlete_id)
 
     if request.method == 'POST':
-        form = AthleteForm(request.POST, instance=athlete)
+        if athlete:
+            form = AthleteForm(request.POST, instance=athlete)
+        else:
+            form = AthleteForm(request.POST)
+
         if form.is_valid():
             form.save(commit=True)
             return athlete_index(request)
@@ -61,7 +63,7 @@ def practice_add(request, id=None):
 		practice = get_object_or_404(Practice, pk=id)
 	if request.method == 'POST':
 		if practice:
-			form = PracticeForm(request.POST, initial=practice)
+			form = PracticeForm(request.POST, instance=practice)
 		else:
 			form = PracticeForm(request.POST)
 
