@@ -58,7 +58,14 @@ def practice_add(request, id=None):
 	if request.method == 'POST':
 		form = PracticeForm(request.POST)
 		if form.is_valid():
-			form.save(commit=True)
+			if id:
+				practice = get_object_or_404(Practice, pk=id)
+				practice.name = form.cleaned_data["name"]
+				practice.datetime = form.cleaned_data["datetime"]
+				practice.workout = form.cleaned_data["workout"]
+				practice.save()
+			else:
+				form.save(commit=True)
 			return practice_index(request)
 		else:
 			print form.errors
