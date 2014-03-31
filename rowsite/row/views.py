@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from row.models import Athlete, Weight, Practice, Result
 from row.forms import AthleteForm, PracticeForm, WeightForm, ResultForm
@@ -61,7 +61,7 @@ def practice_add(request):
 		form = PracticeForm(request.POST)
 		if form.is_valid():
 			form.save(commit=True)
-			return practice_index(request)
+			return HttpResponseRedirect(reverse('row:practice_index'))
 	else:
 		form = PracticeForm()
 	context = {'form':form}
@@ -76,15 +76,11 @@ def practice_edit(request, id):
 			practice.datetime = form.cleaned_data["datetime"]
 			practice.workout = form.cleaned_data["workout"]
 			practice.save()
-			return practice_index(request)
+			return HttpResponseRedirect(reverse('row:practice_index'))
 	else:
 		form = PracticeForm(instance=practice)
 	context = {'form':form}
 	return render(request, 'row/practice/add.html', context)
-
-
-
-
 
 
 # Adds a new weight

@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^result/add/', views.result_add, name='result_add'),
     url(r'^practice/(?P<practice_id>\d+)/result/add/$', views.result_add, name='practice_result_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
-    url(r'^practice/(?P<id>\d+)/edit/$', views.practice_add, name='practice_edit'),
+    url(r'^practice/(?P<id>\d+)/edit/$', views.practice_edit, name='practice_edit'),
     url(r'^athlete/(?P<athlete_id>\d+)/edit/$', views.athlete_add, name='athlete_edit')
 
 )
