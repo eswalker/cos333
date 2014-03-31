@@ -8,6 +8,11 @@ class AthleteForm(forms.ModelForm):
     year = forms.CharField(max_length=20, help_text="Fr, So, Jr, or Sr", label="year")
     height = forms.IntegerField(min_value=0, help_text="Your height in inches", label="height")
 
+    def clean_height(self):
+        height = self.cleaned_data["height"]
+        if height > 100 or height < 30:
+            raise forms.ValidationError('Height must be between 30 and 100 inches')
+
     class Meta:
         model = Athlete
 
