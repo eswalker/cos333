@@ -4,8 +4,8 @@ from row.models import Athlete, Weight, Practice, Result
 
 class AthleteForm(forms.ModelForm):
     name = forms.CharField(max_length=50, help_text="Your full name.", label="name")
-    side = forms.CharField(max_length=20, help_text="Port, Starboard, Coxswain, Coach, or Other", label="side")
-    year = forms.CharField(max_length=20, help_text="Fr, So, Jr, or Sr", label="year")
+    side = forms.ChoiceField(choices=Athlete.side_choices, help_text="Port, Starboard, Coxswain, Coach, or Other", label="side")
+    year = forms.ChoiceField(choices=Athlete.year_choices, help_text="Fr, So, Jr, or Sr", label="year")
     height = forms.IntegerField(min_value=0, help_text="Your height in inches", label="height")
 
     def clean_height(self):
@@ -20,7 +20,7 @@ class AthleteForm(forms.ModelForm):
 class PracticeForm(forms.ModelForm):
 	name = forms.CharField(max_length=20, help_text="What was the practice?", label="name")
 	datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="datetime")
-	forms.CharField(max_length=20, help_text="Erg, Water, Bike, etc.", label="type")
+	workout = forms.ChoiceField(max_length=20, help_text="Erg, Water, Bike, etc.", label="type")
     
     # An inline class to provide additional information on the form.
 	class Meta:

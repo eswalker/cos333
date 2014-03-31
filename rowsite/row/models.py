@@ -36,6 +36,12 @@ class Practice(models.Model):
     name = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
 
+    workout_choices = (
+        ('Erg', 'Erg'),
+        ('Water', 'Water'),
+        ('Bike', 'Bike')
+    )
+
     def __unicode__(self):
         return str(self.datetime.date()) + " " +  self.name
 
