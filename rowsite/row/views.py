@@ -82,6 +82,11 @@ def practice_edit(request, id):
 	context = {'form':form}
 	return render(request, 'row/practice/add.html', context)
 
+def practice_delete(request, id):
+	practice = get_object_or_404(Practice, pk=id)
+	practice.delete()
+	return HttpResponseRedirect(reverse('row:practice_index'))
+
 
 # Adds a new weight
 def weight_add(request, athlete_id=None):
@@ -99,6 +104,12 @@ def weight_add(request, athlete_id=None):
         	form = WeightForm(initial={'athlete': athlete_id})
     context = {'form':form}
     return render(request, 'row/weight/add.html', context)
+
+def weight_delete(request, id):
+	practice = get_object_or_404(Practice, pk=id, athlete_id=None)
+	practice.delete()
+	if athlete_id:
+		return HttpResponseRedirect(reverse('row:athlete_detail'), args(athlete_id))
 
 # Adds a new result
 def result_add(request, practice_id=None, athlete_id=None):
