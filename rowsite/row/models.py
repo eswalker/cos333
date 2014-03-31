@@ -54,7 +54,7 @@ class Weight(models.Model):
     datetime = models.DateTimeField(auto_now=True)
     datetime.editable=True
     athlete = models.ForeignKey(Athlete)
-    weight = models.IntegerField()
+    weight = models.DecimalField(decimal_places=1, max_digits=4)
 
     def __unicode__(self):
         return str(self.datetime.date()) + " " + str(self.athlete) + " " + str(self.weight)

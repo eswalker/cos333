@@ -27,7 +27,7 @@ class PracticeForm(forms.ModelForm):
 
 class WeightForm(forms.ModelForm):
     athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="athlete")
-    weight = forms.IntegerField(help_text="Weight", label="weight")
+    weight = forms.DecimalField(help_text="Weight", decimal_places=1, label="weight")
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the weigh-in? (Ex. 3/29/14 8:30)", label="datetime")
 
     # An inline class to provide additional information on the form.
