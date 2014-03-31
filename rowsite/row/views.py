@@ -20,34 +20,33 @@ def athlete_detail(request, athlete_id):
     return render(request, 'row/athlete/details.html', context)
 
 # Adds a new athlete
-def athlete_add(request, athlete_id=None):
+def athlete_add(request):
     if request.method == 'POST':
         form = AthleteForm(request.POST)
         if form.is_valid():
-            if athlete_id:
-                athlete = get_object_or_404(Athlete, pk=athlete_id)
-                athlete.name = form.cleaned_data["name"]
-                athlete.side = form.cleaned_data["side"]
-                athlete.year = form.cleaned_data["height"]
-                athlete.status = form.cleaned_data["status"]
-                athlete.height = form.cleaned_data["height"]
-                athlete.save()
-            else:
-                form.save(commit=True)
+            form.save(commit=True)
             return athlete_index(request)
-        else:
-            print form.errors
-
     else:
-        athlete = None
-        if athlete_id:
-            athlete = get_object_or_404(Athlete, pk=athlete_id)
-        if athlete:
-            form = AthleteForm(instance=athlete)
-        else:
-            form = AthleteForm()
+        form = AthleteForm()
 	context = {'form':form}
 	return render(request, 'row/athlete/add.html', context)
+
+def athlete_edit(request, athlete_id=None):
+    athlete = get_object_or_404(Athlete, pk=athlete_id)
+    if request.method == 'POST':
+        form = AthleteForm(request.POST)
+        if form.isvalid():
+            athlete.name = form.cleaned_data["name"]
+            athlete.side = form.cleaned_data["side"]
+            athlete.year = form.cleaned_data["height"]
+            athlete.status = form.cleaned_data["status"]
+            athlete.height = form.cleaned_data["height"]
+            athlete.save()
+            return athlete_index(request)
+    else:
+        form = AthleteForm(instance=athlete)
+    context = {'form': form}
+    return render(request, 'row/athlete/add.html', context)
 
 # Lists practices by date
 def practice_index(request):
@@ -87,11 +86,6 @@ def practice_edit(request, id):
 		form = PracticeForm(instance=practice)
 	context = {'form':form}
 	return render(request, 'row/practice/add.html', context)
-
-
-
-
-
 
 # Adds a new weight
 def weight_add(request, athlete_id=None):
