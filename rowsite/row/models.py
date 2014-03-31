@@ -37,8 +37,7 @@ class Athlete(models.Model):
         return self.name
     
 class Practice(models.Model):
-    datetime = models.DateTimeField(auto_now=True)
-    datetime.editable=True
+    datetime = models.DateTimeField(editable=True)
     name = models.CharField(max_length=20)
     workout = models.CharField(max_length=20)
 
