@@ -21,25 +21,22 @@ def athlete_detail(request, athlete_id):
 
 # Adds a new athlete
 def athlete_add(request, athlete_id=None):
-    athlete = None;
-    if athlete_id:
-        athlete = get_object_or_404(Athlete, pk=athlete_id)
-
     if request.method == 'POST':
-        if athlete:
-            form = AthleteForm(request.POST, instance=athlete)
-        else:
-            form = AthleteForm(request.POST)
-
+        form = AthleteForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
             return athlete_index(request)
-            
         else:
-			print form.errors
-    else:
-        form = AthleteForm()
+            print form.errors
 
+    else:
+        athlete = None;
+        if athlete_id:
+            athlete = get_object_or_404(Athlete, pk=athlete_id)
+        if athlete:
+            form = AthleteForm(instance=athlete)
+        else:
+            form = AthleteForm()
 	context = {'form':form}
 	return render(request, 'row/athlete/add.html', context)
 
