@@ -31,4 +31,5 @@ urlpatterns = patterns('',
     url(r'^weight/(?P<id>\d+)/delete/$', views.weight_delete, name='weight_delete'),
 
 
+
 )

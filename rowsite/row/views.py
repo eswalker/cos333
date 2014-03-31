@@ -20,26 +20,14 @@ def athlete_detail(request, athlete_id):
     return render(request, 'row/athlete/details.html', context)
 
 # Adds a new athlete
-def athlete_add(request, athlete_id=None):
-    athlete = None;
-    if athlete_id:
-        athlete = get_object_or_404(Athlete, pk=athlete_id)
-
+def athlete_add(request):
     if request.method == 'POST':
-        if athlete:
-            form = AthleteForm(request.POST, instance=athlete)
-        else:
-            form = AthleteForm(request.POST)
-
+        form = AthleteForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return athlete_index(request)
-            
-        else:
-			print form.errors
+            return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm()
-
 	context = {'form':form}
 	return render(request, 'row/athlete/add.html', context)
 
@@ -47,6 +35,25 @@ def athlete_delete(request, id):
 	athlete = get_object_or_404(Athlete, pk=id)
 	athlete.delete()
 	return HttpResponseRedirect(reverse('row:athlete_index'))
+
+def athlete_edit(request, athlete_id=None):
+    athlete = get_object_or_404(Athlete, pk=athlete_id)
+    if request.method == 'POST':
+        form = AthleteForm(request.POST)
+        if form.is_valid():
+            athlete.name = form.cleaned_data["name"]
+            athlete.side = form.cleaned_data["side"]
+            athlete.year = form.cleaned_data["year"]
+            athlete.status = form.cleaned_data["status"]
+            athlete.height = form.cleaned_data["height"]
+            athlete.save()
+            return HttpResponseRedirect(reverse('row:athlete_index'))
+    else:
+        form = AthleteForm(instance=athlete)
+    context = {'form': form}
+    return render(request, 'row/athlete/add.html', context)
+
+
 
 # Lists practices by date
 def practice_index(request):
@@ -91,7 +98,6 @@ def practice_delete(request, id):
 	practice = get_object_or_404(Practice, pk=id)
 	practice.delete()
 	return HttpResponseRedirect(reverse('row:practice_index'))
-
 
 # Adds a new weight
 def weight_add(request, athlete_id=None):
