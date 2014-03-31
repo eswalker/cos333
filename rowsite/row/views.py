@@ -55,19 +55,27 @@ def practice_detail(request, practice_id):
     return render(request, 'row/practice/details.html', context)
 
 # Adds a new practice
-def practice_add(request):
-    if request.method == 'POST':
-        form = PracticeForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return practice_index(request)
-        else:
-            print form.errors
+def practice_add(request, id=None):
+	practice = None
+	if id:
+		practice = get_object_or_404(Practice, pk=id)
+	if request.method == 'POST':
+		if practice:
+			form = PracticeForm(request.POST, initial=practice)
+		else:
+			form = PracticeForm(request.POST)
 
-    else:
-        form = PracticeForm()
-    context = {'form':form}
-    return render(request, 'row/practice/add.html', context)
+		if form.is_valid():
+			form.save(commit=True)
+			return practice_index(request)
+		else:
+			print form.errors
+	else:
+		form = PracticeForm()
+	context = {'form':form}
+	return render(request, 'row/practice/add.html', context)
+
+
 
 # Adds a new weight
 def weight_add(request, athlete_id=None):
