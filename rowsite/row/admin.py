@@ -7,7 +7,7 @@ class AthleteAdmin(admin.ModelAdmin):
 class ResultAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Date and Distance', {'fields':['datetime','distance']}),
-		('More information', {'fields':['time','type','athlete','practice'], 'classes':['collapse']}),
+		('More information', {'fields':['time', 'athlete','practice'], 'classes':['collapse']}),
 	]
 
 

@@ -7,6 +7,7 @@
   <table>
     <tr><td>Name</td><td>{{ practice.name }}</td></tr>
     <tr><td>Date</td><td>{{ practice.datetime }}</td></tr>
+    <tr><td>Type</td><td>{{ practice.type }}</td></tr>
   </table>
 
 {% endif %}
@@ -20,7 +21,6 @@
     <th>Date</th>
     <th>Distance</th>
     <th>Time</th>
-    <th>Type</th>
   </tr>
 
   {% for result in results %}
@@ -29,7 +29,6 @@
       <td>{{ result.datetime }}</td>
       <td>{{ result.distance }}</td>
       <td>{{ result.time }}</td>
-      <td>{{ result.type }}</td>
     </tr>
   {% endfor %}
 </table>

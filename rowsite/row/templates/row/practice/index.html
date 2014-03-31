@@ -7,9 +7,13 @@
 
 {% if practices %}
   <table>
-  <tr><th>Date</th><th>Practice</th>
+  <tr><th>Date</th><th>Practice</th><th>Type</th></tr>
   {% for p in practices %}
-    <tr><td>{{ p.datetime }}</td><td><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></td>
+    <tr>
+    	<td>{{ p.datetime }}</td>
+    	<td><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></td>
+    	<td>{{ p.type }}</td>
+    </tr>
   {% endfor %}
   </table>
 {% else %}
