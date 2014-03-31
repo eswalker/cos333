@@ -56,32 +56,34 @@ def practice_detail(request, practice_id):
     context = {'practice':practice, 'results':results}
     return render(request, 'row/practice/details.html', context)
 
-# Adds a new practice
-def practice_add(request, id=None):
+def practice_add(request):
 	if request.method == 'POST':
 		form = PracticeForm(request.POST)
 		if form.is_valid():
-			if id:
-				practice = get_object_or_404(Practice, pk=id)
-				practice.name = form.cleaned_data["name"]
-				practice.datetime = form.cleaned_data["datetime"]
-				practice.workout = form.cleaned_data["workout"]
-				practice.save()
-			else:
-				form.save(commit=True)
+			form.save(commit=True)
 			return practice_index(request)
-		else:
-			print form.errors
 	else:
-		practice = None
-		if id:
-			practice = get_object_or_404(Practice, pk=id)
-		if practice:
-			form = PracticeForm(instance=practice)
-		else:
-			form = PracticeForm()
+		form = PracticeForm()
 	context = {'form':form}
 	return render(request, 'row/practice/add.html', context)
+
+def practice_edit(request, id):
+	practice = get_object_or_404(Practice, pk=id)
+	if request.method == 'POST':
+		form = PracticeForm(request.POST)
+		if form.is_valid():
+			practice.name = form.cleaned_data["name"]
+			practice.datetime = form.cleaned_data["datetime"]
+			practice.workout = form.cleaned_data["workout"]
+			practice.save()
+			return practice_index(request)
+	else:
+		form = PracticeForm(instance=practice)
+	context = {'form':form}
+	return render(request, 'row/practice/add.html', context)
+
+
+
 
 
 
