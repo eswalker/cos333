@@ -17,6 +17,9 @@
   	<th>
   		Height
   	</th>
+    <th>
+      Status
+    </th>
   </tr>
 
   {% for a in athletes %}
@@ -33,6 +36,9 @@
     	<td>
     		{{ a.height }}
     	</td>
+      <td>
+        {{ a.status }}
+      </td>
     </tr>
   {% endfor %}
  

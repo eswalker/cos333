@@ -21,9 +21,15 @@ class Athlete(models.Model):
         ('NA', 'Not Applicable')
     )
 
+    status_choices = (
+        ('Healthy', 'Healthy'),
+        ('Injured', 'Injured')
+    )
+
     name = models.CharField(max_length=50, unique=True)
     side = models.CharField(max_length=9, choices=side_choices)
     year = models.CharField(max_length=2, choices=year_choices, default='NA')
+    status = models.CharField(max_length=20, choices=status_choices, default='Healthy')
     height = models.PositiveIntegerField()
     
     
