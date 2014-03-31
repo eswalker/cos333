@@ -20,25 +20,26 @@ def athlete_detail(request, athlete_id):
     return render(request, 'row/athlete/details.html', context)
 
 # Adds a new athlete
-def athlete_add(request):
-	general_errors=None
-	if request.method == 'POST':
-		form = AthleteForm(request.POST)
-		if form.is_valid():
-			new_athlete = form.save(commit=False)
-			try:
-				new_athlete.full_clean()
-				new_athlete.save()
-			except ValidationError as e:
-				general_errors = e.message_dict[NON_FIELD_ERRORS]
-			return athlete_index(request)
-		else:
-			print form.errors
-	else:
-		form = AthleteForm()
-	context = {'form':form, 'general_errors':general_errors}
-	return render(request, 'row/athlete/add.html', context)
+def athlete_add(request, athlete_id=None):
+    if athlete_id:
+        athlete = get_object_or404(Athlete, pk=athlete_id)
 
+    else:
+        athlete = Athlete()
+
+    if request.method == 'POST':
+        form = AthleteForm(request.POST, instance=athlete)
+        if form.is_valid():
+            form.save(commit=True)
+            return athlete_index(request)
+            
+        else:
+			print form.errors
+    else:
+        form = AthleteForm()
+
+	context = {'form':form}
+	return render(request, 'row/athlete/add.html', context)
 
 # Lists practices by date
 def practice_index(request):
