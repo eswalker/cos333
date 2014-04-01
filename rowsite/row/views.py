@@ -104,8 +104,6 @@ def weight_add(request, athlete_id=None):
         if form.is_valid():
             form.save(commit=True)
             return athlete_index(request)
-        else:
-            print form.errors
     else:
         if athlete_id == None:
             form = WeightForm()
@@ -126,15 +124,13 @@ def result_add(request, practice_id=None, athlete_id=None):
         if form.is_valid():
             form.save(commit=True)
             return HttpResponseRedirect(reverse('row:practice_index'))
-        else:
-            print form.errors
-
-    if practice_id != None:
-        form = ResultForm(initial={'practice': practice_id})
-    elif athlete_id != None:
-        form = ResultForm(initial={'athlete': athlete_id})
     else:
-        form = ResultForm()
+        if practice_id != None:
+            form = ResultForm(initial={'practice': practice_id})
+        elif athlete_id != None:
+            form = ResultForm(initial={'athlete': athlete_id})
+        else:
+            form = ResultForm()
     context = {'form':form, 'title':'Add Result'}
     return render(request, 'row/add.html', context)
 

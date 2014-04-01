@@ -16,7 +16,9 @@
                 <td>{{ field.label }}</td>
                 <td>{{ field }}</td>                 
                 <td>{{ field.help_text}}</td>
-                <td>{{ field.errors }}</td>
+                {% if field.errors %}
+                    <td class="alert alert-danger">{{ field.errors }}</td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
