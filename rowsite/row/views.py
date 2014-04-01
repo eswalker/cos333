@@ -107,12 +107,12 @@ def weight_add(request, athlete_id=None):
         else:
             print form.errors
     else:
-    	if athlete_id == None:
-        	form = WeightForm()
-    	else:
-        	form = WeightForm(initial={'athlete': athlete_id})
-	context = {'form':form, 'title':'Add Weight'}
-	return render(request, 'row/add.html', context)
+        if athlete_id == None:
+            form = WeightForm()
+        else:
+            form = WeightForm(initial={'athlete': athlete_id})
+    context = {'form':form, 'title':'Add Weight'}
+    return render(request, 'row/add.html', context)
 
 def weight_delete(request, id):
 	weight = get_object_or_404(Weight, pk=id)
@@ -125,7 +125,7 @@ def result_add(request, practice_id=None, athlete_id=None):
         form = ResultForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return practice_index(request)
+            return HttpResponseRedirect(reverse('row:practice_index'))
         else:
             print form.errors
 
