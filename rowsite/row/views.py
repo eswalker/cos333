@@ -28,8 +28,8 @@ def athlete_add(request):
             return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm()
-	context = {'form':form}
-	return render(request, 'row/athlete/add.html', context)
+	context = {'form':form, 'title':'Add Athlete'}
+	return render(request, 'row/add.html', context)
 
 def athlete_delete(request, id):
 	athlete = get_object_or_404(Athlete, pk=id)
@@ -45,12 +45,13 @@ def athlete_edit(request, athlete_id=None):
 			athlete.side = form.cleaned_data["side"]
 			athlete.year = form.cleaned_data["year"]
 			athlete.height = form.cleaned_data["height"]
+			athlete.status = form.cleaned_data["status"]
 			athlete.save()
 			return HttpResponseRedirect(reverse('row:athlete_index'))
 	else:
 		form = AthleteForm(instance=athlete)
-	context = {'form':form}
-	return render(request, 'row/athlete/add.html', context)
+	context = {'form':form, 'title':'Edit Athlete'}
+	return render(request, 'row/add.html', context)
 
 # Lists practices by date
 def practice_index(request):
@@ -73,8 +74,8 @@ def practice_add(request):
 			return HttpResponseRedirect(reverse('row:practice_index'))
 	else:
 		form = PracticeForm()
-	context = {'form':form}
-	return render(request, 'row/practice/add.html', context)
+	context = {'form':form, 'title':'Add Practice'}
+	return render(request, 'row/add.html', context)
 
 def practice_edit(request, id):
 	practice = get_object_or_404(Practice, pk=id)
@@ -88,8 +89,8 @@ def practice_edit(request, id):
 			return HttpResponseRedirect(reverse('row:practice_index'))
 	else:
 		form = PracticeForm(instance=practice)
-	context = {'form':form}
-	return render(request, 'row/practice/add.html', context)
+	context = {'form':form, 'title':'Edit Practice'}
+	return render(request, 'row/add.html', context)
 
 def practice_delete(request, id):
 	practice = get_object_or_404(Practice, pk=id)
@@ -110,8 +111,8 @@ def weight_add(request, athlete_id=None):
         	form = WeightForm()
     	else:
         	form = WeightForm(initial={'athlete': athlete_id})
-    context = {'form':form}
-    return render(request, 'row/weight/add.html', context)
+	context = {'form':form, 'title':'Add Weight'}
+	return render(request, 'row/add.html', context)
 
 def weight_delete(request, id):
 	weight = get_object_or_404(Weight, pk=id)
@@ -134,8 +135,8 @@ def result_add(request, practice_id=None, athlete_id=None):
         form = ResultForm(initial={'athlete': athlete_id})
     else:
         form = ResultForm()
-    context = {'form':form}
-    return render(request, 'row/result/add.html', context)
+	context = {'form':form, 'title':'Add Result'}
+	return render(request, 'row/add.html', context)
 
 def result_delete(request, id):
 	result = get_object_or_404(Result, pk=id)

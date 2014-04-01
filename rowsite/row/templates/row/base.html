@@ -14,19 +14,18 @@
                 <p class="navbar-text navbar-left">Rowing App</p>
             </div>
         </nav>
-
         {% endblock %}
     </div>
     <div id="sidebar" class="col-md-2">
       
-         <div class="well">
-          <ul class="nav navbar navbar-stacked sidebar-navbar-collapse">
-            {% block sidebar %}
-            <li><a href="/">Home</a></li>
-            <li><a href="/athletes/">Roster</a></li>
-            <li><a href="/practices/">Practices  <span class="badge">new</span></a></li>
-            {% endblock %}
-          </ul>
+        <div class="well">
+            <ul class="nav navbar navbar-stacked sidebar-navbar-collapse">
+                {% block sidebar %}
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/athletes/">Roster</a></li>
+                    <li><a href="/practices/">Practices  <span class="badge">new</span></a></li>
+                {% endblock %}
+            </ul>
         </div><!--/.nav-collapse -->
     </div>
 
