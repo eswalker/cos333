@@ -2,10 +2,9 @@
 {% block title %} Practice Details {% endblock %}
 {% block content %}
 
-
+<h1>{{ practice.name }}</h1>
 {% if practice %}
   <table class="table table-bordered">
-    <tr><td>Name</td><td>{{ practice.name }}</td></tr>
     <tr><td>Date</td><td>{{ practice.datetime }}</td></tr>
     <tr><td>Type</td><td>{{ practice.workout }}</td></tr>
   </table>
@@ -13,7 +12,7 @@
 {% endif %}
  
 {% if results %}
-<p>Results</p>
+<h2>Results</h2>
 <table class="table table-bordered">
 
   <tr>

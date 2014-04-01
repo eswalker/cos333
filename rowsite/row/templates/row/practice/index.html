@@ -1,10 +1,8 @@
 {% extends 'row/base.html' %}
 {% block title %} Practices {% endblock %} 
 {% block content %}
- 
-<a class="btn btn-primary" href="{% url 'row:practice_add' %}">Add Practice</a>
-<a class="btn btn-primary" href="{% url 'row:result_add' %}">Add Result</a>
 
+<h1>Practices</h1>
 {% if practices %}
   <table class="table table-bordered">
   <tr>
@@ -27,5 +25,9 @@
 {% else %}
   <p>No practices are available</p>
 {% endif %}
+
+ 
+<a class="btn btn-primary" href="{% url 'row:practice_add' %}">Add Practice</a>
+<a class="btn btn-primary" href="{% url 'row:result_add' %}">Add Result</a>
 
 {% endblock %}

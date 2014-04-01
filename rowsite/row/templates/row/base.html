@@ -14,24 +14,36 @@
                 <p class="navbar-text navbar-left">Rowing App</p>
             </div>
         </nav>
-
         {% endblock %}
     </div>
     <div id="sidebar" class="col-md-2">
       
-         <div class="well">
-          <ul class="nav navbar navbar-stacked sidebar-navbar-collapse">
-            {% block sidebar %}
-            <li><a href="/">Home</a></li>
-            <li><a href="/athletes/">Roster</a></li>
-            <li><a href="/practices/">Practices  <span class="badge">new</span></a></li>
-            {% endblock %}
-          </ul>
+        <div class="well">
+            <ul class="nav navbar navbar-stacked sidebar-navbar-collapse">
+                {% block sidebar %}
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/athletes/">Roster</a></li>
+                    <li><a href="/practices/">Practices  <span class="badge">new</span></a></li>
+                {% endblock %}
+            </ul>
         </div><!--/.nav-collapse -->
     </div>
 
     <div id="content" class="col-md-10 container container-fluid">
         {% block content %}{% endblock %}
     </div>
+
+    <div id="footer" class="col-md-12">
+        <br><br>
+        <nav class="navbar navbar-default " role="footer">
+            <div class="container container-fluid">
+                <p class="navbar-text navbar-center">
+                    Ed Walker | Brian Rosenfeld | Matt Drabick | Sam Jordan | COS 333 Spring 2014 
+                </p>
+                   
+            </div>
+        </nav>
+    </div>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>

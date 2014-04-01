@@ -2,9 +2,9 @@
 {% block title %} Athlete Details {% endblock %}
 {% block content %}
 
+<h1>{{ athlete.name }}</h1>
 {% if athlete %}
   <table class="table table-bordered">
-    <tr><td>Name</td><td>{{ athlete.name }}</td></tr>
     <tr><td>Side</td><td>{{ athlete.side }}</td></tr>
     <tr><td>Year</td><td>{{ athlete.year }}</td></tr>
     <tr><td>Height</td><td>{{ athlete.height }}</td></tr>
@@ -12,20 +12,25 @@
   </table>
 
   {% if weights %}
-  	<p>Weights</p>
+  	<h2>Weight</h2>
   	<table class="table table-bordered">
+      <tr>
+        <th>Date</th>
+        <th>Weight (lbs)</th>
+      </tr>
   		{% for weight in weights %}
-  			<tr><td>{{ weight.datetime }}</td>
-        <td>{{ weight.weight }}</td></tr>
+  			<tr>
+          <td>{{ weight.datetime }}</td>
+          <td>{{ weight.weight }}</td>
+        </tr>
   		{% endfor %}
   	</table>
   {% endif %}
-  <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}">Add Weight</a>
+ 
 
 
   {% if results %}
-    <div class="container-fluid"
-    <p>Results</p>
+    <h2>Results</h2>
     <table class="table table-bordered">
 
       <tr>
@@ -44,10 +49,11 @@
         </tr>
       {% endfor %}
     </table>
-    </div>
   {% endif %}
 
     <a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}">Add Result</a>
+    <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}">Add Weight</a>
+
 
 {% endif %}
 {% endblock %}

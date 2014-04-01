@@ -1,11 +1,11 @@
 {% extends 'row/base.html' %}
-{% block title %} Add Result {% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1>Add a Result</h1>
-
-<form id="result_form" method="post" action="/result/add/">
-	{% csrf_token %}
+<h1>{{ title }}</h1>
+<form id="form" method="post" action="">
+  
+    {% csrf_token %}
     {% for hidden in form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
@@ -21,7 +21,7 @@
         {% endfor %}
     </table>
 
-     <input type="submit" name="submit" value="Add Result" />
+     <input type="submit" class="btn btn-primary" name="submit" value="Submit" />
 </form>
 
 {% endblock %}
