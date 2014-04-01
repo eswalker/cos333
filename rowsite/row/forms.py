@@ -7,7 +7,7 @@ class AthleteForm(forms.ModelForm):
     side = forms.ChoiceField(choices=Athlete.side_choices, help_text="Port, Starboard, Coxswain, Coach, or Other", label="side")
     year = forms.ChoiceField(choices=Athlete.year_choices, help_text="Fr, So, Jr, or Sr", label="year")
     height = forms.IntegerField(min_value=0, help_text="Your height in inches", label="height")
-    status = forms.ChoiceField(choices=Athlete.status_choices, help_text="Athlete status (Healthy or Injured).", label="status")
+    status = forms.ChoiceField(choices=Athlete.status_choices, help_text="Athlete status (Active, Injured, or Retired).", label="status")
 
     def clean_height(self):
         height = self.cleaned_data["height"]

@@ -28,6 +28,7 @@ def athlete_add(request):
             return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm()
+
 	context = {'form':form}
 	return render(request, 'row/athlete/add.html', context)
 
@@ -45,6 +46,7 @@ def athlete_edit(request, athlete_id=None):
 			athlete.side = form.cleaned_data["side"]
 			athlete.year = form.cleaned_data["year"]
 			athlete.height = form.cleaned_data["height"]
+			athlete.status = form.cleaned_data["status"]
 			athlete.save()
 			return HttpResponseRedirect(reverse('row:athlete_index'))
 	else:
