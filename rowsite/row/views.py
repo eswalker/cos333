@@ -135,8 +135,8 @@ def result_add(request, practice_id=None, athlete_id=None):
         form = ResultForm(initial={'athlete': athlete_id})
     else:
         form = ResultForm()
-	context = {'form':form, 'title':'Add Result'}
-	return render(request, 'row/add.html', context)
+    context = {'form':form, 'title':'Add Result'}
+    return render(request, 'row/add.html', context)
 
 def result_delete(request, id):
 	result = get_object_or_404(Result, pk=id)
