@@ -22,11 +22,12 @@ class Athlete(models.Model):
     )
 
     status_choices = (
-        ('Healthy', 'Healthy'),
-        ('Injured', 'Injured')
+        ('Active', 'Active'),
+        ('Injured', 'Injured'),
+        ('Retired', 'Retired')
     )
 
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
     side = models.CharField(max_length=9, choices=side_choices)
     year = models.CharField(max_length=2, choices=year_choices, default='NA')
     status = models.CharField(max_length=20, choices=status_choices, default='Healthy')

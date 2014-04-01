@@ -23,9 +23,7 @@ class PracticeForm(forms.ModelForm):
 	datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="datetime")
 	workout = forms.ChoiceField(choices=Practice.workout_choices, help_text="Erg, Water, Bike, etc.", label="type")
     
-    # An inline class to provide additional information on the form.
 	class Meta:
-		# Provide an association between the ModelForm and a model
    		model = Practice
 
 class WeightForm(forms.ModelForm):
@@ -39,9 +37,7 @@ class WeightForm(forms.ModelForm):
             raise forms.ValidationError('Weight must be between 50 and 400 lbs.')
         return weight
 
-    # An inline class to provide additional information on the form.
     class Meta:
-        # Provide an association between the ModelForm and a model
         model = Weight
 
 class ResultForm(forms.ModelForm):
@@ -51,8 +47,5 @@ class ResultForm(forms.ModelForm):
     athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="athlete")
     practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="practice")
 
-
-     # An inline class to provide additional information on the form.
     class Meta:
-        # Provide an association between the ModelForm and a model
         model = Result
