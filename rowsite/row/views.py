@@ -28,8 +28,9 @@ def athlete_add(request):
             return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm()
-	context = {'form':form, 'title':'Add Athlete'}
-	return render(request, 'row/add.html', context)
+    print "hello"
+    context = {'form':form, 'title':'Add Athlete'}
+    return render(request, 'row/add.html', context)
 
 def athlete_delete(request, id):
 	athlete = get_object_or_404(Athlete, pk=id)
