@@ -28,7 +28,6 @@ def athlete_add(request):
             return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm()
-    print "hello"
     context = {'form':form, 'title':'Add Athlete'}
     return render(request, 'row/add.html', context)
 
