@@ -2,62 +2,37 @@
 
 {% block content %}
 {% if athletes %}
-  <table>
+  <table class="table table-bordered">
  
   <tr>
-  	<th>
-  		Name
-  	</th>
-  	<th>
-  		Year
-  	</th>
-  	<th>
-  		Side
-  	</th>
-  	<th>
-  		Height
-  	</th>
-    <th>
-      Status
-    </th>
-    <th>
-      Edit
-    </th>
-    <th>
-      Delete
-    </th>
+  	<th>Name</th>
+  	<th>Year</th>
+  	<th>Side</th>
+  	<th>Height</th>
+    <th>Status</th>
+    <th>Edit</th>
+    <th>Delete</th>
   </tr>
 
   {% for a in athletes %}
     <tr>
-    	<td>
-    		<a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a>
-    	</td>
-    	<td>
-    		{{ a.year }}
-    	</td>
-    	<td>
-    		{{ a.side }}
-    	</td>
-    	<td>
-    		{{ a.height }}
-    	</td>
-      <td>
-        {{ a.status }}
-      </td>
-      <td>
-        <a href="{% url 'row:athlete_edit' a.id %}">Edit</a>
-      </td>
-      <td>
-        <a href="{% url 'row:athlete_delete' a.id %}">Delete</a>
-      </td>
+    	<td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>
+    	<td>{{ a.year }}</td>
+    	<td>{{ a.side }}</td>
+      <td>{{ a.height }}</td>
+      <td>{{ a.status }}</td>
+      <td><a href="{% url 'row:athlete_edit' a.id %}">Edit</a></td>
+      <td><a href="{% url 'row:athlete_delete' a.id %}">Delete</a></td>
     </tr>
   {% endfor %}
+  </table>
  
 {% else %}
   <p>No athletes are available</p>
 {% endif %}
-<a href="{% url 'row:athlete_add' %}">Add Athlete</a><br>
-<a href="{% url 'row:weight_add' %}">Add Weight</a><br>
-<a href="{% url 'row:result_add' %}">Add Result</a>
+
+<a class="btn btn-primary " href="{% url 'row:athlete_add' %}">Add Athlete</a>
+<a class="btn btn-primary" href="{% url 'row:weight_add' %}">Add Weight</a>
+<a class="btn btn-primary" href="{% url 'row:result_add' %}">Add Result</a>
+
 {% endblock %}
