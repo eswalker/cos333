@@ -1,0 +1,12 @@
+{% extends 'row/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+  <h1>For the rowers</h1>
+  <p>Virtual Boathouse is a rowing management app, storing and organizing data from erg practices, on-the-water pieces, races, and weighins.</p>
+  <p><a href="{% url 'row:register' %}" class="btn btn-primary btn-lg" role="button">Register Now</a></p>
+</div>
+
+{% endblock %}

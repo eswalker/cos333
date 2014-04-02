@@ -12,7 +12,15 @@
         {% block header %}
         <nav class="navbar navbar-default " role="navigation">
             <div class="container container-fluid">
-                <p class="navbar-text navbar-left">Rowing App</p>
+
+                <p class="navbar-text navbar-left">Virtual Boathouse</p>
+                {% if user.is_authenticated %}
+                    <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a></p>
+                {% else %}
+                    <p class="navbar-text navbar-right">
+                        <a href="{% url 'row:login' %}">Login</a> | <a href="{% url 'row:register' %}">Register</a>
+                    </p>
+                {% endif %}
             </div>
         </nav>
         {% endblock %}
@@ -27,7 +35,7 @@
                     <li><a href="/practices/">Practices  <span class="badge">new</span></a></li>
                 {% endblock %}
             </ul>
-        </div><!--/.nav-collapse -->
+        </div>
     </div>
 
     <div id="content" class="col-md-10 container container-fluid">
@@ -38,7 +46,7 @@
         <br><br>
         <nav class="navbar navbar-default " role="footer">
             <div class="container container-fluid">
-                <p class="navbar-text navbar-center">
+                <p class="navbar-text navbar-right">
                     Ed Walker | Brian Rosenfeld | Matt Drabick | Sam Jordan | COS 333 Spring 2014 
                 </p>
                    
