@@ -12,7 +12,15 @@
         {% block header %}
         <nav class="navbar navbar-default " role="navigation">
             <div class="container container-fluid">
+
                 <p class="navbar-text navbar-left">Virtual Boathouse</p>
+                {% if user.is_authenticated %}
+                    <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a></p>
+                {% else %}
+                    <p class="navbar-text navbar-right">
+                        <a href="{% url 'row:login' %}">Login</a> | <a href="{% url 'row:register' %}">Register</a>
+                    </p>
+                {% endif %}
             </div>
         </nav>
         {% endblock %}

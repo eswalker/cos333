@@ -3,7 +3,7 @@ from row import views
 
 urlpatterns = patterns('',
 
-    url(r'^$', views.athlete_index, name='index'),
+    url(r'^$', views.index, name='index'),
 
     url(r'^athlete/add/$', views.athlete_add, name='athlete_add'),
     url(r'^athletes/$', views.athlete_index, name='athlete_index'),
@@ -26,6 +26,10 @@ urlpatterns = patterns('',
     url(r'^practice/(?P<practice_id>\d+)/result/add/$', views.result_add, name='practice_result_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
     url(r'^result/(?P<id>\d+)/delete/$', views.result_delete, name='result_delete'),
+
+    url(r'^accounts/login/', views.user_login, name="login"),
+    url(r'^accounts/register/', views.user_register, name="register"),
+    url(r'^accounts/logout/', views.user_logout, name="logout"),
 
 
 
