@@ -1,0 +1,4 @@
+Django==1.6.2
+dj-database-url==0.3.0
+django-toolbelt==0.0.1
+wsgiref==0.1.2
