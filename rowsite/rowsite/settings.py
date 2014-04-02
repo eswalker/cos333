@@ -57,7 +57,11 @@ WSGI_APPLICATION = 'rowsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -69,7 +73,6 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
-"""
 
 DATABASES = {
     'default': {
