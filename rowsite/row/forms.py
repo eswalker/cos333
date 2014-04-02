@@ -1,6 +1,28 @@
 from django import forms
 from datetime import datetime
 from row.models import Athlete, Weight, Practice, Result
+from django.contrib.auth.models import User
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if len(password) < 8:
+            raise forms.ValidationError('Password is too short')
+        if password.lower() == password or password.upper() == password:
+            raise forms.ValidationError('Password must have lower and uppercase letters')
+        return password
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+class UserLoginForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model = User
+        fields = ('username', 'password')
 
 class AthleteForm(forms.ModelForm):
     name = forms.CharField(max_length=50, help_text="Your full name.", label="name")

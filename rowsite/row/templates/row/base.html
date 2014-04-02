@@ -13,6 +13,13 @@
         <nav class="navbar navbar-default " role="navigation">
             <div class="container container-fluid">
                 <p class="navbar-text navbar-left">Rowing App</p>
+                {% if user.is_authenticated %}
+                    <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a></p>
+                {% else %}
+                    <p class="navbar-text navbar-right">
+                        <a href="{% url 'row:login' %}">Login</a> | <a href="{% url 'row:register' %}">Register</a>
+                    </p>
+                {% endif %}
             </div>
         </nav>
         {% endblock %}
@@ -38,7 +45,7 @@
         <br><br>
         <nav class="navbar navbar-default " role="footer">
             <div class="container container-fluid">
-                <p class="navbar-text navbar-center">
+                <p class="navbar-text navbar-right">
                     Ed Walker | Brian Rosenfeld | Matt Drabick | Sam Jordan | COS 333 Spring 2014 
                 </p>
                    

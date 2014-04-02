@@ -1,17 +1,28 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 
 from row.models import Athlete, Weight, Practice, Result
-from row.forms import AthleteForm, PracticeForm, WeightForm, ResultForm
+from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm
+
+
+def index(request):
+    context = {'title': 'Virtual Boathouse'}
+    return render(request, 'row/index.html', context)
+
 
 # Lists athletes in a roster
+@login_required
 def athlete_index(request):
     athletes = Athlete.objects.all()
     context = {'athletes': athletes}
     return render(request, 'row/athlete/index.html', context)
 
 # Shows athlete details for one athlete
+@login_required
 def athlete_detail(request, athlete_id):
     athlete = get_object_or_404(Athlete, pk=athlete_id)
     weights = Weight.objects.filter(athlete=athlete_id)
@@ -20,6 +31,7 @@ def athlete_detail(request, athlete_id):
     return render(request, 'row/athlete/details.html', context)
 
 # Adds a new athlete
+@login_required
 def athlete_add(request):
     if request.method == 'POST':
         form = AthleteForm(request.POST)
@@ -31,11 +43,13 @@ def athlete_add(request):
     context = {'form':form, 'title':'Add Athlete'}
     return render(request, 'row/add.html', context)
 
+@login_required
 def athlete_delete(request, id):
 	athlete = get_object_or_404(Athlete, pk=id)
 	athlete.delete()
 	return HttpResponseRedirect(reverse('row:athlete_index'))
 
+@login_required
 def athlete_edit(request, athlete_id=None):
 	athlete = get_object_or_404(Athlete, pk=athlete_id)
 	if request.method == 'POST':
@@ -54,18 +68,21 @@ def athlete_edit(request, athlete_id=None):
 	return render(request, 'row/add.html', context)
 
 # Lists practices by date
+@login_required
 def practice_index(request):
 	practices = Practice.objects.all()
 	context = {'practices': practices}
 	return render(request, 'row/practice/index.html', context)
 
 # Shows practice details for one practice
+@login_required
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     results = Result.objects.filter(practice=practice_id)
     context = {'practice':practice, 'results':results}
     return render(request, 'row/practice/details.html', context)
 
+@login_required
 def practice_add(request):
 	if request.method == 'POST':
 		form = PracticeForm(request.POST)
@@ -77,6 +94,7 @@ def practice_add(request):
 	context = {'form':form, 'title':'Add Practice'}
 	return render(request, 'row/add.html', context)
 
+@login_required
 def practice_edit(request, id):
 	practice = get_object_or_404(Practice, pk=id)
 	if request.method == 'POST':
@@ -92,12 +110,14 @@ def practice_edit(request, id):
 	context = {'form':form, 'title':'Edit Practice'}
 	return render(request, 'row/add.html', context)
 
+@login_required
 def practice_delete(request, id):
 	practice = get_object_or_404(Practice, pk=id)
 	practice.delete()
 	return HttpResponseRedirect(reverse('row:practice_index'))
 
 # Adds a new weight
+@login_required
 def weight_add(request, athlete_id=None):
     if request.method == 'POST':
         form = WeightForm(request.POST)
@@ -112,12 +132,14 @@ def weight_add(request, athlete_id=None):
     context = {'form':form, 'title':'Add Weight'}
     return render(request, 'row/add.html', context)
 
+@login_required
 def weight_delete(request, id):
 	weight = get_object_or_404(Weight, pk=id)
 	weight.delete()
 	return HttpResponseRedirect(reverse('row:athlete_index'))
 
 # Adds a new result
+@login_required
 def result_add(request, practice_id=None, athlete_id=None):
     if request.method == 'POST':
         form = ResultForm(request.POST)
@@ -134,8 +156,56 @@ def result_add(request, practice_id=None, athlete_id=None):
     context = {'form':form, 'title':'Add Result'}
     return render(request, 'row/add.html', context)
 
+@login_required
 def result_delete(request, id):
 	result = get_object_or_404(Result, pk=id)
 	result.delete()
 	return HttpResponseRedirect(reverse('row:practice_index'))
+
+def user_register(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            u = User(username=username)
+            u.set_password(password)
+            u.save()
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return HttpResponseRedirect(reverse('row:athlete_add'))
+    else:
+        form = UserForm()
+    context = {'form':form, 'title':'Register'}
+    return render(request, 'row/add.html', context)
+
+def user_login(request):
+	if request.method == 'POST':
+		form = UserLoginForm(request.POST)
+		username = request.POST["username"]
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				if request.GET["next"]:
+					return HttpResponseRedirect(request.GET["next"])
+				return HttpResponseRedirect(reverse('row:athlete_index'))
+	else:
+		form = UserLoginForm()
+	context = {'form':form, 'title':'Login'}
+	return render(request, 'row/add.html', context)
+
+from django.contrib.auth import logout
+
+# Use the login_required() decorator to ensure only those logged in can logout
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('row:index'))
+
+
+
+
+
 
