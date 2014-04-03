@@ -13,6 +13,7 @@ urlpatterns = patterns('',
 
     url(r'^weight/add/$', views.weight_add, name='weight_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/weight/add/$', views.weight_add, name='athlete_weight_add'),
+    url(r'^weight/(?P<id>\d+)/edit/$', views.weight_edit, name='weight_edit'),
     url(r'^weight/(?P<id>\d+)/delete/$', views.weight_delete, name='weight_delete'),
 
 
@@ -25,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^result/add/$', views.result_add, name='result_add'),
     url(r'^practice/(?P<practice_id>\d+)/result/add/$', views.result_add, name='practice_result_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
+    url(r'^result/(?P<id>\d+)/edit/$', views.result_edit, name='result_edit'),
     url(r'^result/(?P<id>\d+)/delete/$', views.result_delete, name='result_delete'),
 
     url(r'^accounts/login/', views.user_login, name="login"),

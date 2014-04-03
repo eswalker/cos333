@@ -132,6 +132,23 @@ def weight_add(request, athlete_id=None):
     return render(request, 'row/add.html', context)
 
 @login_required
+def weight_edit(request, id):
+	weight = get_object_or_404(Weight, pk=id)
+	if request.method == 'POST':
+		form = WeightForm(request.POST)
+		if form.is_valid():
+			weight.datetime = form.cleaned_data["datetime"]
+			weight.athlete = form.cleaned_data["athlete"]
+			weight.weight = form.cleaned_data["weight"]
+			weight.save()
+			return HttpResponseRedirect(reverse('row:athlete_index'))
+	else:
+		form = WeightForm(instance=weight)
+	context = {'form':form, 'title':'Edit Weight'}
+	return render(request, 'row/add.html', context)
+
+
+@login_required
 def weight_delete(request, id):
 	weight = get_object_or_404(Weight, pk=id)
 	weight.delete()
@@ -154,6 +171,23 @@ def result_add(request, practice_id=None, athlete_id=None):
             form = ResultForm()
     context = {'form':form, 'title':'Add Result'}
     return render(request, 'row/add.html', context)
+
+@login_required
+def result_edit(request, id):
+	result = get_object_or_404(Result, pk=id)
+	if request.method == 'POST':
+		form = ResultForm(request.POST)
+		if form.is_valid():
+			result.distance = form.cleaned_data["distance"]
+			result.datetime = form.cleaned_data["datetime"]
+			result.athlete = form.cleaned_data["athlete"]
+			result.practice = form.cleaned_data["practice"]
+			result.save()
+			return HttpResponseRedirect(reverse('row:practice_index'))
+	else:
+		form = ResultForm(instance=result)
+	context = {'form':form, 'title':'Edit Result'}
+	return render(request, 'row/add.html', context)
 
 @login_required
 def result_delete(request, id):
