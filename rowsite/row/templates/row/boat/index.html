@@ -8,6 +8,8 @@
 	  		<th>Name</th>
 	  		<th>Seats</th>
 	  		<th>Coxed</th>
+	  		<th>Edit</th>
+	  		<th>Delete</th>
 		</tr>
 
 		{% for b in boats %}
@@ -19,6 +21,8 @@
 				{% else %}
 					<td>No</td>
 				{% endif %}
+				<td></td>
+				<td><a class="" href="{% url 'row:boat_delete' b.id %}">Delete</a></td>
 			</tr>
 		{% endfor %}
   	</table>
@@ -26,5 +30,7 @@
 {% else %}
   <p>No boats are available</p>
 {% endif %}
+
+<a class="btn btn-primary " href="{% url 'row:boat_add' %}">Add Boat</a>
 
 {% endblock %}

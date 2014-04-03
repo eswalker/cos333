@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
-from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm
+from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm, BoatForm
 
 
 def index(request):
@@ -243,3 +243,21 @@ def boat_index(request):
 	boats = Boat.objects.all()
 	context = {'boats': boats}
 	return render(request, 'row/boat/index.html', context)
+
+@login_required
+def boat_add(request):
+    if request.method == 'POST':
+        form = BoatForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return HttpResponseRedirect(reverse('row:boat_index'))
+    else:
+        form = BoatForm()
+    context = {'form':form, 'title':'Add Boat'}
+    return render(request, 'row/add.html', context)	
+
+@login_required
+def boat_delete(request, id):
+	boat = get_object_or_404(Boat, pk=id)
+	boat.delete()
+	return HttpResponseRedirect(reverse('row:boat_index'))

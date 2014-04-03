@@ -34,7 +34,6 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/', views.user_logout, name="logout"),
 
     url(r'^boats/$', views.boat_index, name='boat_index'),
-
-
-
+    url(r'^boat/add/$', views.boat_add, name='boat_add'),
+    url(r'^boat/(?P<id>\d+)/delete/$', views.boat_delete, name='boat_delete'),
 )
