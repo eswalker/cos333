@@ -52,8 +52,7 @@ class Practice(models.Model):
         return str(self.datetime.date()) + " " +  self.name
 
 class Result(models.Model):
-    datetime = models.DateTimeField(auto_now=True)
-    datetime.editable=True
+    datetime = models.DateTimeField(editable=True)
     distance = models.IntegerField()
     time = models.IntegerField()
     athlete = models.ForeignKey(Athlete)
@@ -63,8 +62,7 @@ class Result(models.Model):
         return str(self.datetime.date()) + " " + str(self.distance) + " " + str(self.time) + " " + str(self.athlete)
 
 class Weight(models.Model):
-    datetime = models.DateTimeField(auto_now=True)
-    datetime.editable=True
+    datetime = models.DateTimeField(editable=True)
     athlete = models.ForeignKey(Athlete)
     weight = models.DecimalField(decimal_places=1, max_digits=4)
 
