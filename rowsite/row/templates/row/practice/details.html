@@ -39,6 +39,7 @@
   <tr>
   	<th>Athlete</th>
     <th>Date</th>
+    <th>Pace</th>
     <th>Distance</th>
     <th>Time</th>
     <th>Edit</th>
@@ -49,8 +50,9 @@
     <tr>
       <td>{{ result.athlete }}</td>
       <td>{{ result.datetime }}</td>
-      <td>{{ result.distance }}</td>
-      <td>{{ result.time }}</td>
+      <td class="_pace"></td>
+      <td class="_distance">{{ result.distance }}</td>
+      <td class="_time">{{ result.time }}</td>
       <td><a class="" href="{% url 'row:result_edit' result.id %}">Edit</a></td>
       <td><a class="" href="{% url 'row:result_delete' result.id %}">Delete</a></td>
     </tr>

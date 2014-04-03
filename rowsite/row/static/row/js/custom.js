@@ -1,4 +1,40 @@
-$( '._time').each(function( index ) {
-	alert($(this).text());
 
+function readableSeconds(secs) {
+	var mins = Math.floor(secs / 60);
+	secs = secs - mins * 60;
+	var strSec = secs;
+	if (secs < 10)
+		var strSec = "0" + secs;
+	return (mins + ":" + strSec);
+}
+
+
+var _distances = []
+var _times = []
+
+$( '._time').each(function( index ) {
+	_times.push($(this).text());
+});
+$( '._distance').each(function( index ) {
+	_distances.push($(this).text());
+});
+
+var _x = 0
+$( '._pace').each(function( index ) {
+	var pace =  _times[_x] / _distances[_x] * 500;
+	$(this).text(readableSeconds(pace));
+	_x = _x + 1;
+});
+
+
+$( '._time').each(function( index ) {
+	$(this).text(readableSeconds($(this).text()));
+});
+
+
+$( '._height').each(function( index ) {
+	var inches = $(this).text();
+	var feet = Math.floor(inches / 12);
+	inches = inches - feet * 12;
+	$(this).text(feet + "'" + inches + '"');
 });
