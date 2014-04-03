@@ -15,7 +15,6 @@ def index(request):
 
 
 # Lists athletes in a roster
-@login_required
 def athlete_index(request):
     athletes = Athlete.objects.all()
     context = {'athletes': athletes}
@@ -188,7 +187,7 @@ def user_login(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				if request.GET["next"]:
+				if request.GET and request.GET["next"]:
 					return HttpResponseRedirect(request.GET["next"])
 				return HttpResponseRedirect(reverse('row:athlete_index'))
 	else:
