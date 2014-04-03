@@ -12,7 +12,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rowsite.settings")
 application = get_wsgi_application()
 
-"""# For Production
+# For Production
 from dj_static import Cling
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rowsite.prod")
-application = Cling(get_wsgi_application()) """
+application = Cling(get_wsgi_application())
