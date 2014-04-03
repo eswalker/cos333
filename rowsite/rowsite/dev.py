@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'row',
-    'gunicorn',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,10 +58,12 @@ WSGI_APPLICATION = 'rowsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES = {}
-DATABASES['default'] =  dj_database_url.config()
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

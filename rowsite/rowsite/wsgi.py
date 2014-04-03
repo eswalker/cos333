@@ -10,10 +10,10 @@ from django.core.wsgi import get_wsgi_application
 import os
 
 """
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rowsite.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rowsite.dev")
 application = get_wsgi_application()"""
 
 # For Production
 from dj_static import Cling
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rowsite.prod")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rowsite.settings")
 application = Cling(get_wsgi_application())
