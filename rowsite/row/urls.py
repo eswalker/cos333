@@ -35,5 +35,6 @@ urlpatterns = patterns('',
 
     url(r'^boats/$', views.boat_index, name='boat_index'),
     url(r'^boat/add/$', views.boat_add, name='boat_add'),
+    url(r'^boat/(?P<id>\d+)/edit/$', views.boat_edit, name='boat_edit'),
     url(r'^boat/(?P<id>\d+)/delete/$', views.boat_delete, name='boat_delete'),
 )

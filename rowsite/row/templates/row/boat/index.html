@@ -21,7 +21,7 @@
 				{% else %}
 					<td>No</td>
 				{% endif %}
-				<td></td>
+				<td><a class="" href="{% url 'row:boat_edit' b.id %}">Edit</a></td>
 				<td><a class="" href="{% url 'row:boat_delete' b.id %}">Delete</a></td>
 			</tr>
 		{% endfor %}

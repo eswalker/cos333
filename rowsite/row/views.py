@@ -261,3 +261,19 @@ def boat_delete(request, id):
 	boat = get_object_or_404(Boat, pk=id)
 	boat.delete()
 	return HttpResponseRedirect(reverse('row:boat_index'))
+
+@login_required
+def boat_edit(request, id):
+	boat = get_object_or_404(Boat, pk=id)
+	if request.method == 'POST':
+		form = BoatForm(request.POST)
+		if form.is_valid():
+			boat.name = form.cleaned_data["name"]
+			boat.seats = form.cleaned_data["seats"]
+			boat.coxed = form.cleaned_data["coxed"]
+			boat.save()
+			return HttpResponseRedirect(reverse('row:boat_index'))
+	else:
+		form = BoatForm(instance=boat)
+	context = {'form':form, 'title':'Edit Boat'}
+	return render(request, 'row/add.html', context)
