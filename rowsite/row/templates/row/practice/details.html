@@ -41,6 +41,8 @@
     <th>Date</th>
     <th>Distance</th>
     <th>Time</th>
+    <th>Edit</th>
+    <th>Delete</th>
   </tr>
 
   {% for result in results %}
@@ -49,10 +51,12 @@
       <td>{{ result.datetime }}</td>
       <td>{{ result.distance }}</td>
       <td>{{ result.time }}</td>
+      <td><a class="" href="{% url 'row:result_edit' result.id %}">Edit</a></td>
+      <td><a class="" href="{% url 'row:result_delete' result.id %}">Delete</a></td>
     </tr>
   {% endfor %}
 </table>
 {% endif %}
-<a href="{% url 'row:practice_result_add' practice_id=practice.id %}">Add Result</a>
+<a class="btn btn-primary" href="{% url 'row:practice_result_add' practice_id=practice.id %}">Add Result</a>
 
 {% endblock %}

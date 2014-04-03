@@ -183,6 +183,7 @@ def result_edit(request, id):
 			result.datetime = form.cleaned_data["datetime"]
 			result.athlete = form.cleaned_data["athlete"]
 			result.practice = form.cleaned_data["practice"]
+			result.time = form.cleaned_data["time"]
 			result.save()
 			return HttpResponseRedirect(reverse('row:practice_index'))
 	else:
