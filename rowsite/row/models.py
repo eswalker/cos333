@@ -70,3 +70,45 @@ class Weight(models.Model):
 
     def __unicode__(self):
         return str(self.datetime.date()) + " " + str(self.athlete) + " " + str(self.weight)
+
+class Boat(models.Model):
+
+    seats_choices = (
+        (1, 1),
+        (2, 2),
+        (4, 4),
+        (8, 8),
+    )
+
+    coxed_choices = (
+        (True, "Yes"),
+        (False, "No"),
+    )
+
+    name = models.CharField(max_length=20)
+    seats = models.PositiveIntegerField(choices=seats_choices)
+    coxed = models.BooleanField(choices=coxed_choices)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Lineup(models.Model):
+    position_choices = (
+        ('1V', '1V'),
+        ('2V', '2V'),
+        ('3V', '3V'),
+        ('4V', '4V'),
+        ('5V', '5V'),
+        ('1F', '1F'),
+        ('2F', '2F'),
+        ('Mixed', 'Mixed'),
+    )
+
+    practice = models.ForeignKey(Practice)
+    boat = models.ForeignKey(Boat)
+    position = models.CharField(max_length=10, choices=position_choices)
+    athletes = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.position + " " + str(self.boat)

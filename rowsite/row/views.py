@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
-from row.models import Athlete, Weight, Practice, Result
+from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
 from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm
 
 
@@ -78,7 +78,8 @@ def practice_index(request):
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     results = Result.objects.filter(practice=practice_id)
-    context = {'practice':practice, 'results':results}
+    lineups = Lineup.objects.filter(practice=practice_id)
+    context = {'practice':practice, 'lineups':lineups, 'results':results}
     return render(request, 'row/practice/details.html', context)
 
 @login_required
@@ -203,8 +204,8 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('row:index'))
 
-
-
-
-
-
+@login_required
+def boat_index(request):
+	boats = Boat.objects.all()
+	context = {'boats': boats}
+	return render(request, 'row/boat/index.html', context)

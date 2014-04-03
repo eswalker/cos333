@@ -1,0 +1,30 @@
+{% extends 'row/base.html' %}
+{% block content %}
+
+<h1>Boats</h1>
+{% if boats %}
+	<table class="table table-bordered">  
+		<tr>
+	  		<th>Name</th>
+	  		<th>Seats</th>
+	  		<th>Coxed</th>
+		</tr>
+
+		{% for b in boats %}
+			<tr>
+				<td>{{ b.name }}</td>
+				<td>{{ b.seats }}</td>
+				{% if b.coxed %}
+					<td>Yes</td>
+				{% else %}
+					<td>No</td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+  	</table>
+ 
+{% else %}
+  <p>No boats are available</p>
+{% endif %}
+
+{% endblock %}

@@ -31,6 +31,8 @@ urlpatterns = patterns('',
     url(r'^accounts/register/', views.user_register, name="register"),
     url(r'^accounts/logout/', views.user_logout, name="logout"),
 
+    url(r'^boats/$', views.boat_index, name='boat_index'),
+
 
 
 )

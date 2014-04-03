@@ -10,6 +10,27 @@
   </table>
 
 {% endif %}
+
+{% if lineups %}
+<h2>Lineups</h2>
+<table class="table table-bordered">
+
+  <tr>
+    <th>Position</th>
+    <th>Boat</th>
+    <th>Athletes</th>
+  </tr>
+
+  {% for lineup in lineups %}
+    <tr>
+      <td>{{ lineup.position }}</td>
+      <td>{{ lineup.boat }}</td>
+      <td>TBA</td>
+    </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
  
 {% if results %}
 <h2>Results</h2>
