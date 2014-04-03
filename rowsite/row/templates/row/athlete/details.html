@@ -17,11 +17,15 @@
       <tr>
         <th>Date</th>
         <th>Weight (lbs)</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </tr>
   		{% for weight in weights %}
   			<tr>
           <td>{{ weight.datetime }}</td>
           <td>{{ weight.weight }}</td>
+          <td><a class="" href="{% url 'row:weight_edit' weight.id %}">Edit</a></td>
+          <td><a class="" href="{% url 'row:weight_edit' weight.id %}">Delete</a></td>
         </tr>
   		{% endfor %}
   	</table>
@@ -36,6 +40,8 @@
         <th>Distance</th>
         <th>Time</th>
         <th>Type</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </tr>
 
       {% for result in results %}
@@ -44,6 +50,8 @@
           <td>{{ result.distance }}</td>
           <td>{{ result.time }}</td>
           <td>{{ result.practice.workout }}</td>
+          <td><a class="" href="{% url 'row:result_edit' result.id %}">Edit</a></td>
+          <td><a class="" href="{% url 'row:result_delete' result.id %}">Delete</a></td>
         </tr>
       {% endfor %}
     </table>
