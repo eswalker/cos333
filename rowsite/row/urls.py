@@ -37,4 +37,9 @@ urlpatterns = patterns('',
     url(r'^boat/add/$', views.boat_add, name='boat_add'),
     url(r'^boat/(?P<id>\d+)/edit/$', views.boat_edit, name='boat_edit'),
     url(r'^boat/(?P<id>\d+)/delete/$', views.boat_delete, name='boat_delete'),
+
+    url(r'^lineup/add/$', views.lineup_add, name='lineup_add'),
+    url(r'^lineup/(?P<id>\d+)/edit/$', views.lineup_edit, name='lineup_edit'),
+    url(r'^lineup/(?P<id>\d+)/delete/$', views.lineup_delete, name='lineup_delete'),
+
 )

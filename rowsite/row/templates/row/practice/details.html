@@ -19,6 +19,8 @@
     <th>Position</th>
     <th>Boat</th>
     <th>Athletes</th>
+    <th>Edit</th>
+    <th>Delete</th>
   </tr>
 
   {% for lineup in lineups %}
@@ -26,6 +28,8 @@
       <td>{{ lineup.position }}</td>
       <td>{{ lineup.boat }}</td>
       <td>TBA</td>
+      <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}">Edit</a></td>
+      <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}">Delete</a></td>
     </tr>
   {% endfor %}
 </table>
@@ -58,5 +62,5 @@
 </table>
 {% endif %}
 <a class="btn btn-primary" href="{% url 'row:practice_result_add' practice_id=practice.id %}">Add Result</a>
-
+<a class="btn btn-primary" href="{% url 'row:lineup_add' %}">Add Lineup</a>
 {% endblock %}

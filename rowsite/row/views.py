@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
-from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm, BoatForm
+from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm, BoatForm, LineupForm
 
 
 def index(request):
@@ -278,3 +278,38 @@ def boat_edit(request, id):
 		form = BoatForm(instance=boat)
 	context = {'form':form, 'title':'Edit Boat'}
 	return render(request, 'row/add.html', context)
+
+@login_required
+def lineup_add(request):
+    if request.method == 'POST':
+        form = LineupForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return HttpResponseRedirect(reverse('row:practice_index'))
+    else:
+        form = LineupForm()
+    context = {'form':form, 'title':'Add Lineup'}
+    return render(request, 'row/add.html', context)
+
+@login_required
+def lineup_edit(request, id):
+	lineup = get_object_or_404(Lineup, pk=id)
+	if request.method == 'POST':
+		form = LineupForm(request.POST)
+		if form.is_valid():
+			lineup.position = form.cleaned_data["position"]
+			lineup.practice = form.cleaned_data["practice"]
+			lineup.boat = form.cleaned_data["boat"]
+			lineup.athletes = form.cleaned_data["athletes"]
+			lineup.save()
+			return HttpResponseRedirect(reverse('row:practice_index'))
+	else:
+		form = LineupForm(instance=lineup)
+	context = {'form':form, 'title':'Edit Boat'}
+	return render(request, 'row/add.html', context)
+
+@login_required
+def lineup_delete(request, id):
+	lineup = get_object_or_404(Lineup, pk=id)
+	lineup.delete()
+	return HttpResponseRedirect(reverse('row:practice_index'))
