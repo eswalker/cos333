@@ -57,12 +57,12 @@
       <td class="_pace"></td>
       <td class="_distance">{{ result.distance }}</td>
       <td class="_time">{{ result.time }}</td>
-      <td><a class="" href="{% url 'row:result_edit' result.id %}">Edit</a></td>
-      <td><a class="" href="{% url 'row:result_delete' result.id %}">Delete</a></td>
+      <td><a class="" href="{% url 'row:result_edit' result.id %}?next={{ request.path }}">Edit</a></td>
+      <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
     </tr>
   {% endfor %}
 </table>
 {% endif %}
-<a class="btn btn-primary" href="{% url 'row:practice_result_add' practice_id=practice.id %}">Add Result</a>
-<a class="btn btn-primary" href="{% url 'row:lineup_add' %}">Add Lineup</a>
+<a class="btn btn-primary" href="{% url 'row:practice_result_add' practice_id=practice.id %}?next={{ request.path }}">Add Result</a>
+<a class="btn btn-primary" href="{% url 'row:practice_lineup_add' practice_id=practice.id %}?next={{ request.path }}">Add Lineup</a>
 {% endblock %}

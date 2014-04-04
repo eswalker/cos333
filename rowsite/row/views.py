@@ -142,6 +142,8 @@ def weight_edit(request, id):
 			weight.athlete = form.cleaned_data["athlete"]
 			weight.weight = form.cleaned_data["weight"]
 			weight.save()
+			if request.GET and request.GET["next"]:
+					return HttpResponseRedirect(request.GET["next"])
 			return HttpResponseRedirect(reverse('row:athlete_index'))
 	else:
 		form = WeightForm(instance=weight)
@@ -153,25 +155,29 @@ def weight_edit(request, id):
 def weight_delete(request, id):
 	weight = get_object_or_404(Weight, pk=id)
 	weight.delete()
+	if request.GET and request.GET["next"]:
+		return HttpResponseRedirect(request.GET["next"])
 	return HttpResponseRedirect(reverse('row:athlete_index'))
 
 # Adds a new result
 @login_required
 def result_add(request, practice_id=None, athlete_id=None):
-    if request.method == 'POST':
-        form = ResultForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return HttpResponseRedirect(reverse('row:practice_index'))
-    else:
-        if practice_id != None:
-            form = ResultForm(initial={'practice': practice_id})
-        elif athlete_id != None:
-            form = ResultForm(initial={'athlete': athlete_id})
-        else:
-            form = ResultForm()
-    context = {'form':form, 'title':'Add Result'}
-    return render(request, 'row/add.html', context)
+	if request.method == 'POST':
+		form = ResultForm(request.POST)
+		if form.is_valid():
+			form.save(commit=True)
+			if request.GET and request.GET["next"]:
+				return HttpResponseRedirect(request.GET["next"])
+			return HttpResponseRedirect(reverse('row:practice_index'))
+	else:
+		if practice_id != None:
+			form = ResultForm(initial={'practice': practice_id})
+		elif athlete_id != None:
+			form = ResultForm(initial={'athlete': athlete_id})
+		else:
+			form = ResultForm()
+	context = {'form':form, 'title':'Add Result'}
+	return render(request, 'row/add.html', context)
 
 @login_required
 def result_edit(request, id):
@@ -195,6 +201,8 @@ def result_edit(request, id):
 def result_delete(request, id):
 	result = get_object_or_404(Result, pk=id)
 	result.delete()
+	if request.GET and request.GET["next"]:
+		return HttpResponseRedirect(request.GET["next"])
 	return HttpResponseRedirect(reverse('row:practice_index'))
 
 def user_register(request):
@@ -280,16 +288,21 @@ def boat_edit(request, id):
 	return render(request, 'row/add.html', context)
 
 @login_required
-def lineup_add(request):
-    if request.method == 'POST':
-        form = LineupForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return HttpResponseRedirect(reverse('row:practice_index'))
-    else:
-        form = LineupForm()
-    context = {'form':form, 'title':'Add Lineup'}
-    return render(request, 'row/add.html', context)
+def lineup_add(request, practice_id=None):
+	if request.method == 'POST':
+		form = LineupForm(request.POST)
+		if form.is_valid():
+			form.save(commit=True)
+			if request.GET and request.GET["next"]:
+				return HttpResponseRedirect(request.GET["next"])
+			return HttpResponseRedirect(reverse('row:practice_index'))
+	else:
+		if practice_id == None:
+			form = LineupForm()
+		else:
+			form = LineupForm(initial={'practice': practice_id})
+	context = {'form':form, 'title':'Add Lineup'}
+	return render(request, 'row/add.html', context)
 
 @login_required
 def lineup_edit(request, id):
@@ -302,6 +315,8 @@ def lineup_edit(request, id):
 			lineup.boat = form.cleaned_data["boat"]
 			lineup.athletes = form.cleaned_data["athletes"]
 			lineup.save()
+			if request.GET and request.GET["next"]:
+				return HttpResponseRedirect(request.GET["next"])
 			return HttpResponseRedirect(reverse('row:practice_index'))
 	else:
 		form = LineupForm(instance=lineup)
@@ -312,4 +327,6 @@ def lineup_edit(request, id):
 def lineup_delete(request, id):
 	lineup = get_object_or_404(Lineup, pk=id)
 	lineup.delete()
+	if request.GET and request.GET["next"]:
+		return HttpResponseRedirect(request.GET["next"])
 	return HttpResponseRedirect(reverse('row:practice_index'))
