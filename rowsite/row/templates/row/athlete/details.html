@@ -13,7 +13,10 @@
 
   {% if weights %}
   	<h2>Weight</h2>
-  	<table class="table table-bordered">
+    <canvas id="_weight-chart" class="" width="600" height="200"></canvas><br/>
+    <a id="_toggle-weight-table" class="btn btn-sm btn-primary">View Table</a>
+  	<table id="_weight-table" class="table table-bordered" hidden>
+      <br>
       <tr>
         <th>Date</th>
         <th>Weight (lbs)</th>
@@ -29,7 +32,6 @@
         </tr>
   		{% endfor %}
   	</table>
-    <canvas id="_weight-chart" width="auto" height="200"></canvas>
   {% endif %}
 
   {% if results %}

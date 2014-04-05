@@ -2,6 +2,7 @@
 function readableSeconds(secs) {
 	var mins = Math.floor(secs / 60);
 	secs = secs - mins * 60;
+	secs = Math.round(secs * 10) / 10;
 	var strSec = secs;
 	if (secs < 10)
 		var strSec = "0" + secs;

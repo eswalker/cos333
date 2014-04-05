@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     {% load staticfiles %}
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'row/cosmo.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'row/style.css' %}" />
+
 
     <title>{% block title %}Virtual Boathouse{% endblock %}</title>
 </head>
@@ -26,14 +27,13 @@
         {% endblock %}
     </div>
     <div id="sidebar" class="col-md-2">
-      
         <div class="well">
             <ul class="nav navbar navbar-stacked sidebar-navbar-collapse">
                 {% block sidebar %}
                     <li><a href="/">Home</a></li>
                     <li><a href="/athletes/">Roster</a></li>
                     <li><a href="/practices/">Practices</a></li>
-                    <li><a href="/boats/">Boats    <span class="badge">new</span></a></li>
+                    <li><a href="/boats/">Boats<span class="badge">new</span></a></li>
                 {% endblock %}
             </ul>
         </div>
@@ -42,6 +42,7 @@
     <div id="content" class="col-md-10 container container-fluid">
         {% block content %}{% endblock %}
     </div>
+
 
     <div id="footer" class="col-md-12">
         <br><br>
@@ -58,6 +59,7 @@
     <script src="{% static 'row/chart.min.js' %}"></script>
     <script src="{% static 'row/js/custom.js' %}"></script>
     <script src="{% static 'row/js/weightChart.js' %}"></script>
+    <script src="{% static 'row/js/resultChart.js' %}"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>
