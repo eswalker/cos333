@@ -27,7 +27,11 @@
     <tr>
       <td>{{ lineup.position }}</td>
       <td>{{ lineup.boat }}</td>
-      <td>TBA</td>
+      <td>
+        {% for athlete in lineup.athletes.all %}
+          <p> {{ athlete.name }} </p>
+        {% endfor %}
+      </td>
       <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}">Edit</a></td>
       <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}">Delete</a></td>
     </tr>

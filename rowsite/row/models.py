@@ -106,7 +106,7 @@ class Lineup(models.Model):
     practice = models.ForeignKey(Practice)
     boat = models.ForeignKey(Boat)
     position = models.CharField(max_length=10, choices=position_choices)
-    athletes = models.CharField(max_length=200)
+    athletes = models.ManyToManyField(Athlete)
 
     def __unicode__(self):
         return self.position + " " + str(self.boat)
