@@ -40,6 +40,7 @@
 
       <tr>
         <th>Date</th>
+        <th>Practice</th>
         <th>Pace</th>
         <th>Distance</th>
         <th>Time</th>
@@ -51,6 +52,7 @@
       {% for result in results %}
         <tr>
           <td>{{ result.datetime }}</td>
+          <td><a href="{% url 'row:practice_detail' result.practice.id %}">{{ result.practice }}</a></td>
           <td class="_pace"></td>
           <td class="_distance">{{ result.distance }}</td>
           <td class="_time">{{ result.time }}</td>
