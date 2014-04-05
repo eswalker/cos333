@@ -77,7 +77,7 @@ def practice_index(request):
 @login_required
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
-    results = Result.objects.filter(practice=practice_id)
+    results = Result.objects.filter(practice=practice_id).order_by('distance', 'time')
     lineups = Lineup.objects.filter(practice=practice_id)
     context = {'practice':practice, 'lineups':lineups, 'results':results}
     return render(request, 'row/practice/details.html', context)
