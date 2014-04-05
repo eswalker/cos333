@@ -43,7 +43,7 @@
 {% if results %}
 <h2>Results</h2>
 <canvas id="_result-chart" class="" width="600" height="200"></canvas><br/>
-<a id="_toggle-result-table" class="btn btn-sm btn-primary">View Table</a>
+<a id="_toggle-result-table" class="btn btn-sm btn-primary">View Results</a>
 <table id="_result-table" class="table table-bordered" hidden>
   <tr>
   	<th>Athlete</th>
@@ -66,7 +66,7 @@
       <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
     </tr>
   {% endfor %}
-</table>
+</table><br><br>
 {% endif %}
 <a class="btn btn-primary" href="{% url 'row:practice_result_add' practice_id=practice.id %}?next={{ request.path }}">Add Result</a>
 <a class="btn btn-primary" href="{% url 'row:practice_lineup_add' practice_id=practice.id %}?next={{ request.path }}">Add Lineup</a>

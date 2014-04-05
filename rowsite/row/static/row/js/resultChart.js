@@ -120,7 +120,7 @@ if (_paces.length > 1) {
 	}
 
 
-	var myNewChart = new Chart(ctx).Line(data, options);
+	var myNewChart = new Chart(ctx).Bar(data, options);
 
 
 }
