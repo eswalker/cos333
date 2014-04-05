@@ -32,8 +32,8 @@
           <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
         {% endfor %}
       </td>
-      <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}">Edit</a></td>
-      <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}">Delete</a></td>
+      <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
+      <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
     </tr>
   {% endfor %}
 </table>

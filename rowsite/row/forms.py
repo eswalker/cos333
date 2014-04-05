@@ -84,7 +84,30 @@ class LineupForm(forms.ModelForm):
     practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="practice")
     boat = forms.ModelChoiceField(queryset=Boat.objects.all(), help_text="Choose a boat", label="boat")
     position = forms.ChoiceField(choices=Lineup.position_choices, help_text="Identify the lineup", label="position")
-    athletes = forms.ModelMultipleChoiceField(queryset=Athlete.objects.all(), widget=forms.SelectMultiple, help_text="Who are the athletes?")
+    athletes = forms.ModelMultipleChoiceField(queryset=Athlete.objects.order_by('name'), widget=forms.SelectMultiple, help_text="Who are the athletes?", label="athletes")
+
+    def clean_athletes(self):
+        boat = self.cleaned_data["boat"]
+        seats = boat.seats
+        coxed = boat.coxed
+
+        athletes = self.cleaned_data["athletes"]
+        num_athletes = len(athletes)
+
+        if num_athletes + coxed != seats + coxed:
+            error = "There should be "
+           
+            if seats == 1: error = error + "1 rower"
+            else: error = error + str(seats) + " rowers"
+           
+            if coxed == True: error = error + " and a coxswain"
+
+            error = error + " in this boat. You have entered " + str(num_athletes)
+            error = error + (" athlete." if num_athletes == 1 else " athletes.")
+
+            raise forms.ValidationError(error)
+
+        return athletes
 
     class Meta:
         model = Lineup
