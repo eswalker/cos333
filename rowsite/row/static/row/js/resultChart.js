@@ -1,55 +1,36 @@
 
-var _weights = []
-var _datetimes = []
+var _paces = []
+var _athletes = []
 
-$( "#_toggle-weight-table" ).click(function() {
-  	$( "#_weight-table" ).toggle();
+$( "#_toggle-result-table" ).click(function() {
+  	$( "#_result-table" ).toggle();
 });
 
-$( '._weight').each(function( index ) {
-	_weights.push(parseFloat($(this).text()));
+$( '._pace').each(function( index ) {
+	_paces.push(parseFloat($(this).text().replace('.','').replace(':','.')));
 });
-$( '._weight-datetime').each(function( index ) {
-	_datetimes.push($(this).text().substring(0,$(this).text().indexOf(",")));
+$( '._athlete').each(function( index ) {
+	_athletes.push($(this).text());
 });
-if (_datetimes.length > 0) {
 
-	var new_weights = [];
-	var new_dates = [];
-	var old = _datetimes[0];
-	var sum = _weights[0];
-	var n = 1;
-	for (var i = 1; i < _datetimes.length; i++) {
-		if (old != _datetimes[i]) {
-			new_dates.push(old);
-			new_weights.push((1.0 * sum) / n);
-			sum = _weights[i];
-			n = 1;
-		} else {
-			n += 1; sum += _weights[i];
-		}
-		old = _datetimes[i];
+if (_paces.length > 1) {
 
-		
-	}
-	new_dates.push(old);
-	new_weights.push((1.0 * sum) / n);
+	
 
-
-	var ctx = $("#_weight-chart").get(0).getContext("2d");
-
+	var ctx = $("#_result-chart").get(0).getContext("2d");
 
 	var data = {
-		labels : new_dates,
+		labels : _athletes,
 		datasets : [
 			{
 				fillColor : "rgba(151,187,205,0.5)",
 				strokeColor : "rgba(151,187,205,1)",
 				pointColor : "rgba(151,187,205,1)",
 				pointStrokeColor : "#fff",
-				data : new_weights
+				data : _paces
 			}
 		]
+		
 	}
 
 	var options = {
@@ -132,14 +113,16 @@ if (_datetimes.length > 0) {
 		animationEasing : "easeOutQuart",
 
 		//Function - Fires when the animation is complete
-		onAnimationComplete : null
+		onAnimationComplete : null,
+
+		rotationAngle : 90
 		
 	}
 
 
-	var myNewChart = new Chart(ctx).Line(data);
+	var myNewChart = new Chart(ctx).Line(data, options);
+
 
 }
-
 
 
