@@ -29,7 +29,7 @@
       <td>{{ lineup.boat }}</td>
       <td>
         {% for athlete in lineup.athletes.all %}
-          <p> {{ athlete.name }} </p>
+          <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
         {% endfor %}
       </td>
       <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}">Edit</a></td>
