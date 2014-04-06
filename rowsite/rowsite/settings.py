@@ -99,3 +99,5 @@ STATIC_ROOT = 'row/static'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
+
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
