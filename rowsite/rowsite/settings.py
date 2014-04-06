@@ -24,7 +24,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://cos333.herokuapp.com/']
 
 AUTH_USER_MODEL = 'auth.User'
 
