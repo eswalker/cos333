@@ -61,10 +61,10 @@
           <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
         </tr>
       {% endfor %}
-    </table>
+    </table><
   {% endif %}
 
-    <a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}?next={{ request.path }}">Add Result</a>
+    <br><a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}?next={{ request.path }}">Add Result</a>
     <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}?next={{ request.path }}">Add Weight</a>
 
 

@@ -72,6 +72,12 @@ class ResultForm(forms.ModelForm):
     class Meta:
         model = Result
 
+    def clean_distance(self):
+        distance = self.cleaned_data["distance"]
+        if distance <= 0:
+            raise forms.ValidationError('Distance must be positive.')
+        return distance
+
 class BoatForm(forms.ModelForm):
     name = forms.CharField(max_length=20, help_text="What is the boat's name?", label="name")
     seats = forms.ChoiceField(choices=Boat.seats_choices, help_text="How many seats are there in the boat?")

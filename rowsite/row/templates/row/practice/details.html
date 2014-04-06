@@ -26,7 +26,7 @@
   {% for lineup in lineups %}
     <tr>
       <td>{{ lineup.position }}</td>
-      <td>{{ lineup.boat }}</td>
+      <td><a href="{% url 'row:boat_index' %}">{{ lineup.boat }}</a></br></td>
       <td>
         {% for athlete in lineup.athletes.all %}
           <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
