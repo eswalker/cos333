@@ -96,5 +96,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/row/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '../row/static')
+    os.path.join(BASE_DIR, '../row/static'),
 )
