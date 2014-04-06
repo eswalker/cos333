@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # From Two Scoops of Django
 from django.core.exceptions import ImproperlyConfigured
 
-def get_env_variabel(var_name):
+def get_env_variable(var_name):
     """Get the environment variable or return exception."""
     try:
         return os.environ[var_name]
