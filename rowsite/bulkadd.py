@@ -1,6 +1,10 @@
 from row.models import Athlete
 import sys
 
+old = Athlete.objects.all()
+for item in old:
+	old.delete()
+
 f = open("rowers")
 
 # name,side,year,status,height 
