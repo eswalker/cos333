@@ -100,7 +100,7 @@ class LineupForm(forms.ModelForm):
         athletes = self.cleaned_data["athletes"]
         num_athletes = len(athletes)
 
-        if num_athletes + coxed != seats + coxed:
+        if num_athletes != seats + coxed:
             error = "There should be "
            
             if seats == 1: error = error + "1 rower"
