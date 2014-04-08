@@ -16,7 +16,7 @@ def index(request):
 
 # Lists athletes in a roster
 def athlete_index(request):
-    athletes = Athlete.objects.all()
+    athletes = Athlete.objects.all().order_by('name')
     context = {'athletes': athletes}
     return render(request, 'row/athlete/index.html', context)
 
@@ -24,8 +24,8 @@ def athlete_index(request):
 @login_required
 def athlete_detail(request, athlete_id):
     athlete = get_object_or_404(Athlete, pk=athlete_id)
-    weights = Weight.objects.filter(athlete=athlete_id)
-    results = Result.objects.filter(athlete=athlete_id)
+    weights = Weight.objects.filter(athlete=athlete_id).order_by('datetime')
+    results = Result.objects.filter(athlete=athlete_id).order_by('datetime')
     context = {'athlete':athlete, 'weights':weights, 'results':results}
     return render(request, 'row/athlete/details.html', context)
 
@@ -69,7 +69,7 @@ def athlete_edit(request, athlete_id=None):
 # Lists practices by date
 @login_required
 def practice_index(request):
-    practices = Practice.objects.all()
+    practices = Practice.objects.all().order_by("datetime")
     context = {'practices': practices}
     return render(request, 'row/practice/index.html', context)
 
@@ -123,7 +123,8 @@ def weight_add(request, athlete_id=None):
         form = WeightForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return athlete_index(request)
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
     else:
         if athlete_id == None:
             form = WeightForm()
@@ -249,7 +250,7 @@ def user_logout(request):
 
 @login_required
 def boat_index(request):
-    boats = Boat.objects.all()
+    boats = Boat.objects.all().order_by('seats')
     context = {'boats': boats}
     return render(request, 'row/boat/index.html', context)
 

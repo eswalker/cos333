@@ -53,7 +53,7 @@ class Practice(models.Model):
 
 class Result(models.Model):
     datetime = models.DateTimeField(editable=True)
-    distance = models.IntegerField()
+    distance = models.PositiveIntegerField()
     time = models.IntegerField()
     athlete = models.ForeignKey(Athlete)
     practice = models.ForeignKey(Practice)

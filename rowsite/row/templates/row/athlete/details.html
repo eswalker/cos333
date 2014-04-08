@@ -64,7 +64,7 @@
     </table>
   {% endif %}
 
-    <a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}?next={{ request.path }}">Add Result</a>
+    <br><a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}?next={{ request.path }}">Add Result</a>
     <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}?next={{ request.path }}">Add Weight</a>
 
 
