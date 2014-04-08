@@ -1,9 +1,13 @@
 from django.shortcuts import render, get_object_or_404
+
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+
+from django.core.urlresolvers import reverse
+from django.core import serializers
 
 from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
 from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm, BoatForm, LineupForm
@@ -332,6 +336,46 @@ def lineup_delete(request, id):
         return HttpResponseRedirect(request.GET["next"])
     return HttpResponseRedirect(reverse('row:practice_index'))
 
+@login_required
 def erg(request):
     context = {'title': 'Virtual Boathouse'}
     return render(request, 'row/ergs.html', context)
+
+
+
+def json_athletes(request):
+	athletes = Athlete.objects.all()
+	data = serializers.serialize('json', athletes)
+	return HttpResponse(data, mimetype='application/json')
+
+def json_practices(request):
+	data = serializers.serialize('json', Practice.objects.all())
+	return HttpResponse(data, mimetype='application/json')
+
+def json_practice_lineups(request, id):
+	practice = get_object_or_404(Practice, pk=id)
+	lineups = get_object_or_404(Lineup, practice=practice)
+	data = serializers.serialize('json', lineups)
+	return HttpResponse(data, mimetype='application/json')
+
+def json_boats(request):
+	data = serializers.serialize('json', Boat.objects.all())
+	return HttpResponse(data, mimetype='application/json')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

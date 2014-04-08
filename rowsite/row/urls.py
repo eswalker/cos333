@@ -46,4 +46,10 @@ urlpatterns = patterns('',
     url(r'^erg', views.erg, name='erg'),
 
 
+    url(r'^json/athletes/$', views.json_athletes, name='json_athletes'),
+    url(r'^json/practices/$', views.json_practices, name='json_practices'),
+    url(r'^json/practice/(?P<id>\d+)/lineups/$', views.json_practice_lineups, name='json_practice_lineups'),
+    url(r'^json/boats/$', views.json_boats, name='json_boats'),
+
+
 )
