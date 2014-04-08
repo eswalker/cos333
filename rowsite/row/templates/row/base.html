@@ -4,6 +4,7 @@
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'row/cosmo.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'row/style.css' %}" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 
     <title>{% block title %}Virtual Boathouse{% endblock %}</title>
@@ -33,7 +34,8 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/athletes/">Roster</a></li>
                     <li><a href="/practices/">Practices</a></li>
-                    <li><a href="/boats/">Boats<span class="badge">new</span></a></li>
+                    <li><a href="/boats/">Boats <span class="badge">new</span></a></li>
+                    <li><a href="/erg/">Ergs <span class="badge">soon</span></a></li>
                 {% endblock %}
             </ul>
         </div>
@@ -55,11 +57,10 @@
             </div>
         </nav>
     </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{% static 'row/js/jquery-ui-1.10.4.custom.min.js' %}"></script>
     <script src="{% static 'row/chart.min.js' %}"></script>
     <script src="{% static 'row/js/custom.js' %}"></script>
     <script src="{% static 'row/js/weightChart.js' %}"></script>
     <script src="{% static 'row/js/resultChart.js' %}"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>

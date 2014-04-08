@@ -1,0 +1,32 @@
+{% extends 'row/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="_erg col-md-1">ERG</div>
+
+
+
+
+
+
+
+
+<ul>
+	<li id="draggable" class="ui-state-highlight ui-draggable">Drag me down</li>
+</ul>
+
+<ul id="sortable" class="ui-sortable">
+	<li class="ui-state-highlight ui-draggable" style="display: list-item;">Drag me down</li><li class="ui-state-default">Item 1</li><li class="ui-state-highlight ui-draggable" style="display: list-item;">Drag me down</li>
+	<li class="ui-state-default">Item 2</li>
+	<li class="ui-state-default">Item 3</li>
+	<li class="ui-state-default">Item 4</li>
+	<li class="ui-state-default">Item 5</li>
+</ul>
+
+<script src="{% static 'row/js/jquery-ui-1.10.4.custom.min.js' %}"></script>
+<script src="{% static 'row/js/erg.js' %}"></script>
+
+
+
+{% endblock %}

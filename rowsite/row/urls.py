@@ -43,4 +43,7 @@ urlpatterns = patterns('',
     url(r'^lineup/(?P<id>\d+)/edit/$', views.lineup_edit, name='lineup_edit'),
     url(r'^lineup/(?P<id>\d+)/delete/$', views.lineup_delete, name='lineup_delete'),
 
+    url(r'^erg', views.erg, name='erg'),
+
+
 )

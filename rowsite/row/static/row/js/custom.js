@@ -39,3 +39,8 @@ $( '._height').each(function( index ) {
 	inches = inches - feet * 12;
 	$(this).text(feet + "'" + inches + '"');
 });
+
+
+
+
+	

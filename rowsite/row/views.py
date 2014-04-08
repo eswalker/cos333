@@ -330,3 +330,7 @@ def lineup_delete(request, id):
     if request.GET and request.GET["next"]:
         return HttpResponseRedirect(request.GET["next"])
     return HttpResponseRedirect(reverse('row:practice_index'))
+
+def erg(request):
+    context = {'title': 'Virtual Boathouse'}
+    return render(request, 'row/ergs.html', context)
