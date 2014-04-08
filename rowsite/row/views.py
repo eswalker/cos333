@@ -69,7 +69,7 @@ def athlete_edit(request, athlete_id=None):
 # Lists practices by date
 @login_required
 def practice_index(request):
-    practices = Practice.objects.all()
+    practices = Practice.objects.all().order_by("datetime")
     context = {'practices': practices}
     return render(request, 'row/practice/index.html', context)
 
