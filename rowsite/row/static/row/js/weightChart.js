@@ -12,7 +12,7 @@ $( '._weight').each(function( index ) {
 $( '._weight-datetime').each(function( index ) {
 	_datetimes.push($(this).text().substring(0,$(this).text().indexOf(",")));
 });
-if (_datetimes.length > 0) {
+if (_datetimes.length > 1) {
 
 	var new_weights = [];
 	var new_dates = [];
