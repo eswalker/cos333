@@ -82,8 +82,8 @@ def practice_add(request):
     if request.method == 'POST':
         form = PracticeForm(request.POST)
         if form.is_valid():
-            form.save(commit=True)
-            return HttpResponseRedirect(reverse('row:practice_index'))
+            practice = form.save(commit=True)
+            return HttpResponseRedirect(reverse('row:practice_detail', args=(practice.id,)))
     else:
         form = PracticeForm()
     context = {'form':form, 'title':'Add Practice'}
@@ -296,9 +296,10 @@ def lineup_add(request, practice_id=None):
     if request.method == 'POST':
         form = LineupForm(request.POST)
         if form.is_valid():
-            lineup = form.save(commit=True)
-            practice_id = lineup.practice
-            return HttpResponseRedirect(reverse('row:practice_detail practice_id'))
+            form.save(commit=True)
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
+            return HttpResponseRedirect(reverse('row:practice_index'))
     else:
         if practice_id == None:
             form = LineupForm()
