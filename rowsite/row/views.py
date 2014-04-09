@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+
 
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -354,7 +356,7 @@ err_invalid_api_key = "Api key does not match any user"
 def json_permissions_coaches_and_coxswains_holder(request):
 	return None
 
-
+@csrf_exempt
 def json_permissions_coaches_and_coxswains(request):
 	if request.method == 'POST':
 		api_key = request.POST['api_key']
@@ -370,18 +372,20 @@ def json_permissions_coaches_and_coxswains(request):
 		data = json_error(err_api_key_required)
 	return data
 
->>>>>>> ccf35af4c5b45ff747bef295454d1f3bcc4a2157
+@csrf_exempt
 def json_athletes(request):
 	athletes = Athlete.objects.all()
 	data = serializers.serialize('json', athletes)
 	return HttpResponse(data, mimetype='application/json')
 
+@csrf_exempt
 def json_practices(request):
 	data = json_permissions_coaches_and_coxswains(request)
 	if not data:
 		data = serializers.serialize('json', Practice.objects.all())
 	return HttpResponse(data, mimetype='application/json')
 
+@csrf_exempt
 def json_practice_lineups(request, id):
 	data = json_permissions_coaches_and_coxswains(request)
 	if not data:
@@ -396,12 +400,14 @@ def json_practice_lineups(request, id):
 			data = json_error("Practice does not exist")
 	return HttpResponse(data, mimetype='application/json')
 
+@csrf_exempt
 def json_boats(request):
 	data = json_permissions_coaches_and_coxswains(request)
 	if not data:
 		data = serializers.serialize('json', Boat.objects.all())
 	return HttpResponse(data, mimetype='application/json')
 
+@csrf_exempt
 def json_login(request):
 	data = None
 	if request.method == 'POST':

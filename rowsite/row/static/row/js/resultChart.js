@@ -123,6 +123,8 @@ if (_paces.length > 1) {
 	var myNewChart = new Chart(ctx).Bar(data, options);
 
 
+} else {
+	$( "#_result-chart" ).toggle();
 }
 
 
