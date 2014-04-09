@@ -15,6 +15,7 @@ from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
 from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm, BoatForm, LineupForm
 
 import uuid
+import csv
 
 
 def index(request):
@@ -393,7 +394,7 @@ def json_practice_lineups(request, id):
 		try:
 			practice = Practice.objects.get(pk=id)
 			try:
-				lineups = Lineup.objects.get(practice=practice)
+				lineups = Lineup.objects.all().filter(practice=practice)
 				data = serializers.serialize('json', lineups)
 			except Lineup.DoesNotExist:
 				data = json_error("No lineups for the practice")
@@ -428,6 +429,29 @@ def json_login(request):
 		data = json_error("Invalid username and password")
 	return HttpResponse(data, mimetype='application/json')
 
+
+'''
+
+CSV
+
+
+'''
+def athlete_index_csv(request):
+    athletes = Athlete.objects.all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="athletes.csv"'
+
+    writer = csv.writer(response)
+    for athlete in athletes:
+    	data = []
+    	data.append(athlete.name)
+    	data.append(athlete.year)
+    	data.append(athlete.side)
+    	data.append(athlete.height)
+    	writer.writerow(data)
+
+    return response
 
 
 

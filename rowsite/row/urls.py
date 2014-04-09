@@ -51,4 +51,7 @@ urlpatterns = patterns('',
     url(r'^json/boats/$', views.json_boats, name='json_boats'),
     url(r'^json/login/$', views.json_login, name='json_login'),
 
+    url(r'^athletes/csv/$', views.athlete_index_csv, name='athlete_index_csv'),
+
+
 )
