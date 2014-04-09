@@ -12,7 +12,7 @@ $( '._weight').each(function( index ) {
 $( '._weight-datetime').each(function( index ) {
 	_datetimes.push($(this).text().substring(0,$(this).text().indexOf(",")));
 });
-if (_datetimes.length > 1) {
+
 
 	var new_weights = [];
 	var new_dates = [];
@@ -35,7 +35,7 @@ if (_datetimes.length > 1) {
 	new_dates.push(old);
 	new_weights.push((1.0 * sum) / n);
 
-
+if (new_dates.length > 1) {
 	var ctx = $("#_weight-chart").get(0).getContext("2d");
 
 
