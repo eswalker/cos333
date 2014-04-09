@@ -51,4 +51,7 @@ urlpatterns = patterns('',
     url(r'^json/boats/$', views.json_boats, name='json_boats'),
     url(r'^json/login/$', views.json_login, name='json_login'),
 
+    url(r'^piece/add/$', views.piece_add, name='piece_add'),
+    url(r'^piece/(?P<id>\d+)/edit/$', views.piece_edit, name='piece_edit'),
+    url(r'^piece/(?P<id>\d+)/delete/$', views.piece_delete, name='piece_delete'),
 )

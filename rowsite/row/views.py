@@ -11,8 +11,8 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import serializers
 
-from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
-from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm, BoatForm, LineupForm
+from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup
+from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm
 
 import uuid
 
@@ -72,7 +72,7 @@ def practice_index(request):
 @login_required
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
-    results = Result.objects.filter(practice=practice_id).order_by('distance', 'time')
+    pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
     lineups = Lineup.objects.filter(practice=practice_id)
     context = {'practice':practice, 'lineups':lineups, 'results':results}
     return render(request, 'row/practice/details.html', context)
@@ -110,6 +110,50 @@ def practice_delete(request, id):
     practice = get_object_or_404(Practice, pk=id)
     practice.delete()
     return HttpResponseRedirect(reverse('row:practice_index'))
+
+# Shows practice details for one practice
+@login_required
+def piece_detail(request, piece_id):
+    piece = get_object_or_404(Piece, pk=piece_id)
+    results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
+    lineups = Lineup.objects.filter(piece=piece_id)
+    context = {'piece':piece, 'lineups':lineups, 'results':results}
+    return render(request, 'row/piece/details.html', context)
+
+@login_required
+def piece_add(request):
+    if request.method == 'POST':
+        form = PieceForm(request.POST)
+        if form.is_valid():
+            piece = form.save(commit=True)
+            return HttpResponseRedirect(reverse('row:practice_detail', args=(piece.id,)))
+    else:
+        form = PieceForm()
+    context = {'form':form, 'title':'Add Piece'}
+    return render(request, 'row/add.html', context)
+
+@login_required
+def piece_edit(request, id):
+    practice = get_object_or_404(Piece, pk=id)
+    if request.method == 'POST':
+        form = PieceForm(request.POST)
+        if form.is_valid():
+            piece.name = form.cleaned_data["name"]
+            piece.datetime = form.cleaned_data["datetime"]
+            piece.practice = form.cleaned_data["practice"]
+            piece.save()
+            return HttpResponseRedirect(reverse('row:practice_index'))
+    else:
+        form = PracticeForm(instance=practice)
+    context = {'form':form, 'title':'Edit Piece'}
+    return render(request, 'row/add.html', context)
+
+@login_required
+def piece_delete(request, id):
+    piece = get_object_or_404(Piece, pk=id)
+    piece.delete()
+    return HttpResponseRedirect(reverse('row:piece_index'))
+
 
 # Adds a new weight
 @login_required
