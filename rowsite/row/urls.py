@@ -5,7 +5,6 @@ urlpatterns = patterns('',
 
     url(r'^$', views.index, name='index'),
 
-    url(r'^athlete/add/$', views.athlete_add, name='athlete_add'),
     url(r'^athletes/$', views.athlete_index, name='athlete_index'),
     url(r'^athlete/(?P<athlete_id>\d+)/$', views.athlete_detail, name='athlete_detail'),
     url(r'^athlete/(?P<athlete_id>\d+)/edit/$', views.athlete_edit, name='athlete_edit'),

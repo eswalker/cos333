@@ -4,11 +4,12 @@ from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    email = forms.EmailField(help_text="Please enter a valid email address.", label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(), help_text="Must contain at least 6 characters and both upper and lowercase letters.")
 
     def clean_password(self):
         password = self.cleaned_data["password"]
-        if len(password) < 8:
+        if len(password) < 6:
             raise forms.ValidationError('Password is too short')
         if password.lower() == password or password.upper() == password:
             raise forms.ValidationError('Password must have lower and uppercase letters')
@@ -25,11 +26,11 @@ class UserLoginForm(forms.ModelForm):
         fields = ('username', 'password')
 
 class AthleteForm(forms.ModelForm):
-    name = forms.CharField(max_length=50, help_text="Your full name.", label="name")
-    side = forms.ChoiceField(choices=Athlete.side_choices, help_text="Port, Starboard, Coxswain, Coach, or Other", label="side")
-    year = forms.ChoiceField(choices=Athlete.year_choices, help_text="Fr, So, Jr, or Sr", label="year")
-    height = forms.IntegerField(min_value=0, help_text="Your height in inches", label="height")
-    status = forms.ChoiceField(choices=Athlete.status_choices, help_text="Athlete status (Active, Injured, or Retired).", label="status")
+    name = forms.CharField(max_length=50, help_text="Your full name.", label="Name")
+    side = forms.ChoiceField(choices=Athlete.side_choices, help_text="Port, Starboard, Coxswain, Coach, or Other", label="Side")
+    year = forms.ChoiceField(choices=Athlete.year_choices, help_text="Fr, So, Jr, or Sr", label="Year")
+    height = forms.IntegerField(min_value=0, help_text="Your height in inches", label="Height")
+    status = forms.ChoiceField(choices=Athlete.status_choices, help_text="Athlete status (Active, Injured, or Retired).", label="Status")
 
     def clean_height(self):
         height = self.cleaned_data["height"]
@@ -39,19 +40,20 @@ class AthleteForm(forms.ModelForm):
 
     class Meta:
         model = Athlete
+        fields = ('name', 'side', 'year', 'height', 'status')
 
 class PracticeForm(forms.ModelForm):
-	name = forms.CharField(max_length=20, help_text="What was the practice?", label="name")
-	datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="datetime")
-	workout = forms.ChoiceField(choices=Practice.workout_choices, help_text="Erg, Water, Bike, etc.", label="type")
+	name = forms.CharField(max_length=20, help_text="What was the practice?", label="Name")
+	datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
+	workout = forms.ChoiceField(choices=Practice.workout_choices, help_text="Erg, Water, Bike, etc.", label="Type")
     
 	class Meta:
    		model = Practice
 
 class WeightForm(forms.ModelForm):
-    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="athlete")
-    weight = forms.DecimalField(help_text="Weight in lbs", decimal_places=1, label="weight")
-    datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the weigh-in? (Ex. 3/29/14 8:30)", label="datetime")
+    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
+    weight = forms.DecimalField(help_text="Weight in lbs", decimal_places=1, label="Weight")
+    datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the weigh-in? (Ex. 3/29/14 8:30)", label="Datetime")
 
     def clean_weight(self):
         weight = self.cleaned_data["weight"]
@@ -63,11 +65,11 @@ class WeightForm(forms.ModelForm):
         model = Weight
 
 class ResultForm(forms.ModelForm):
-    datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="datetime")
+    datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
     distance = forms.IntegerField(help_text="Distance", label="distance")
     time = forms.IntegerField(help_text="Time (in seconds)", label="time")
-    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="athlete")
-    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="practice")
+    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
+    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="Practice")
 
     class Meta:
         model = Result
@@ -79,18 +81,18 @@ class ResultForm(forms.ModelForm):
         return distance
 
 class BoatForm(forms.ModelForm):
-    name = forms.CharField(max_length=20, help_text="What is the boat's name?", label="name")
-    seats = forms.ChoiceField(choices=Boat.seats_choices, help_text="How many seats are there in the boat?")
-    coxed = forms.ChoiceField(choices=Boat.coxed_choices, help_text="Does the boat have a coxswain?")
+    name = forms.CharField(max_length=20, help_text="What is the boat's name?", label="Name")
+    seats = forms.ChoiceField(choices=Boat.seats_choices, help_text="How many seats are there in the boat?", label="Seats")
+    coxed = forms.ChoiceField(choices=Boat.coxed_choices, help_text="Does the boat have a coxswain?", label="Coxed")
 
     class Meta:
         model = Boat
 
 class LineupForm(forms.ModelForm):
-    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="practice")
-    boat = forms.ModelChoiceField(queryset=Boat.objects.all(), help_text="Choose a boat", label="boat")
-    position = forms.ChoiceField(choices=Lineup.position_choices, help_text="Identify the lineup", label="position")
-    athletes = forms.ModelMultipleChoiceField(queryset=Athlete.objects.order_by('name'), widget=forms.SelectMultiple, help_text="Who are the athletes?", label="athletes")
+    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="Practice")
+    boat = forms.ModelChoiceField(queryset=Boat.objects.all(), help_text="Choose a boat", label="Boat")
+    position = forms.ChoiceField(choices=Lineup.position_choices, help_text="Identify the lineup", label="Position")
+    athletes = forms.ModelMultipleChoiceField(queryset=Athlete.objects.order_by('name'), widget=forms.SelectMultiple, help_text="Who are the athletes?", label="Athletes")
 
     def clean_athletes(self):
         boat = self.cleaned_data["boat"]

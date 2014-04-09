@@ -12,6 +12,8 @@ from django.core import serializers
 from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
 from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, WeightForm, ResultForm, BoatForm, LineupForm
 
+import uuid
+
 
 def index(request):
     context = {'title': 'Virtual Boathouse'}
@@ -32,19 +34,6 @@ def athlete_detail(request, athlete_id):
     results = Result.objects.filter(athlete=athlete_id).order_by('datetime')
     context = {'athlete':athlete, 'weights':weights, 'results':results}
     return render(request, 'row/athlete/details.html', context)
-
-# Adds a new athlete
-@login_required
-def athlete_add(request):
-    if request.method == 'POST':
-        form = AthleteForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return HttpResponseRedirect(reverse('row:athlete_index'))
-    else:
-        form = AthleteForm()
-    context = {'form':form, 'title':'Add Athlete'}
-    return render(request, 'row/add.html', context)
 
 @login_required
 def athlete_delete(request, id):
@@ -212,20 +201,28 @@ def result_delete(request, id):
 
 def user_register(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
+        user_form = UserForm(request.POST)
+        athlete_form = AthleteForm(request.POST)
+        if user_form.is_valid() and athlete_form.is_valid():
+            username = user_form.cleaned_data["username"]
+            password = user_form.cleaned_data["password"]
             u = User(username=username)
             u.set_password(password)
             u.save()
+
+            athlete = athlete_form.save(commit=False)
+            athlete.user = u
+            athlete.api_key = str(uuid.uuid4())
+            athlete.save()
+
             user = authenticate(username=username, password=password)
             login(request, user)
-            return HttpResponseRedirect(reverse('row:athlete_add'))
+            return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
-        form = UserForm()
-    context = {'form':form, 'title':'Register'}
-    return render(request, 'row/add.html', context)
+        user_form = UserForm()
+        athlete_form = AthleteForm()
+    context = {'user_form':user_form, 'athlete_form':athlete_form, 'title':'Register'}
+    return render(request, 'row/register.html', context)
 
 def user_login(request):
     if request.method == 'POST':
@@ -297,10 +294,9 @@ def lineup_add(request, practice_id=None):
     if request.method == 'POST':
         form = LineupForm(request.POST)
         if form.is_valid():
-            form.save(commit=True)
-            if request.GET and request.GET["next"]:
-                return HttpResponseRedirect(request.GET["next"])
-            return HttpResponseRedirect(reverse('row:practice_index'))
+            lineup = form.save(commit=True)
+            practice_id = lineup.practice
+            return HttpResponseRedirect(reverse('row:practice_detail practice_id'))
     else:
         if practice_id == None:
             form = LineupForm()
@@ -340,8 +336,6 @@ def lineup_delete(request, id):
 def erg(request):
     context = {'title': 'Virtual Boathouse'}
     return render(request, 'row/ergs.html', context)
-
-
 
 def json_athletes(request):
 	athletes = Athlete.objects.all()

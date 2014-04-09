@@ -1,0 +1,39 @@
+{% extends 'row/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form id="form" method="post" action="">
+  
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+  <table class="table table-bordered">
+        {% for field in user_form.visible_fields %}
+            <tr>
+                <td>{{ field.label }}</td>
+                <td>{{ field }}</td>                 
+                <td>{{ field.help_text}}</td>
+                {% if field.errors %}
+                    <td class="alert alert-danger">{{ field.errors }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        {% for field in athlete_form.visible_fields %}
+            <tr>
+                <td>{{ field.label }}</td>
+                <td>{{ field }}</td>                 
+                <td>{{ field.help_text}}</td>
+                {% if field.errors %}
+                    <td class="alert alert-danger">{{ field.errors }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+     <input type="submit" class="btn btn-primary" name="submit" value="Submit" />
+</form>
+
+{% endblock %}

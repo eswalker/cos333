@@ -1,6 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
 
 # Create your models here.
 class Athlete(models.Model):
@@ -27,11 +27,13 @@ class Athlete(models.Model):
         ('Retired', 'Retired')
     )
 
+    user = models.OneToOneField(User)
     name = models.CharField(max_length=50)
     side = models.CharField(max_length=9, choices=side_choices)
     year = models.CharField(max_length=2, choices=year_choices, default='NA')
     status = models.CharField(max_length=20, choices=status_choices, default='Active')
     height = models.PositiveIntegerField()
+    api_key = models.CharField(max_length=50)
     
     
     def __unicode__(self):
