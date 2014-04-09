@@ -35,6 +35,8 @@ class Athlete(models.Model):
     height = models.PositiveIntegerField()
     api_key = models.CharField(max_length=50)
     
+    def is_leader(self):
+        return self.side == "Coach" or self.side == "Coxswain"
     
     def __unicode__(self):
         return self.name

@@ -363,7 +363,7 @@ def json_permissions_coaches_and_coxswains(request):
 		api_key = request.POST['api_key']
 		try:
 			athlete = Athlete.objects.get(api_key=api_key)
-			if athlete.side == "coach" or athlete.side == "coxswain":
+			if athlete.is_leader():
 				return None
 			else:
 				data = json_error(err_coach_cox_permissions)
