@@ -343,23 +343,88 @@ def erg(request):
 
 
 
+
+'''
+
+JSON API
+
+'''
+
+def json_error(error):
+	return '{ "error":"' + error + '"}'
+err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
+err_api_key_required = "Api key required to access this resource"
+err_invalid_api_key = "Api key does not match any user"
+
+
+# for testing
+def json_permissions_coaches_and_coxswains_holder(request):
+	return None
+
+
+def json_permissions_coaches_and_coxswains(request):
+	if request.method == 'POST':
+		api_key = request.POST['api_key']
+		try:
+			athlete = Athlete.objects.get(api_key=api_key)
+			if athlete.side == "coach" or athlete.side == "coxswain":
+				return None
+			else:
+				data = json_error(err_coach_cox_permissions)
+		except Athlete.DoesNotExist:
+			data = json_error(err_invalid_api_key)
+	else:
+		data = json_error(err_api_key_required)
+	return data
+
 def json_athletes(request):
 	athletes = Athlete.objects.all()
 	data = serializers.serialize('json', athletes)
 	return HttpResponse(data, mimetype='application/json')
 
 def json_practices(request):
-	data = serializers.serialize('json', Practice.objects.all())
+	data = json_permissions_coaches_and_coxswains(request)
+	if not data:
+		data = serializers.serialize('json', Practice.objects.all())
 	return HttpResponse(data, mimetype='application/json')
 
 def json_practice_lineups(request, id):
-	practice = get_object_or_404(Practice, pk=id)
-	lineups = get_object_or_404(Lineup, practice=practice)
-	data = serializers.serialize('json', lineups)
+	data = json_permissions_coaches_and_coxswains(request)
+	if not data:
+		try:
+			practice = Practice.objects.get(pk=id)
+			try:
+				lineups = Lineup.objects.get(practice=practice)
+				data = serializers.serialize('json', lineups)
+			except Lineup.DoesNotExist:
+				data = json_error("No lineups for the practice")
+		except Practice.DoesNotExist:
+			data = json_error("Practice does not exist")
 	return HttpResponse(data, mimetype='application/json')
 
 def json_boats(request):
-	data = serializers.serialize('json', Boat.objects.all())
+	data = json_permissions_coaches_and_coxswains(request)
+	if not data:
+		data = serializers.serialize('json', Boat.objects.all())
+	return HttpResponse(data, mimetype='application/json')
+
+def json_login(request):
+	data = None
+	if request.method == 'POST':
+		username = request.POST["username"]
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				try:
+					athlete = Athlete.objects.get(user=user)
+					data = '{"api_key":"' + athlete.api_key + '"}'
+				except Athlete.DoesNotExist:
+					data = None
+	else:
+		data = json_error("Must POST username and password")
+	if data == None:
+		data = json_error("Invalid username and password")
 	return HttpResponse(data, mimetype='application/json')
 
 

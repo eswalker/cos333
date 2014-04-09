@@ -50,6 +50,6 @@ urlpatterns = patterns('',
     url(r'^json/practices/$', views.json_practices, name='json_practices'),
     url(r'^json/practice/(?P<id>\d+)/lineups/$', views.json_practice_lineups, name='json_practice_lineups'),
     url(r'^json/boats/$', views.json_boats, name='json_boats'),
-
+    url(r'^json/login/$', views.json_login, name='json_login'),
 
 )
