@@ -58,4 +58,7 @@ urlpatterns = patterns('',
     url(r'^piece/(?P<id>\d+)/edit/$', views.piece_edit, name='piece_edit'),
     url(r'^piece/(?P<id>\d+)/delete/$', views.piece_delete, name='piece_delete'),
     url(r'^piece/(?P<piece_id>\d+)/$', views.piece_detail, name='piece_detail'),
+
+
+
 )

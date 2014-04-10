@@ -348,10 +348,10 @@ def lineup_add(request, piece_id=None):
                 return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
-        if practice_id == None:
+        if piece_id == None:
             form = LineupForm()
         else:
-            form = LineupForm(initial={'practice': practice_id})
+            form = LineupForm(initial={'piece': piece_id})
     context = {'form':form, 'title':'Add Lineup'}
     return render(request, 'row/add.html', context)
 

@@ -45,7 +45,7 @@ class AthleteForm(forms.ModelForm):
 class PracticeForm(forms.ModelForm):
 	name = forms.CharField(max_length=20, help_text="What was the practice?", label="Name")
 	datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
-	workout = forms.ChoiceField(choices=Practice.workout_choices, help_text="Erg, Water, Bike, etc.", label="Type")
+	workout = forms.ChoiceField(choices=Practice.workout_choices, help_text="Erg or Water", label="Type")
     
 	class Meta:
    		model = Practice
@@ -97,7 +97,7 @@ class BoatForm(forms.ModelForm):
         model = Boat
 
 class LineupForm(forms.ModelForm):
-    piece = forms.ModelChoiceField(queryset=Piece.objects.all(), help_text="Choose a piece", label="Piece")
+    piece = forms.ModelChoiceField(queryset=Piece.objects.filter(practice__workout="Water"), help_text="Choose a piece", label="Piece")
     boat = forms.ModelChoiceField(queryset=Boat.objects.all(), help_text="Choose a boat", label="Boat")
     position = forms.ChoiceField(choices=Lineup.position_choices, help_text="Identify the lineup", label="Position")
     athletes = forms.ModelMultipleChoiceField(queryset=Athlete.objects.order_by('name'), widget=forms.SelectMultiple, help_text="Who are the athletes?", label="Athletes")
@@ -124,6 +124,13 @@ class LineupForm(forms.ModelForm):
             raise forms.ValidationError(error)
 
         return athletes
+
+    def clean_piece(self):
+        piece = self.cleaned_data["piece"]
+        workout = piece.practice.workout
+
+        if workout == "Erg":
+            raise forms.ValidationError("You cannot add a lineup to an erg piece.")
 
     class Meta:
         model = Lineup

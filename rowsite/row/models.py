@@ -121,3 +121,12 @@ class Lineup(models.Model):
 
     def __unicode__(self):
         return self.position + " " + str(self.boat)
+
+class Note(models.Model):
+    subject = models.CharField(max_length=50)
+    piece = models.ForeignKey(Piece)
+    author = models.ForeignKey(Athlete)
+    notes = models.TextField()
+
+    def __unicode__(self):
+        return self.subject
