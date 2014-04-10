@@ -59,6 +59,6 @@ urlpatterns = patterns('',
     url(r'^piece/(?P<id>\d+)/delete/$', views.piece_delete, name='piece_delete'),
     url(r'^piece/(?P<piece_id>\d+)/$', views.piece_detail, name='piece_detail'),
 
-
-
+    url(r'^note/add/$', views.note_add, name='note_add'),
+    url(r'^note/(?P<id>\d+)/$', views.note_detail, name='note_detail'),
 )

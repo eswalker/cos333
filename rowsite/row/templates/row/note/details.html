@@ -1,0 +1,11 @@
+{% extends 'row/base.html' %}
+{% block title %} Note Details {% endblock %}
+{% block content %}
+
+{% if note %}
+	<h1>{{ note.subject }}</h1>
+	<h2>{{ note.datetime }}</h2>
+	<table class="table table-bordered">
+	<p>{{ note.note }}</p>
+{% endif %}
+{% endblock %}

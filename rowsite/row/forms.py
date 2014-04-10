@@ -1,6 +1,6 @@
 from django import forms
 from datetime import datetime
-from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup
+from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -134,3 +134,11 @@ class LineupForm(forms.ModelForm):
 
     class Meta:
         model = Lineup
+
+class NoteForm(forms.ModelForm):
+    subject = forms.CharField(max_length=50, help_text="50 characters or fewer", label='Subject')
+    piece = forms.ModelChoiceField(queryset=Piece.objects.all().order_by('datetime'), help_text="Select a piece", label="Piece")
+
+    class Meta:
+        model = Note
+        fields = ('subject', 'piece', 'note')

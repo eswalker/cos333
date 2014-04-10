@@ -11,8 +11,8 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import serializers
 
-from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup
-from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm
+from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note
+from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm, NoteForm
 
 import uuid
 import csv
@@ -381,6 +381,27 @@ def lineup_delete(request, id):
     if request.GET and request.GET["next"]:
         return HttpResponseRedirect(request.GET["next"])
     return HttpResponseRedirect(reverse('row:practice_index'))
+
+@login_required
+def note_add(request):
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.author = request.user
+            note.save()
+            return HttpResponseRedirect(reverse('row:athlete_index'))
+    else:
+        form = NoteForm()
+    context = {'form':form, 'title':'Add Note'}
+    return render(request, 'row/add.html', context) 
+
+@login_required
+def note_detail(request, id):
+    note = get_object_or_404(Note, pk=id)
+    context = {'note':note}
+    return render(request, 'row/note/details.html', context)
+
 
 @login_required
 def erg(request):

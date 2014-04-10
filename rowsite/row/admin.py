@@ -1,5 +1,5 @@
 from django.contrib import admin
-from row.models import Athlete, Practice, Piece, Result, Weight, Lineup, Boat
+from row.models import Athlete, Practice, Piece, Result, Weight, Lineup, Boat, Note
 
 class AthleteAdmin(admin.ModelAdmin):
 	fields = ['user', 'name','year','side','height', 'status', 'api_key']
@@ -19,3 +19,4 @@ admin.site.register(Result, ResultAdmin)
 admin.site.register(Weight)
 admin.site.register(Boat)
 admin.site.register(Lineup)
+admin.site.register(Note)
