@@ -1,6 +1,6 @@
 from django import forms
 from datetime import datetime
-from row.models import Athlete, Weight, Practice, Result, Boat, Lineup
+from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -50,6 +50,14 @@ class PracticeForm(forms.ModelForm):
 	class Meta:
    		model = Practice
 
+class PieceForm(forms.ModelForm):
+    name = forms.CharField(max_length=20, help_text="What was the piece?", label="Name")
+    datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
+    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="Practice")
+
+    class Meta:
+        model = Piece
+
 class WeightForm(forms.ModelForm):
     athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
     weight = forms.DecimalField(help_text="Weight in lbs", decimal_places=1, label="Weight")
@@ -69,7 +77,7 @@ class ResultForm(forms.ModelForm):
     distance = forms.IntegerField(help_text="Distance", label="distance")
     time = forms.IntegerField(help_text="Time (in seconds)", label="time")
     athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
-    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="Practice")
+    piece = forms.ModelChoiceField(queryset=Piece.objects.all(), help_text="Choose a piece", label="Piece")
 
     class Meta:
         model = Result
@@ -89,7 +97,7 @@ class BoatForm(forms.ModelForm):
         model = Boat
 
 class LineupForm(forms.ModelForm):
-    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="Practice")
+    piece = forms.ModelChoiceField(queryset=Piece.objects.all(), help_text="Choose a piece", label="Piece")
     boat = forms.ModelChoiceField(queryset=Boat.objects.all(), help_text="Choose a boat", label="Boat")
     position = forms.ChoiceField(choices=Lineup.position_choices, help_text="Identify the lineup", label="Position")
     athletes = forms.ModelMultipleChoiceField(queryset=Athlete.objects.order_by('name'), widget=forms.SelectMultiple, help_text="Who are the athletes?", label="Athletes")

@@ -40,7 +40,7 @@ class Athlete(models.Model):
     
     def __unicode__(self):
         return self.name
-    
+
 class Practice(models.Model):
     datetime = models.DateTimeField(editable=True)
     name = models.CharField(max_length=20)
@@ -49,8 +49,15 @@ class Practice(models.Model):
     workout_choices = (
         ('Erg', 'Erg'),
         ('Water', 'Water'),
-        ('Bike', 'Bike')
     )
+
+    def __unicode__(self):
+        return str(self.datetime.date()) + " " +  self.name
+
+class Piece(models.Model):
+    datetime = models.DateTimeField(editable=True)
+    name = models.CharField(max_length=20)
+    practice = models.ForeignKey(Practice)
 
     def __unicode__(self):
         return str(self.datetime.date()) + " " +  self.name
@@ -60,7 +67,7 @@ class Result(models.Model):
     distance = models.PositiveIntegerField()
     time = models.IntegerField()
     athlete = models.ForeignKey(Athlete)
-    practice = models.ForeignKey(Practice)
+    piece = models.ForeignKey(Piece)
 
     def __unicode__(self):
         return str(self.datetime.date()) + " " + str(self.distance) + " " + str(self.time) + " " + str(self.athlete)
@@ -107,7 +114,7 @@ class Lineup(models.Model):
         ('Mixed', 'Mixed'),
     )
 
-    practice = models.ForeignKey(Practice)
+    piece = models.ForeignKey(Piece)
     boat = models.ForeignKey(Boat)
     position = models.CharField(max_length=10, choices=position_choices)
     athletes = models.ManyToManyField(Athlete)

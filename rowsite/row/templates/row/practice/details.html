@@ -11,63 +11,26 @@
 
 {% endif %}
 
-{% if lineups %}
-<h2>Lineups</h2>
+{% if pieces %}
+<h2>Pieces</h2>
 <table class="table table-bordered">
 
   <tr>
-    <th>Position</th>
-    <th>Boat</th>
-    <th>Athletes</th>
+    <th>Date</th>
+    <th>Name</th>
     <th>Edit</th>
     <th>Delete</th>
   </tr>
 
-  {% for lineup in lineups %}
+  {% for piece in pieces %}
     <tr>
-      <td>{{ lineup.position }}</td>
-      <td><a href="{% url 'row:boat_index' %}">{{ lineup.boat }}</a></br></td>
-      <td>
-        {% for athlete in lineup.athletes.all %}
-          <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
-        {% endfor %}
-      </td>
-      <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
-      <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
+      <td>{{ piece.datetime }}</td>
+      <td><a href="{% url 'row:piece_detail' piece.id %}">{{ piece.name }}</a></br></td>
+      <td><a class="" href="{% url 'row:piece_edit' piece.id %}?next={{ request.path }}">Edit</a></td>
+      <td><a class="" href="{% url 'row:piece_delete' piece.id %}?next={{ request.path }}">Delete</a></td>
     </tr>
   {% endfor %}
 </table>
 {% endif %}
-
- 
-{% if results %}
-<h2>Results</h2>
-<canvas id="_result-chart" class="" width="600" height="200"></canvas><br/>
-<a id="_toggle-result-table" class="btn btn-sm btn-primary">View Results</a>
-<table id="_result-table" class="table table-bordered" hidden>
-  <tr>
-  	<th>Athlete</th>
-    <th>Date</th>
-    <th>Pace</th>
-    <th>Distance</th>
-    <th>Time</th>
-    <th>Edit</th>
-    <th>Delete</th>
-  </tr>
-
-  {% for result in results %}
-    <tr>
-      <td class="_athlete">{{ result.athlete }}</td>
-      <td>{{ result.datetime }}</td>
-      <td class="_pace"></td>
-      <td class="_distance">{{ result.distance }}</td>
-      <td class="_time">{{ result.time }}</td>
-      <td><a class="" href="{% url 'row:result_edit' result.id %}?next={{ request.path }}">Edit</a></td>
-      <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
-    </tr>
-  {% endfor %}
-</table><br><br>
-{% endif %}
-<a class="btn btn-primary" href="{% url 'row:practice_result_add' practice_id=practice.id %}?next={{ request.path }}">Add Result</a>
-<a class="btn btn-primary" href="{% url 'row:practice_lineup_add' practice_id=practice.id %}?next={{ request.path }}">Add Lineup</a>
+<a class="btn btn-primary" href="{% url 'row:practice_piece_add' practice_id=practice.id %}?next={{ request.path }}">Add Piece</a>
 {% endblock %}
