@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     url(r'^practice/(?P<id>\d+)/delete/$', views.practice_delete, name='practice_delete'),
     
     url(r'^result/add/$', views.result_add, name='result_add'),
-    url(r'^practice/(?P<practice_id>\d+)/result/add/$', views.result_add, name='practice_result_add'),
+    url(r'^piece/(?P<piece_id>\d+)/result/add/$', views.result_add, name='piece_result_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
     url(r'^result/(?P<id>\d+)/edit/$', views.result_edit, name='result_edit'),
     url(r'^result/(?P<id>\d+)/delete/$', views.result_delete, name='result_delete'),
@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     url(r'^boat/(?P<id>\d+)/delete/$', views.boat_delete, name='boat_delete'),
 
     url(r'^lineup/add/$', views.lineup_add, name='lineup_add'),
-    url(r'^practice/(?P<practice_id>\d+)/lineup/add/$', views.lineup_add, name='practice_lineup_add'),
+    url(r'^piece/(?P<piece_id>\d+)/lineup/add/$', views.lineup_add, name='piece_lineup_add'),
     url(r'^lineup/(?P<id>\d+)/edit/$', views.lineup_edit, name='lineup_edit'),
     url(r'^lineup/(?P<id>\d+)/delete/$', views.lineup_delete, name='lineup_delete'),
 
@@ -52,6 +52,8 @@ urlpatterns = patterns('',
     url(r'^json/login/$', views.json_login, name='json_login'),
 
     url(r'^piece/add/$', views.piece_add, name='piece_add'),
+    url(r'^practice/(?P<practice_id>\d+)/piece/add/$', views.piece_add, name='practice_piece_add'),
     url(r'^piece/(?P<id>\d+)/edit/$', views.piece_edit, name='piece_edit'),
     url(r'^piece/(?P<id>\d+)/delete/$', views.piece_delete, name='piece_delete'),
+    url(r'^piece/(?P<piece_id>\d+)/$', views.piece_detail, name='piece_detail'),
 )

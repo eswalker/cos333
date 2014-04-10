@@ -73,8 +73,7 @@ def practice_index(request):
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
-    lineups = Lineup.objects.filter(practice=practice_id)
-    context = {'practice':practice, 'lineups':lineups, 'results':results}
+    context = {'practice':practice, 'pieces':pieces}
     return render(request, 'row/practice/details.html', context)
 
 @login_required
@@ -121,14 +120,17 @@ def piece_detail(request, piece_id):
     return render(request, 'row/piece/details.html', context)
 
 @login_required
-def piece_add(request):
+def piece_add(request, practice_id=None):
     if request.method == 'POST':
         form = PieceForm(request.POST)
         if form.is_valid():
             piece = form.save(commit=True)
-            return HttpResponseRedirect(reverse('row:practice_detail', args=(piece.id,)))
+            return HttpResponseRedirect(reverse('row:piece_detail', args=(piece.id,)))
     else:
-        form = PieceForm()
+        if practice_id:
+            form = PieceForm(initial={'practice': practice_id})
+        else:
+            form = PieceForm()
     context = {'form':form, 'title':'Add Piece'}
     return render(request, 'row/add.html', context)
 
@@ -201,7 +203,7 @@ def weight_delete(request, id):
 
 # Adds a new result
 @login_required
-def result_add(request, practice_id=None, athlete_id=None):
+def result_add(request, piece_id=None, athlete_id=None):
     if request.method == 'POST':
         form = ResultForm(request.POST)
         if form.is_valid():
@@ -210,8 +212,8 @@ def result_add(request, practice_id=None, athlete_id=None):
                 return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
-        if practice_id != None:
-            form = ResultForm(initial={'practice': practice_id})
+        if piece_id != None:
+            form = ResultForm(initial={'piece': piece_id})
         elif athlete_id != None:
             form = ResultForm(initial={'athlete': athlete_id})
         else:
@@ -336,7 +338,7 @@ def boat_edit(request, id):
     return render(request, 'row/add.html', context)
 
 @login_required
-def lineup_add(request, practice_id=None):
+def lineup_add(request, piece_id=None):
     if request.method == 'POST':
         form = LineupForm(request.POST)
         if form.is_valid():
@@ -471,21 +473,3 @@ def json_login(request):
 	if data == None:
 		data = json_error("Invalid username and password")
 	return HttpResponse(data, mimetype='application/json')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
