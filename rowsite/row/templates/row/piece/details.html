@@ -65,8 +65,25 @@
       <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
     </tr>
   {% endfor %}
-</table><br><br>
+</table>
 {% endif %}
+
+{% if notes %}
+  <h2>Notes</h2>
+  <table class="table table-bordered">
+    <tr>
+      <th>Author</th>
+      <th>Subject</th>
+    </tr>
+    {% for note in notes %}
+    <tr>
+      <td>{{ note.author }}</td>
+      <td><a href="{% url 'row:note_detail' note.id %}">{{ note.subject }}</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+
 <a class="btn btn-primary" href="{% url 'row:piece_result_add' piece_id=piece.id %}?next={{ request.path }}">Add Result</a>
 {% if piece.practice.workout == "Water" %}
 <a class="btn btn-primary" href="{% url 'row:piece_lineup_add' piece_id=piece.id %}?next={{ request.path }}">Add Lineup</a>

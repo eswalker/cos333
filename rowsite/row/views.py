@@ -117,7 +117,8 @@ def piece_detail(request, piece_id):
     piece = get_object_or_404(Piece, pk=piece_id)
     results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
     lineups = Lineup.objects.filter(piece=piece_id)
-    context = {'piece':piece, 'lineups':lineups, 'results':results}
+    notes = Note.objects.filter(piece=piece_id)
+    context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes}
     return render(request, 'row/piece/details.html', context)
 
 @login_required
@@ -137,7 +138,7 @@ def piece_add(request, practice_id=None):
 
 @login_required
 def piece_edit(request, id):
-    practice = get_object_or_404(Piece, pk=id)
+    piece = get_object_or_404(Piece, pk=id)
     if request.method == 'POST':
         form = PieceForm(request.POST)
         if form.is_valid():
@@ -145,9 +146,11 @@ def piece_edit(request, id):
             piece.datetime = form.cleaned_data["datetime"]
             piece.practice = form.cleaned_data["practice"]
             piece.save()
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
-        form = PracticeForm(instance=practice)
+        form = PieceForm(instance=piece)
     context = {'form':form, 'title':'Edit Piece'}
     return render(request, 'row/add.html', context)
 
@@ -155,7 +158,9 @@ def piece_edit(request, id):
 def piece_delete(request, id):
     piece = get_object_or_404(Piece, pk=id)
     piece.delete()
-    return HttpResponseRedirect(reverse('row:piece_index'))
+    if request.GET and request.GET["next"]:
+        return HttpResponseRedirect(request.GET["next"])
+    return HttpResponseRedirect(reverse('row:practice_index'))
 
 
 # Adds a new weight
