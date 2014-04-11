@@ -131,6 +131,7 @@ class LineupForm(forms.ModelForm):
 
         if workout == "Erg":
             raise forms.ValidationError("You cannot add a lineup to an erg piece.")
+        return piece
 
     class Meta:
         model = Lineup
