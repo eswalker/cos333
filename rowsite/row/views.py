@@ -41,12 +41,18 @@ def athlete_detail(request, athlete_id):
 @login_required
 def athlete_delete(request, id):
     athlete = get_object_or_404(Athlete, pk=id)
+    if not user_coxswain_coach(request.user, athlete):
+        context = {'title':'Permission Denied'}
+        return render(request, 'row/denied.html', context)
     athlete.delete()
     return HttpResponseRedirect(reverse('row:athlete_index'))
 
 @login_required
 def athlete_edit(request, athlete_id=None):
     athlete = get_object_or_404(Athlete, pk=athlete_id)
+    if not user_coxswain_coach(request.user, athlete):
+        context = {'title':'Permission Denied'}
+        return render(request, 'row/denied.html', context)
     if request.method == 'POST':
         form = AthleteForm(request.POST)
         if form.is_valid():
@@ -78,7 +84,7 @@ def practice_detail(request, practice_id):
     context = {'practice':practice, 'pieces':pieces, 'notes': notes}
     return render(request, 'row/practice/details.html', context)
 
-@login_required
+@user_passes_test(coxswain_coach)
 def practice_add(request):
     if request.method == 'POST':
         form = PracticeForm(request.POST)
@@ -90,7 +96,7 @@ def practice_add(request):
     context = {'form':form, 'title':'Add Practice'}
     return render(request, 'row/add.html', context)
 
-@login_required
+@user_passes_test(coxswain_coach)
 def practice_edit(request, id):
     practice = get_object_or_404(Practice, pk=id)
     if request.method == 'POST':
@@ -106,7 +112,7 @@ def practice_edit(request, id):
     context = {'form':form, 'title':'Edit Practice'}
     return render(request, 'row/add.html', context)
 
-@login_required
+@user_passes_test(coxswain_coach)
 def practice_delete(request, id):
     practice = get_object_or_404(Practice, pk=id)
     practice.delete()
