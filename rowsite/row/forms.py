@@ -137,8 +137,7 @@ class LineupForm(forms.ModelForm):
 
 class NoteForm(forms.ModelForm):
     subject = forms.CharField(max_length=50, help_text="50 characters or fewer", label='Subject')
-    piece = forms.ModelChoiceField(queryset=Piece.objects.all().order_by('datetime'), help_text="Select a piece", label="Piece")
 
     class Meta:
         model = Note
-        fields = ('subject', 'piece', 'note')
+        fields = ('subject', 'note')

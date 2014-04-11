@@ -74,7 +74,8 @@ def practice_index(request):
 def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
-    context = {'practice':practice, 'pieces':pieces}
+    notes = Note.objects.filter(practice=practice_id).order_by('subject')
+    context = {'practice':practice, 'pieces':pieces, 'notes': notes}
     return render(request, 'row/practice/details.html', context)
 
 @login_required
@@ -117,7 +118,7 @@ def piece_detail(request, piece_id):
     piece = get_object_or_404(Piece, pk=piece_id)
     results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
     lineups = Lineup.objects.filter(piece=piece_id)
-    notes = Note.objects.filter(piece=piece_id)
+    notes = Note.objects.filter(piece=piece_id).order_by('subject')
     context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes}
     return render(request, 'row/piece/details.html', context)
 
@@ -388,21 +389,20 @@ def lineup_delete(request, id):
     return HttpResponseRedirect(reverse('row:practice_index'))
 
 @login_required
-def note_add(request, piece_id):
+def note_add(request, piece_id=None, practice_id=None):
     if request.method == 'POST':
         form = NoteForm(request.POST)
         if form.is_valid():
             note = form.save(commit=False)
             note.author = Athlete.objects.get(user=request.user)
+            if piece_id: note.piece = Piece.objects.get(pk=piece_id)
+            elif practice_id: note.practice = Practice.objects.get(pk=practice_id)
             note.save()
             if request.GET and request.GET["next"]:
                 return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
-        if piece_id == None:
-            form = NoteForm()
-        else:
-            form = NoteForm(initial={'piece': piece_id})
+        form = NoteForm()
     context = {'form':form, 'title':'Add Note'}
     return render(request, 'row/add.html', context) 
 
@@ -419,7 +419,6 @@ def note_edit(request, id):
         form = NoteForm(request.POST)
         if form.is_valid():
             note.subject = form.cleaned_data["subject"]
-            note.piece = form.cleaned_data["piece"]
             note.note = form.cleaned_data["note"]
             note.save()
             if request.GET and request.GET["next"]:

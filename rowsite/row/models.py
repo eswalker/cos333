@@ -124,8 +124,8 @@ class Lineup(models.Model):
 
 class Note(models.Model):
     subject = models.CharField(max_length=50)
-    piece = models.ForeignKey(Piece)
-    practice = models.ForeignKey(Practice)
+    piece = models.ForeignKey(Piece, null=True)
+    practice = models.ForeignKey(Practice, null=True)
     author = models.ForeignKey(Athlete)
     note = models.TextField()
 
