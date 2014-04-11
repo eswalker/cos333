@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.http import HttpResponse, HttpResponseRedirect
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
