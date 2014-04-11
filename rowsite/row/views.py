@@ -388,16 +388,21 @@ def lineup_delete(request, id):
     return HttpResponseRedirect(reverse('row:practice_index'))
 
 @login_required
-def note_add(request):
+def note_add(request, piece_id):
     if request.method == 'POST':
         form = NoteForm(request.POST)
         if form.is_valid():
             note = form.save(commit=False)
-            note.author = request.user
+            note.author = Athlete.objects.get(user=request.user)
             note.save()
-            return HttpResponseRedirect(reverse('row:athlete_index'))
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
+            return HttpResponseRedirect(reverse('row:practice_index'))
     else:
-        form = NoteForm()
+        if piece_id == None:
+            form = NoteForm()
+        else:
+            form = NoteForm(initial={'piece': piece_id})
     context = {'form':form, 'title':'Add Note'}
     return render(request, 'row/add.html', context) 
 
@@ -406,6 +411,32 @@ def note_detail(request, id):
     note = get_object_or_404(Note, pk=id)
     context = {'note':note}
     return render(request, 'row/note/details.html', context)
+
+@login_required
+def note_edit(request, id):
+    note = get_object_or_404(Note, pk=id)
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note.subject = form.cleaned_data["subject"]
+            note.piece = form.cleaned_data["piece"]
+            note.note = form.cleaned_data["note"]
+            note.save()
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
+            return HttpResponseRedirect(reverse('row:practice_index'))
+    else:
+        form = NoteForm(instance=note)
+    context = {'form':form, 'title':'Edit Note'}
+    return render(request, 'row/add.html', context)
+
+@login_required
+def note_delete(request, id):
+    note = get_object_or_404(Note, pk=id)
+    note.delete()
+    if request.GET and request.GET["next"]:
+        return HttpResponseRedirect(request.GET["next"])
+    return HttpResponseRedirect(reverse('row:practice_index'))
 
 
 @login_required

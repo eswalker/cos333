@@ -125,7 +125,8 @@ class Lineup(models.Model):
 class Note(models.Model):
     subject = models.CharField(max_length=50)
     piece = models.ForeignKey(Piece)
-    author = models.ForeignKey(User)
+    practice = models.ForeignKey(Practice)
+    author = models.ForeignKey(Athlete)
     note = models.TextField()
 
     def __unicode__(self):

@@ -74,18 +74,25 @@
     <tr>
       <th>Author</th>
       <th>Subject</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
     {% for note in notes %}
     <tr>
-      <td>{{ note.author }}</td>
-      <td><a href="{% url 'row:note_detail' note.id %}">{{ note.subject }}</a></td>
+      <td><a href="{% url 'row:athlete_detail' note.author.id %}?next={{ request.path }}">{{ note.author }}</a></td>
+      <td><a href="{% url 'row:note_detail' note.id %}?next={{ request.path }}">{{ note.subject }}</a></td>
+      <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
+      <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
     </tr>
     {% endfor %}
   </table>
+{% else %}
+  <br><br>
 {% endif %}
 
-<a class="btn btn-primary" href="{% url 'row:piece_result_add' piece_id=piece.id %}?next={{ request.path }}">Add Result</a>
 {% if piece.practice.workout == "Water" %}
 <a class="btn btn-primary" href="{% url 'row:piece_lineup_add' piece_id=piece.id %}?next={{ request.path }}">Add Lineup</a>
 {% endif %}
+<a class="btn btn-primary" href="{% url 'row:piece_result_add' piece_id=piece.id %}?next={{ request.path }}">Add Result</a>
+<a class="btn btn-primary" href="{% url 'row:piece_note_add' piece.id %}?next={{ request.path }}">Add Note</a>
 {% endblock %}
