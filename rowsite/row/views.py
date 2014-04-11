@@ -14,6 +14,8 @@ from django.core import serializers
 from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note
 from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm, NoteForm
 
+from row.permissions import user_coxswain_coach, coxswain_coach, coach, user
+
 import uuid
 import csv
 
