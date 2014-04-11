@@ -336,7 +336,10 @@ def boat_edit(request, id):
         if form.is_valid():
             boat.name = form.cleaned_data["name"]
             boat.seats = form.cleaned_data["seats"]
-            boat.coxed = form.cleaned_data["coxed"]
+            if form.cleaned_data["coxed"] == "True":
+            	boat.coxed = True
+            else:
+            	boat.coxed = False
             boat.save()
             return HttpResponseRedirect(reverse('row:boat_index'))
     else:
