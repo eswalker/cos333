@@ -44,6 +44,9 @@ urlpatterns = patterns('',
 
     url(r'^erg', views.erg, name='erg'),
 
+    url(r'^denied/$', views.denied, name='denied'),
+
+
 
     url(r'^json/athletes/$', views.json_athletes, name='json_athletes'),
     url(r'^json/practices/$', views.json_practices, name='json_practices'),

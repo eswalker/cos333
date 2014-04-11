@@ -52,7 +52,8 @@ def athlete_delete(request, id):
 @login_required
 def athlete_edit(request, athlete_id=None):
     athlete = get_object_or_404(Athlete, pk=athlete_id)
-    if not user_coxswain_coach(request.user, athlete):
+    user_athlete = Athlete.objects.get(user=request.user)
+    if not user_coxswain_coach(user_athlete,  athlete):
         context = {'title':'Permission Denied'}
         return render(request, 'row/denied.html', context)
     if request.method == 'POST':
@@ -145,7 +146,7 @@ def piece_add(request, practice_id=None):
     context = {'form':form, 'title':'Add Piece'}
     return render(request, 'row/add.html', context)
 
-@user_passes_test(coxswain_coach)
+@user_passes_test(coxswain_coach, login)
 def piece_edit(request, id):
     piece = get_object_or_404(Piece, pk=id)
     if request.method == 'POST':
@@ -163,7 +164,7 @@ def piece_edit(request, id):
     context = {'form':form, 'title':'Edit Piece'}
     return render(request, 'row/add.html', context)
 
-@user_passes_test(coxswain_coach)
+@user_passes_test(coxswain_coach, login_url='/denied/')
 def piece_delete(request, id):
     piece = get_object_or_404(Piece, pk=id)
     piece.delete()
@@ -457,6 +458,10 @@ def note_delete(request, id):
 def erg(request):
     context = {'title': 'Virtual Boathouse'}
     return render(request, 'row/ergs.html', context)
+
+def denied(request):
+    context = {'title': 'Permission Denied'}
+    return render(request, 'row/denied.html', context)
 
 '''
 
