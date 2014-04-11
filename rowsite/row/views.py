@@ -119,7 +119,7 @@ def practice_delete(request, id):
     return HttpResponseRedirect(reverse('row:practice_index'))
 
 # Shows practice details for one practice
-@login_required
+@user_passes_test(coxswain_coach)
 def piece_detail(request, piece_id):
     piece = get_object_or_404(Piece, pk=piece_id)
     results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
@@ -128,7 +128,7 @@ def piece_detail(request, piece_id):
     context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes}
     return render(request, 'row/piece/details.html', context)
 
-@login_required
+@user_passes_test(coxswain_coach)
 def piece_add(request, practice_id=None):
     if request.method == 'POST':
         form = PieceForm(request.POST)
@@ -143,7 +143,7 @@ def piece_add(request, practice_id=None):
     context = {'form':form, 'title':'Add Piece'}
     return render(request, 'row/add.html', context)
 
-@login_required
+@user_passes_test(coxswain_coach)
 def piece_edit(request, id):
     piece = get_object_or_404(Piece, pk=id)
     if request.method == 'POST':
@@ -161,7 +161,7 @@ def piece_edit(request, id):
     context = {'form':form, 'title':'Edit Piece'}
     return render(request, 'row/add.html', context)
 
-@login_required
+@user_passes_test(coxswain_coach)
 def piece_delete(request, id):
     piece = get_object_or_404(Piece, pk=id)
     piece.delete()
@@ -183,6 +183,10 @@ def weight_add(request, athlete_id=None):
         if athlete_id == None:
             form = WeightForm()
         else:
+            athlete = get_object_or_404(Athlete, pk=athlete_id)
+            if not user_coxswain_coach(request.user, athlete):
+                context = {'title':'Permission Denied'}
+                return render(request, 'row/denied.html', context)
             form = WeightForm(initial={'athlete': athlete_id})
     context = {'form':form, 'title':'Add Weight'}
     return render(request, 'row/add.html', context)
