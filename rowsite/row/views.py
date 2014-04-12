@@ -184,21 +184,24 @@ def piece_delete(request, id):
 # Adds a new weight
 @login_required
 def weight_add(request, athlete_id=None):
+
+    athlete2 = Athlete.objects.get(user=request.user)
+
     if request.method == 'POST':
-        form = WeightForm(request.POST)
+        form = WeightForm(request.POST, athlete2=athlete2)
         if form.is_valid():
             form.save(commit=True)
             if request.GET and request.GET["next"]:
                 return HttpResponseRedirect(request.GET["next"])
     else:
         if athlete_id == None:
-            form = WeightForm()
+            form = WeightForm(athlete2=athlete2)
         else:
-            athlete = get_object_or_404(Athlete, pk=athlete_id)
+            """athlete = get_object_or_404(Athlete, pk=athlete_id)
             user_athlete = Athlete.objects.get(user=request.user)
             if not user_coxswain_coach(user_athlete, athlete):
-                 return render(request, 'row/denied.html', {})
-            form = WeightForm(initial={'athlete': athlete_id})
+                 return render(request, 'row/denied.html', {})"""
+            form = WeightForm(initial={'athlete': athlete_id}, athlete2=athlete2)
     context = {'form':form, 'title':'Add Weight'}
     return render(request, 'row/add.html', context)
 

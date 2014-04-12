@@ -59,6 +59,10 @@ class PieceForm(forms.ModelForm):
         model = Piece
 
 class WeightForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.athlete2 = kwargs.pop("athlete2")
+        super(WeightForm, self).__init__(*args, **kwargs)
+
     athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
     weight = forms.DecimalField(help_text="Weight in lbs", decimal_places=1, label="Weight")
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the weigh-in? (Ex. 3/29/14 8:30)", label="Datetime")
@@ -68,6 +72,14 @@ class WeightForm(forms.ModelForm):
         if weight > 400 or weight < 50:
             raise forms.ValidationError('Weight must be between 50 and 400 lbs.')
         return weight
+
+    def clean_athlete(self):
+        print "clean"
+        athlete = self.cleaned_data["athlete"]
+        if self.athlete2.side == "Coxswain" or self.athlete2.side =="Coach": return athlete
+        if athlete != self.athlete2:
+            raise forms.ValidationError("You do not have permission to edit this athlete's weight.")
+        return athlete
 
     class Meta:
         model = Weight
