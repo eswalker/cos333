@@ -74,7 +74,6 @@ class WeightForm(forms.ModelForm):
         return weight
 
     def clean_athlete(self):
-        print "clean"
         athlete = self.cleaned_data["athlete"]
         if self.athlete2.side == "Coxswain" or self.athlete2.side =="Coach": return athlete
         if athlete != self.athlete2:
@@ -85,6 +84,10 @@ class WeightForm(forms.ModelForm):
         model = Weight
 
 class ResultForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.athlete2 = kwargs.pop("athlete2")
+        super(ResultForm, self).__init__(*args, **kwargs)
+
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
     distance = forms.IntegerField(help_text="Distance", label="distance")
     time = forms.IntegerField(help_text="Time (in seconds)", label="time")
@@ -99,6 +102,13 @@ class ResultForm(forms.ModelForm):
         if distance <= 0:
             raise forms.ValidationError('Distance must be positive.')
         return distance
+
+    def clean_athlete(self):
+        athlete = self.cleaned_data["athlete"]
+        if self.athlete2.side == "Coxswain" or self.athlete2.side =="Coach": return athlete
+        if athlete != self.athlete2:
+            raise forms.ValidationError("You do not have permission to edit this athlete's weight.")
+        return athlete
 
 class BoatForm(forms.ModelForm):
     name = forms.CharField(max_length=20, help_text="What is the boat's name?", label="Name")

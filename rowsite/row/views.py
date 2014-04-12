@@ -230,8 +230,10 @@ def weight_delete(request, id):
 # Adds a new result
 @login_required
 def result_add(request, piece_id=None, athlete_id=None):
+    user_athlete = Athlete.objects.get(user=request.user)
+
     if request.method == 'POST':
-        form = ResultForm(request.POST)
+        form = ResultForm(request.POST, athlete2=user_athlete)
         if form.is_valid():
             form.save(commit=True)
             if request.GET and request.GET["next"]:
@@ -239,11 +241,11 @@ def result_add(request, piece_id=None, athlete_id=None):
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
         if piece_id != None:
-            form = ResultForm(initial={'piece': piece_id})
+            form = ResultForm(initial={'piece': piece_id}, athlete2=user_athlete)
         elif athlete_id != None:
-            form = ResultForm(initial={'athlete': athlete_id})
+            form = ResultForm(initial={'athlete': athlete_id}, athlete2=user_athlete)
         else:
-            form = ResultForm()
+            form = ResultForm(athlete2=user_athlete)
     context = {'form':form, 'title':'Add Result'}
     return render(request, 'row/add.html', context)
 
