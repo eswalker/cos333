@@ -40,6 +40,7 @@ def athlete_detail(request, athlete_id):
     context = {'athlete':athlete, 'weights':weights, 'results':results}
     return render(request, 'row/athlete/details.html', context)
 
+'''
 @login_required
 def athlete_delete(request, id):
     athlete = get_object_or_404(Athlete, pk=id)
@@ -49,6 +50,7 @@ def athlete_delete(request, id):
         return render(request, 'row/denied.html', context)
     athlete.delete()
     return HttpResponseRedirect(reverse('row:athlete_index'))
+'''
 
 @login_required
 def athlete_edit(request, athlete_id=None):

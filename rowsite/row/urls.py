@@ -8,7 +8,6 @@ urlpatterns = patterns('',
     url(r'^athletes/$', views.athlete_index, name='athlete_index'),
     url(r'^athlete/(?P<athlete_id>\d+)/$', views.athlete_detail, name='athlete_detail'),
     url(r'^athlete/(?P<athlete_id>\d+)/edit/$', views.athlete_edit, name='athlete_edit'),
-    url(r'^athlete/(?P<id>\d+)/delete/$', views.athlete_delete, name='athlete_delete'),
 
     url(r'^weight/add/$', views.weight_add, name='weight_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/weight/add/$', views.weight_add, name='athlete_weight_add'),
