@@ -212,7 +212,7 @@ def weight_edit(request, id):
     if not user_coxswain_coach(user_athlete, athlete):
         return render(request, 'row/denied.html', {})
     if request.method == 'POST':
-        form = WeightForm(request.POST)
+        form = WeightForm(request.POST, athlete2=user_athlete)
         if form.is_valid():
             weight.datetime = form.cleaned_data["datetime"]
             weight.athlete = form.cleaned_data["athlete"]
@@ -222,7 +222,7 @@ def weight_edit(request, id):
                     return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
-        form = WeightForm(instance=weight)
+        form = WeightForm(instance=weight, athlete2=user_athlete)
     context = {'form':form, 'title':'Edit Weight'}
     return render(request, 'row/add.html', context)
 
