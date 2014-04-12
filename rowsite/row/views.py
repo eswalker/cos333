@@ -265,17 +265,17 @@ def result_edit(request, id):
     if not user_coxswain_coach(user_athlete, athlete):
         return render(request, 'row/denied.html', {})
     if request.method == 'POST':
-        form = ResultForm(request.POST)
+        form = ResultForm(request.POST, athlete2=user_athlete)
         if form.is_valid():
             result.distance = form.cleaned_data["distance"]
             result.datetime = form.cleaned_data["datetime"]
             result.athlete = form.cleaned_data["athlete"]
-            result.practice = form.cleaned_data["practice"]
+            result.piece = form.cleaned_data["piece"]
             result.time = form.cleaned_data["time"]
             result.save()
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
-        form = ResultForm(instance=result)
+        form = ResultForm(instance=result, athlete2=user_athlete)
     context = {'form':form, 'title':'Edit Result'}
     return render(request, 'row/add.html', context)
 
