@@ -88,8 +88,8 @@ def practice_detail(request, practice_id):
     context = {'practice':practice, 'pieces':pieces, 'notes': notes}
     return render(request, 'row/practice/details.html', context)
 
-@login_required
 @user_passes_test(coxswain_coach, login_url="/denied/")
+@login_required
 def practice_add(request):
     if request.method == 'POST':
         form = PracticeForm(request.POST)
@@ -101,8 +101,8 @@ def practice_add(request):
     context = {'form':form, 'title':'Add Practice'}
     return render(request, 'row/add.html', context)
 
-@login_required
 @user_passes_test(coxswain_coach, login_url="/denied/")
+@login_required
 def practice_edit(request, id):
     practice = get_object_or_404(Practice, pk=id)
     if request.method == 'POST':
@@ -118,8 +118,8 @@ def practice_edit(request, id):
     context = {'form':form, 'title':'Edit Practice'}
     return render(request, 'row/add.html', context)
 
-@login_required
 @user_passes_test(coxswain_coach, login_url="/denied/")
+@login_required
 def practice_delete(request, id):
     practice = get_object_or_404(Practice, pk=id)
     practice.delete()
@@ -127,7 +127,6 @@ def practice_delete(request, id):
 
 # Shows practice details for one practice
 @login_required
-@user_passes_test(coxswain_coach, login_url="/denied/")
 def piece_detail(request, piece_id):
     piece = get_object_or_404(Piece, pk=piece_id)
     results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
@@ -136,8 +135,8 @@ def piece_detail(request, piece_id):
     context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes}
     return render(request, 'row/piece/details.html', context)
 
-@login_required
 @user_passes_test(coxswain_coach, login_url="/denied/")
+@login_required
 def piece_add(request, practice_id=None):
     if request.method == 'POST':
         form = PieceForm(request.POST)
@@ -152,8 +151,8 @@ def piece_add(request, practice_id=None):
     context = {'form':form, 'title':'Add Piece'}
     return render(request, 'row/add.html', context)
 
-@login_required
 @user_passes_test(coxswain_coach, login_url="/denied/")
+@login_required
 def piece_edit(request, id):
     piece = get_object_or_404(Piece, pk=id)
     if request.method == 'POST':
@@ -171,8 +170,8 @@ def piece_edit(request, id):
     context = {'form':form, 'title':'Edit Piece'}
     return render(request, 'row/add.html', context)
 
-@login_required
 @user_passes_test(coxswain_coach, login_url='/denied/')
+@login_required
 def piece_delete(request, id):
     piece = get_object_or_404(Piece, pk=id)
     piece.delete()
@@ -339,6 +338,7 @@ def boat_index(request):
     context = {'boats': boats}
     return render(request, 'row/boat/index.html', context)
 
+@user_passes_test(coxswain_coach, login_url='/denied/')
 @login_required
 def boat_add(request):
     if request.method == 'POST':
@@ -351,12 +351,14 @@ def boat_add(request):
     context = {'form':form, 'title':'Add Boat'}
     return render(request, 'row/add.html', context)    
 
+@user_passes_test(coxswain_coach, login_url='/denied/')
 @login_required
 def boat_delete(request, id):
     boat = get_object_or_404(Boat, pk=id)
     boat.delete()
     return HttpResponseRedirect(reverse('row:boat_index'))
 
+@user_passes_test(coxswain_coach, login_url='/denied/')
 @login_required
 def boat_edit(request, id):
     boat = get_object_or_404(Boat, pk=id)
@@ -376,6 +378,7 @@ def boat_edit(request, id):
     context = {'form':form, 'title':'Edit Boat'}
     return render(request, 'row/add.html', context)
 
+@user_passes_test(coach, login_url='/denied/')
 @login_required
 def lineup_add(request, piece_id=None):
     if request.method == 'POST':
@@ -393,6 +396,7 @@ def lineup_add(request, piece_id=None):
     context = {'form':form, 'title':'Add Lineup'}
     return render(request, 'row/add.html', context)
 
+@user_passes_test(coach, login_url='/denied/')
 @login_required
 def lineup_edit(request, id):
     lineup = get_object_or_404(Lineup, pk=id)
@@ -412,6 +416,7 @@ def lineup_edit(request, id):
     context = {'form':form, 'title':'Edit Boat'}
     return render(request, 'row/add.html', context)
 
+@user_passes_test(coach, login_url='/denied/')
 @login_required
 def lineup_delete(request, id):
     lineup = get_object_or_404(Lineup, pk=id)
@@ -447,6 +452,10 @@ def note_detail(request, id):
 @login_required
 def note_edit(request, id):
     note = get_object_or_404(Note, pk=id)
+    athlete = note.author
+    user_athlete = Athlete.objects.get(user=request.user)
+    if not user(user_athlete, athlete):
+        return render(request, 'row/denied.html', {})
     if request.method == 'POST':
         form = NoteForm(request.POST)
         if form.is_valid():
@@ -464,6 +473,10 @@ def note_edit(request, id):
 @login_required
 def note_delete(request, id):
     note = get_object_or_404(Note, pk=id)
+    athlete = note.author
+    user_athlete = Athlete.objects.get(user=request.user)
+    if not user(user_athlete, athlete):
+        return render(request, 'row/denied.html', {})
     note.delete()
     if request.GET and request.GET["next"]:
         return HttpResponseRedirect(request.GET["next"])
