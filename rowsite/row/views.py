@@ -203,6 +203,10 @@ def weight_add(request, athlete_id=None):
 @login_required
 def weight_edit(request, id):
     weight = get_object_or_404(Weight, pk=id)
+    athlete = weight.athlete
+    user_athlete = Athlete.objects.get(user=request.user)
+    if not user_coxswain_coach(user_athlete, athlete):
+        return render(request, 'row/denied.html', {})
     if request.method == 'POST':
         form = WeightForm(request.POST)
         if form.is_valid():
@@ -222,6 +226,10 @@ def weight_edit(request, id):
 @login_required
 def weight_delete(request, id):
     weight = get_object_or_404(Weight, pk=id)
+    athlete = weight.athlete
+    user_athlete = Athlete.objects.get(user=request.user)
+    if not user_coxswain_coach(user_athlete, athlete):
+        return render(request, 'row/denied.html', {})
     weight.delete()
     if request.GET and request.GET["next"]:
         return HttpResponseRedirect(request.GET["next"])
