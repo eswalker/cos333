@@ -2,7 +2,7 @@ from django.contrib import admin
 from row.models import Athlete, Practice, Piece, Result, Weight, Lineup, Boat, Note
 
 class AthleteAdmin(admin.ModelAdmin):
-	fields = ['user', 'name','year','side','height', 'status', 'api_key']
+	fields = ['user', 'name','year','role','side','height', 'status', 'api_key']
 
 class ResultAdmin(admin.ModelAdmin):
 	fieldsets = [

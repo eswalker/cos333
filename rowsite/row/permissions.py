@@ -6,18 +6,17 @@ from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, N
 
 def user_coxswain_coach(athlete1, athlete2):
 	if user(athlete1, athlete2): return True
-
-	side = athlete1.side
-	if side == "Coxswain" or side == "Coach": return True
+	role = athlete1.role
+	if role == "Coxswain" or role == "Coach": return True
 	return False
 
 def coxswain_coach(user):
-	side = Athlete.objects.get(user=user).side
-	if side == "Coxswain" or side == "Coach": return True
+	role = Athlete.objects.get(user=user).role
+	if role == "Coxswain" or role == "Coach": return True
 	return False
 
 def coach(user):
-	if Athlete.objects.get(user=user).side == "Coach": return True
+	if Athlete.objects.get(user=user).role == "Coach": return True
 	return False
 
 def user(athlete1, athlete2):

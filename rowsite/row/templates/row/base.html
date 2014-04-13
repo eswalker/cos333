@@ -20,7 +20,7 @@
                     <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a></p>
                 {% else %}
                     <p class="navbar-text navbar-right">
-                        <a href="{% url 'row:login' %}">Login</a> | <a href="{% url 'row:register' %}">Register</a>
+                        <a href="{% url 'row:login' %}">Login</a>
                     </p>
                 {% endif %}
             </div>
@@ -34,8 +34,9 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/athletes/">Roster</a></li>
                     <li><a href="/practices/">Practices</a></li>
-                    <li><a href="/boats/">Boats <span class="badge">new</span></a></li>
+                    <li><a href="/boats/">Boats</a></li>
                     <li><a href="/erg/">Ergs <span class="badge">soon</span></a></li>
+                    <li><a href="/invites/">Invite <span class="badge">new</span></a></li>
                 {% endblock %}
             </ul>
         </div>

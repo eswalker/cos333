@@ -1,0 +1,38 @@
+{% extends 'row/base.html' %}
+
+{% block content %}
+<h1>Invites</h1>
+{% if invites %}
+  <table class="table table-bordered">
+  
+  <tr>
+    <th>Role</th>
+  	<th>Email</th>
+  	<th>Used</th>
+    <th>Status</th>
+    <th>Cancel?</th>
+  </tr>
+
+  {% for i in invites %}
+    <tr>
+      <td>{{ i.role }}</td>
+    	<td>{{ i.email }}</td>
+    	<td>{{ i.used }}</td>
+      {% if i.canceled %}
+        <td>Inactive</td>
+        <td></td>
+      {% else %}
+        <td>Active</td>
+      <td><a href="{% url 'row:invite_cancel' i.id %}">Cancel</a></td>
+     {% endif %}
+    </tr>
+  {% endfor %}
+  </table>
+ 
+{% else %}
+  <p>No athletes are available</p>
+{% endif %}
+
+<a class="btn btn-primary" href="{% url 'row:invite_add' %}">Invite Someone</a>
+
+{% endblock %}

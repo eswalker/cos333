@@ -9,6 +9,12 @@ urlpatterns = patterns('',
     url(r'^athlete/(?P<athlete_id>\d+)/$', views.athlete_detail, name='athlete_detail'),
     url(r'^athlete/(?P<athlete_id>\d+)/edit/$', views.athlete_edit, name='athlete_edit'),
 
+    url(r'^invites/$', views.invite_index, name='invite_index'),
+    url(r'^invite/add/$', views.invite_add, name='invite_add'),
+    url(r'^invite/(?P<id>\d+)/cancel/$', views.invite_cancel, name='invite_cancel'),
+    url(r'^invited/(?P<invite_key>\w+)/$', views.invited, name='invited'),
+
+
     url(r'^weight/add/$', views.weight_add, name='weight_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/weight/add/$', views.weight_add, name='athlete_weight_add'),
     url(r'^weight/(?P<id>\d+)/edit/$', views.weight_edit, name='weight_edit'),
@@ -28,7 +34,6 @@ urlpatterns = patterns('',
     url(r'^result/(?P<id>\d+)/delete/$', views.result_delete, name='result_delete'),
 
     url(r'^accounts/login/', views.user_login, name="login"),
-    url(r'^accounts/register/', views.user_register, name="register"),
     url(r'^accounts/logout/', views.user_logout, name="logout"),
 
     url(r'^boats/$', views.boat_index, name='boat_index'),
