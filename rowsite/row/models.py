@@ -2,16 +2,66 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from django.core.mail import send_mail
+
+import datetime
+import time
+
+'''
+class Team(models.Model):
+    name = models.CharField(max_length=50)
+    head_coach = models.OneToOneField(User)
+
+    def __unicode__(self):
+        return self.name
+'''
+
+class Invite(models.Model):
+    #team = models.ForeignKey(Team)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    email = models.EmailField()
+    invite_key = models.CharField(max_length=50)
+    used = models.BooleanField(default=False)
+    canceled = models.BooleanField(default=False)
+    
+    role_choices = (
+        ('Rower', 'Rower'),
+        ('Coxswain', 'Coxswain'),
+        ('Coach', 'Coach'),
+        ('Observer', 'Observer')
+    )
+
+    role = models.CharField(max_length=20, choices=role_choices)
+
+    def is_recent(self):
+        today = datetime.datetime.today()
+        today_unix_timestamp = time.mktime(today.timetuple())
+        created_unix_timestamp = time.mktime(self.created_at.timetuple())
+
+        delta = today_unix_timestamp - created_unix_timestamp
+        return delta < ( 7 * 3600 * 24)
+
+    def send_invite(self):
+        
+        link = "https://cos333.herokuapp.com/invited/" + self.invite_key + "/"
+        recipients = []
+        recipients.append(self.email)
+        sender = "VirtualBoathouse@gmail.com"
+        subject = "You are invited to Virtual Boathouse"
+        message = 'Go to ' + link + ' to register.'
+        
+        send_mail(subject, message, sender, recipients, fail_silently=False)
+
+    def __unicode__(self):
+        return self.role + " " + self.email
+
 # Create your models here.
-class Athlete(models.Model):
-  
+class Athlete(models.Model):  
     side_choices = (
         ('Port', 'Port'),
         ('Starboard', 'Starboard'),
         ('Both', 'Both'),
-        ('Coxswain', 'Coxswain'),
-        ('Coach', 'Coach'),
-        ('Other', 'Other')
+        ('N/A', 'Not Applicable')
     )
     year_choices = (
         ('Fr', 'Freshman'),
@@ -30,13 +80,14 @@ class Athlete(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=50)
     side = models.CharField(max_length=9, choices=side_choices)
+    role = models.CharField(max_length=20, choices=Invite.role_choices)
     year = models.CharField(max_length=2, choices=year_choices, default='NA')
     status = models.CharField(max_length=20, choices=status_choices, default='Active')
     height = models.PositiveIntegerField()
     api_key = models.CharField(max_length=50)
     
     def is_leader(self):
-        return self.side == "Coach" or self.side == "Coxswain"
+        return self.role == "Coach" or self.role == "Coxswain"
     
     def __unicode__(self):
         return self.name

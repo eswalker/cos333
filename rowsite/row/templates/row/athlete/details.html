@@ -5,6 +5,8 @@
 <h1>{{ athlete.name }}</h1>
 {% if athlete %}
   <table class="table table-bordered">
+    <tr><td>Email</td><td>{{ athlete.user.email }}</td></tr>
+    <tr><td>Role</td><td>{{ athlete.role }}</td></tr>
     <tr><td>Side</td><td>{{ athlete.side }}</td></tr>
     <tr><td>Year</td><td>{{ athlete.year }}</td></tr>
     <tr><td>Height</td><td class="_height">{{ athlete.height }}</td></tr>

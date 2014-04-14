@@ -1,10 +1,9 @@
 from django import forms
 from datetime import datetime
-from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note
+from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note, Invite
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
-    email = forms.EmailField(help_text="Please enter a valid email address.", label="Email")
     password = forms.CharField(widget=forms.PasswordInput(), help_text="Must contain at least 6 characters and both upper and lowercase letters.")
 
     def clean_password(self):
@@ -17,13 +16,22 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('password',)
 
 class UserLoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(max_length=75, help_text="", label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
     class Meta:
         model = User
         fields = ('username', 'password')
+
+class InviteForm(forms.ModelForm):
+    email = forms.EmailField(label="Email")
+    role = forms.ChoiceField(choices=Invite.role_choices, help_text="Rower, Coxswain, Coach, or Observer", label="Role")
+
+    class Meta:
+        model = Invite
+        fields = ('email', 'role')
 
 class AthleteForm(forms.ModelForm):
     name = forms.CharField(max_length=50, help_text="Your full name.", label="Name")

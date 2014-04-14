@@ -88,6 +88,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Email setup
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'VirtualBoathouse@gmail.com'
+EMAIL_HOST_PASSWORD = 'hiddenscrubland'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'VirtualBoathouse@gmail.com'
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
