@@ -61,14 +61,14 @@ class Athlete(models.Model):
         ('Port', 'Port'),
         ('Starboard', 'Starboard'),
         ('Both', 'Both'),
-        ('N/A', 'Not Applicable')
+        ('NA', 'Not Applicable')
     )
     year_choices = (
         ('Fr', 'Freshman'),
         ("So", 'Sophomore'),
         ('Jr', 'Junior'),
         ('Sr', 'Senior'),
-        ('N/A', 'Not Applicable')
+        ('NA', 'Not Applicable')
     )
 
     status_choices = (
