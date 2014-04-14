@@ -117,3 +117,11 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+# Email setup
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'VirtualBoathouse@gmail.com'
+EMAIL_HOST_PASSWORD = 'hiddenscrubland'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'VirtualBoathouse@gmail.com'
