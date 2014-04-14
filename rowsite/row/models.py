@@ -68,7 +68,7 @@ class Athlete(models.Model):
         ("So", 'Sophomore'),
         ('Jr', 'Junior'),
         ('Sr', 'Senior'),
-        ('NA', 'Not Applicable')
+        ('N/A', 'Not Applicable')
     )
 
     status_choices = (

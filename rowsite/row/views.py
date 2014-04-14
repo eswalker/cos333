@@ -58,8 +58,10 @@ def invite_cancel(request, id):
 
 # Lists athletes in a roster
 def athlete_index(request):
-    athletes = Athlete.objects.all().order_by('name')
-    context = {'athletes': athletes}
+    rowers = Athlete.objects.filter(role="Rower").order_by('name')
+    coxswains = Athlete.objects.filter(role="Coxswain").order_by('name')
+    coaches = Athlete.objects.filter(role="Coach").order_by('name')
+    context = {'rowers': rowers, 'coxswains': coxswains, 'coaches': coaches}
     return render(request, 'row/athlete/index.html', context)
 
 # Shows athlete details for one athlete

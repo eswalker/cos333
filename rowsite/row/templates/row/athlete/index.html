@@ -1,25 +1,47 @@
 {% extends 'row/base.html' %}
 
 {% block content %}
-<h1>Athletes</h1>
-{% if athletes %}
+
+<h1>Coaches</h1>
+{% if coaches %}
   <table class="table table-bordered">
   
   <tr>
-  	<th>Name</th>
-  	<th>Year</th>
-  	<th>Side</th>
-  	<th>Height</th>
+    <th>Name</th>
+    <th>Edit</th>
+    
+  </tr>
+
+  {% for a in coaches %}
+    <tr>
+      <td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>
+      <td><a href="{% url 'row:athlete_edit' a.id %}">Edit</a></td>
+     
+    </tr>
+  {% endfor %}
+  </table>
+ 
+{% else %}
+  <p>No coaches are available</p>
+{% endif %}
+
+<h1>Coxswains</h1>
+{% if coxswains %}
+  <table class="table table-bordered">
+  
+  <tr>
+    <th>Name</th>
+    <th>Year</th>
+    <th>Height</th>
     <th>Status</th>
     <th>Edit</th>
     
   </tr>
 
-  {% for a in athletes %}
+  {% for a in coxswains %}
     <tr>
-    	<td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>
-    	<td>{{ a.year }}</td>
-    	<td>{{ a.side }}</td>
+      <td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>
+      <td>{{ a.year }}</td>
       <td>{{ a.height }}</td>
       <td>{{ a.status }}</td>
       <td><a href="{% url 'row:athlete_edit' a.id %}">Edit</a></td>
@@ -29,7 +51,38 @@
   </table>
  
 {% else %}
-  <p>No athletes are available</p>
+  <p>No coxswains are available</p>
+{% endif %}
+
+<h1>Rowers</h1>
+{% if rowers %}
+  <table class="table table-bordered">
+  
+  <tr>
+    <th>Name</th>
+    <th>Year</th>
+    <th>Side</th>
+    <th>Height</th>
+    <th>Status</th>
+    <th>Edit</th>
+    
+  </tr>
+
+  {% for a in rowers %}
+    <tr>
+      <td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>
+      <td>{{ a.year }}</td>
+      <td>{{ a.side }}</td>
+      <td>{{ a.height }}</td>
+      <td>{{ a.status }}</td>
+      <td><a href="{% url 'row:athlete_edit' a.id %}">Edit</a></td>
+     
+    </tr>
+  {% endfor %}
+  </table>
+ 
+{% else %}
+  <p>No rowers are available</p>
 {% endif %}
 
 <a class="btn btn-primary" href="{% url 'row:weight_add' %}">Add Weight</a>
