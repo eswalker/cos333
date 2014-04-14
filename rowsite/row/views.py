@@ -384,6 +384,7 @@ def invited(request, invite_key):
 				athlete.api_key = md5(str(uuid.uuid4())).hexdigest()
 				athlete.role = invite.role
 				athlete.save()
+                invite.used = True
 				user = authenticate(username=email, password=password)
 				login(request, user)
 				return HttpResponseRedirect(reverse('row:athlete_index'))
