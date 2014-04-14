@@ -107,7 +107,7 @@ class ResultForm(forms.ModelForm):
         athlete = self.cleaned_data["athlete"]
         if self.athlete2.side == "Coxswain" or self.athlete2.side =="Coach": return athlete
         if athlete != self.athlete2:
-            raise forms.ValidationError("You do not have permission to edit this athlete's weight.")
+            raise forms.ValidationError("You do not have permission to edit this athlete's result.")
         return athlete
 
 class BoatForm(forms.ModelForm):
