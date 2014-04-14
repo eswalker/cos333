@@ -28,9 +28,9 @@ def index(request):
 @login_required
 @user_passes_test(coach, login_url="/denied/")
 def invite_index(request):
-	invites = Invite.objects.all().order_by('created_at')
-	context = {'title':'Invites', 'invites': invites}
-	return render(request, 'row/invite/index.html', context)
+    invites = Invite.objects.all().order_by('created_at')
+    context = {'title':'Invites', 'invites': invites}
+    return render(request, 'row/invite/index.html', context)
 
 @login_required
 @user_passes_test(coach, login_url="/denied/")
@@ -51,10 +51,10 @@ def invite_add(request):
 @login_required
 @user_passes_test(coach, login_url="/denied/")
 def invite_cancel(request, id):
-	invite = get_object_or_404(Invite, pk=id)
-	invite.canceled = True
-	invite.save()
-	return HttpResponseRedirect(reverse('row:invite_index'))
+    invite = get_object_or_404(Invite, pk=id)
+    invite.canceled = True
+    invite.save()
+    return HttpResponseRedirect(reverse('row:invite_index'))
 
 # Lists athletes in a roster
 def athlete_index(request):
@@ -354,48 +354,48 @@ def user_register(request):
 
 
 def invited(request, invite_key):
-	try:
-		invite = Invite.objects.get(invite_key=invite_key)
-	except Invite.DoesNotExist:
-		message = "Your invite key does not exist."
-		context = {'message':message}
-		return render(request, 'row/denied.html', context)
+    try:
+        invite = Invite.objects.get(invite_key=invite_key)
+    except Invite.DoesNotExist:
+        message = "Your invite key does not exist."
+        context = {'message':message}
+        return render(request, 'row/denied.html', context)
 
-	email = invite.email.lower()
-	if not invite.is_recent():
-		message = "Your invite is expired. Ask your coach to invite you again."
-	elif invite.canceled:
-		message = "Your invite has been canceled."
-	elif invite.used:
-		message = "Your invite has been used."
-	elif User.objects.filter(username=email).exists():
-		message = email + " is already registered."
-	else:
-		if request.method == 'POST':
-			user_form = UserForm(request.POST)
-			athlete_form = AthleteForm(request.POST)
-			if user_form.is_valid() and athlete_form.is_valid():
-				password = user_form.cleaned_data["password"]
-				u = User(username=email, email=email)
-				u.set_password(password)
-				u.save()
-				athlete = athlete_form.save(commit=False)
-				athlete.user = u
-				athlete.api_key = md5(str(uuid.uuid4())).hexdigest()
-				athlete.role = invite.role
-				athlete.save()
+    email = invite.email.lower()
+    if not invite.is_recent():
+        message = "Your invite is expired. Ask your coach to invite you again."
+    elif invite.canceled:
+        message = "Your invite has been canceled."
+    elif invite.used:
+        message = "Your invite has been used."
+    elif User.objects.filter(username=email).exists():
+        message = email + " is already registered."
+    else:
+        if request.method == 'POST':
+            user_form = UserForm(request.POST)
+            athlete_form = AthleteForm(request.POST)
+            if user_form.is_valid() and athlete_form.is_valid():
+                password = user_form.cleaned_data["password"]
+                u = User(username=email, email=email)
+                u.set_password(password)
+                u.save()
+                athlete = athlete_form.save(commit=False)
+                athlete.user = u
+                athlete.api_key = md5(str(uuid.uuid4())).hexdigest()
+                athlete.role = invite.role
+                athlete.save()
                 invite.used = True
                 invite.save()
-				user = authenticate(username=email, password=password)
-				login(request, user)
-				return HttpResponseRedirect(reverse('row:athlete_index'))
-		else:
-			user_form = UserForm()
-			athlete_form = AthleteForm()
-		context = {'user_form':user_form, 'athlete_form':athlete_form, 'title':'Register'}
-		return render(request, 'row/register.html', context)
-	context = {'message':message}
-	return render(request, 'row/denied.html', context)
+                user = authenticate(username=email, password=password)
+                login(request, user)
+                return HttpResponseRedirect(reverse('row:athlete_index'))
+        else:
+            user_form = UserForm()
+            athlete_form = AthleteForm()
+        context = {'user_form':user_form, 'athlete_form':athlete_form, 'title':'Register'}
+        return render(request, 'row/register.html', context)
+    context = {'message':message}
+    return render(request, 'row/denied.html', context)
 
 def user_login(request):
     if request.method == 'POST':
@@ -458,9 +458,9 @@ def boat_edit(request, id):
             boat.name = form.cleaned_data["name"]
             boat.seats = form.cleaned_data["seats"]
             if form.cleaned_data["coxed"] == "True":
-            	boat.coxed = True
+                boat.coxed = True
             else:
-            	boat.coxed = False
+                boat.coxed = False
             boat.save()
             return HttpResponseRedirect(reverse('row:boat_index'))
     else:
@@ -589,7 +589,7 @@ JSON API
 '''
 
 def json_error(error):
-	return '{ "error":"' + error + '"}'
+    return '{ "error":"' + error + '"}'
 err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
 err_api_key_required = "Api key required to access this resource"
 err_invalid_api_key = "Api key does not match any user"
@@ -597,78 +597,78 @@ err_invalid_api_key = "Api key does not match any user"
 
 # for testing
 def json_permissions_coaches_and_coxswains_holder(request):
-	return None
+    return None
 
 @csrf_exempt
 def json_permissions_coaches_and_coxswains(request):
-	if request.method == 'POST':
-		api_key = request.POST['api_key']
-		try:
-			athlete = Athlete.objects.get(api_key=api_key)
-			if athlete.is_leader():
-				return None
-			else:
-				data = json_error(err_coach_cox_permissions)
-		except Athlete.DoesNotExist:
-			data = json_error(err_invalid_api_key)
-	else:
-		data = json_error(err_api_key_required)
-	return data
+    if request.method == 'POST':
+        api_key = request.POST['api_key']
+        try:
+            athlete = Athlete.objects.get(api_key=api_key)
+            if athlete.is_leader():
+                return None
+            else:
+                data = json_error(err_coach_cox_permissions)
+        except Athlete.DoesNotExist:
+            data = json_error(err_invalid_api_key)
+    else:
+        data = json_error(err_api_key_required)
+    return data
 
 @csrf_exempt
 def json_athletes(request):
-	athletes = Athlete.objects.all()
-	data = serializers.serialize('json', athletes)
-	return HttpResponse(data, mimetype='application/json')
+    athletes = Athlete.objects.all()
+    data = serializers.serialize('json', athletes)
+    return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
 def json_practices(request):
-	data = json_permissions_coaches_and_coxswains(request)
-	if not data:
-		data = serializers.serialize('json', Practice.objects.all())
-	return HttpResponse(data, mimetype='application/json')
+    data = json_permissions_coaches_and_coxswains(request)
+    if not data:
+        data = serializers.serialize('json', Practice.objects.all())
+    return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
 def json_practice_lineups(request, id):
-	data = json_permissions_coaches_and_coxswains(request)
-	if not data:
-		try:
-			practice = Practice.objects.get(pk=id)
-			try:
-				lineups = Lineup.objects.all().filter(practice=practice)
-				data = serializers.serialize('json', lineups)
-			except Lineup.DoesNotExist:
-				data = json_error("No lineups for the practice")
-		except Practice.DoesNotExist:
-			data = json_error("Practice does not exist")
-	return HttpResponse(data, mimetype='application/json')
+    data = json_permissions_coaches_and_coxswains(request)
+    if not data:
+        try:
+            practice = Practice.objects.get(pk=id)
+            try:
+                lineups = Lineup.objects.all().filter(practice=practice)
+                data = serializers.serialize('json', lineups)
+            except Lineup.DoesNotExist:
+                data = json_error("No lineups for the practice")
+        except Practice.DoesNotExist:
+            data = json_error("Practice does not exist")
+    return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
 def json_boats(request):
-	data = json_permissions_coaches_and_coxswains(request)
-	if not data:
-		data = serializers.serialize('json', Boat.objects.all())
-	return HttpResponse(data, mimetype='application/json')
+    data = json_permissions_coaches_and_coxswains(request)
+    if not data:
+        data = serializers.serialize('json', Boat.objects.all())
+    return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
 def json_login(request):
-	data = None
-	if request.method == 'POST':
-		username = request.POST["username"]
-		password = request.POST['password']
-		user = authenticate(username=username, password=password)
-		if user is not None:
-			if user.is_active:
-				try:
-					athlete = Athlete.objects.get(user=user)
-					data = '{"api_key":"' + athlete.api_key + '"}'
-				except Athlete.DoesNotExist:
-					data = None
-	else:
-		data = json_error("Must POST username and password")
-	if data == None:
-		data = json_error("Invalid username and password")
-	return HttpResponse(data, mimetype='application/json')
+    data = None
+    if request.method == 'POST':
+        username = request.POST["username"]
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                try:
+                    athlete = Athlete.objects.get(user=user)
+                    data = '{"api_key":"' + athlete.api_key + '"}'
+                except Athlete.DoesNotExist:
+                    data = None
+    else:
+        data = json_error("Must POST username and password")
+    if data == None:
+        data = json_error("Invalid username and password")
+    return HttpResponse(data, mimetype='application/json')
 
 
 '''
@@ -685,11 +685,11 @@ def athlete_index_csv(request):
 
     writer = csv.writer(response)
     for athlete in athletes:
-    	data = []
-    	data.append(athlete.name)
-    	data.append(athlete.year)
-    	data.append(athlete.side)
-    	data.append(athlete.height)
-    	writer.writerow(data)
+        data = []
+        data.append(athlete.name)
+        data.append(athlete.year)
+        data.append(athlete.side)
+        data.append(athlete.height)
+        writer.writerow(data)
 
     return response
