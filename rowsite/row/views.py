@@ -385,6 +385,7 @@ def invited(request, invite_key):
 				athlete.role = invite.role
 				athlete.save()
                 invite.used = True
+                invite.save()
 				user = authenticate(username=email, password=password)
 				login(request, user)
 				return HttpResponseRedirect(reverse('row:athlete_index'))
