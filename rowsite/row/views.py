@@ -117,9 +117,11 @@ def practice_index(request):
 # Shows practice details for one practice
 @login_required
 def practice_detail(request, practice_id):
+    author = Athlete.objects.get(user=request.user)
+
     practice = get_object_or_404(Practice, pk=practice_id)
     pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
-    notes = Note.objects.filter(practice=practice_id).order_by('subject')
+    notes = Note.objects.filter(practice=practice_id, author=author).order_by('subject')
     context = {'practice':practice, 'pieces':pieces, 'notes': notes}
     return render(request, 'row/practice/details.html', context)
 
@@ -163,10 +165,11 @@ def practice_delete(request, id):
 # Shows practice details for one practice
 @login_required
 def piece_detail(request, piece_id):
+    author = Athlete.objects.get(user=request.user)
     piece = get_object_or_404(Piece, pk=piece_id)
     results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
     lineups = Lineup.objects.filter(piece=piece_id)
-    notes = Note.objects.filter(piece=piece_id).order_by('subject')
+    notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')
     context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes}
     return render(request, 'row/piece/details.html', context)
 
