@@ -571,8 +571,9 @@ def note_delete(request, id):
 
 @login_required
 def erg(request):
-    context = {'title': 'Virtual Boathouse'}
-    return render(request, 'row/ergs.html', context)
+	athletes = Athlete.objects.all()
+	context = {'title': 'Virtual Boathouse', 'athletes':athletes}
+	return render(request, 'row/ergs.html', context)
 
 def denied(request):
     context = {'title': 'Permission Denied'}

@@ -1,11 +1,32 @@
 
 $(function() {
-	$( "#sortable" ).sortable({
+	$( "#ergs" ).sortable({
 		revert: true
 	});
-	$( "#draggable" ).draggable({
-		connectToSortable: "#sortable",
-		revert: "valid"
+	$( "#open_erg" ).draggable({
+		connectToSortable:"#ergs",
+		helper: "clone",
+		revert: "invalid"
 	});
-	$( "ul, li" ).disableSelection();
+	$( "#open_erg, ._erg, ._ergs" ).disableSelection();
+
+
+
+$( "#sortable" ).sortable({
+      revert: true
+    });
+    $( "#draggable" ).draggable({
+      connectToSortable: "#sortable",
+      helper: "clone",
+      revert: "invalid"
+    });
+    $( "ul, span" ).disableSelection();
+
 });
+
+
+
+
+    $( "#sortable0, #sortable1, #sortable2" ).sortable({
+      connectWith: ".connectedSortable"
+    }).disableSelection();

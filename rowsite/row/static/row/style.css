@@ -1,4 +1,21 @@
 ._erg {
-  background-image:url('paper.gif');
   background-color:#cccccc;
+  float:left;
+  margin:5px;
+  padding:5px;
 }
+
+._ergs {
+  background-color:#eeeeee;
+  float:none;
+  padding:20px;
+}
+
+
+._row {
+  background-color:#dddddd;
+  float:none;
+  height:auto;
+  padding:20px;
+}
+
