@@ -71,20 +71,16 @@
 {% if notes %}
   <h2>Notes</h2>
   <table class="table table-bordered">
-    <tr>
-      <th>Author</th>
-      <th>Subject</th>
-      <th>Edit</th>
-      <th>Delete</th>
-    </tr>
+    <tbody>
     {% for note in notes %}
-    <tr>
-      <td><a href="{% url 'row:athlete_detail' note.author.id %}?next={{ request.path }}">{{ note.author }}</a></td>
-      <td><a href="{% url 'row:note_detail' note.id %}?next={{ request.path }}">{{ note.subject }}</a></td>
-      <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
-      <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
-    </tr>
-    {% endfor %}
+      <tr class="note_head">
+        <td><b>Subject</b>: {{ note.subject }}</td>
+        <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
+        <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
+      </tr>
+      <tr class="note_text" hidden><td colspan="3">{{ note.note }}</td></tr>
+      {% endfor %}
+    </tbody>
   </table>
 {% else %}
   <br><br>

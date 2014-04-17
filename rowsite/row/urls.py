@@ -36,6 +36,16 @@ urlpatterns = patterns('',
     url(r'^accounts/login/', views.user_login, name="login"),
     url(r'^accounts/logout/', views.user_logout, name="logout"),
 
+    # From http://runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
+    # Map the 'app.hello.reset_confirm' view that wraps around built-in password
+    # reset confirmation view, to the password reset confirmation links.
+    url(r'^accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.user_reset_confirm, name='reset_confirm'),
+
+    url(r'^accounts/reset/', views.user_password_reset, name="reset"),
+    
+
+
     url(r'^boats/$', views.boat_index, name='boat_index'),
     url(r'^boat/add/$', views.boat_add, name='boat_add'),
     url(r'^boat/(?P<id>\d+)/edit/$', views.boat_edit, name='boat_edit'),
@@ -68,7 +78,6 @@ urlpatterns = patterns('',
 
     url(r'^piece/(?P<piece_id>\d+)/note/add/$', views.note_add, name='piece_note_add'),
     url(r'^practice/(?P<practice_id>\d+)/note/add/$', views.note_add, name='practice_note_add'),
-    url(r'^note/(?P<id>\d+)/$', views.note_detail, name='note_detail'),
     url(r'^note/(?P<id>\d+)/delete/$', views.note_delete, name='note_delete'),
     url(r'^note/(?P<id>\d+)/edit/$', views.note_edit, name='note_edit'),
 )

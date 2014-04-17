@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.contrib.auth.models import User
 
 from django.core.urlresolvers import reverse
@@ -117,9 +118,11 @@ def practice_index(request):
 # Shows practice details for one practice
 @login_required
 def practice_detail(request, practice_id):
+    author = Athlete.objects.get(user=request.user)
+
     practice = get_object_or_404(Practice, pk=practice_id)
     pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
-    notes = Note.objects.filter(practice=practice_id).order_by('subject')
+    notes = Note.objects.filter(practice=practice_id, author=author).order_by('subject')
     context = {'practice':practice, 'pieces':pieces, 'notes': notes}
     return render(request, 'row/practice/details.html', context)
 
@@ -163,10 +166,11 @@ def practice_delete(request, id):
 # Shows practice details for one practice
 @login_required
 def piece_detail(request, piece_id):
+    author = Athlete.objects.get(user=request.user)
     piece = get_object_or_404(Piece, pk=piece_id)
     results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
     lineups = Lineup.objects.filter(piece=piece_id)
-    notes = Note.objects.filter(piece=piece_id).order_by('subject')
+    notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')
     context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes}
     return render(request, 'row/piece/details.html', context)
 
@@ -422,6 +426,23 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('row:index'))
 
+def user_password_reset(request):
+    return password_reset(request,
+        template_name='row/reset.html',
+        email_template_name='row/reset_email.html',
+        subject_template_name='row/reset_subject.txt',
+        post_reset_redirect=reverse('row:index'))
+
+# This view handles password reset confirmation links.
+# From tutorial at
+# http://runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
+def user_reset_confirm(request, uidb64=None, token=None):
+    # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
+    # and template name, url to redirect after password reset is confirmed.
+    return password_reset_confirm(request, template_name='row/reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect=reverse('row:index'))
+
+
 @login_required
 def boat_index(request):
     boats = Boat.objects.all().order_by('seats')
@@ -533,11 +554,12 @@ def note_add(request, piece_id=None, practice_id=None):
     context = {'form':form, 'title':'Add Note'}
     return render(request, 'row/add.html', context) 
 
+"""
 @login_required
 def note_detail(request, id):
     note = get_object_or_404(Note, pk=id)
     context = {'note':note}
-    return render(request, 'row/note/details.html', context)
+    return render(request, 'row/note/details.html', context)"""
 
 @login_required
 def note_edit(request, id):
