@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.contrib.auth.models import User
 
 from django.core.urlresolvers import reverse
@@ -424,6 +425,23 @@ from django.contrib.auth import logout
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('row:index'))
+
+def user_password_reset(request):
+    return password_reset(request,
+        template_name='row/reset.html',
+        email_template_name='row/reset_email.html',
+        subject_template_name='row/reset_subject.txt',
+        post_reset_redirect=reverse('row:index'))
+
+# This view handles password reset confirmation links.
+# From tutorial at
+# http://runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
+def user_reset_confirm(request, uidb64=None, token=None):
+    # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
+    # and template name, url to redirect after password reset is confirmed.
+    return password_reset_confirm(request, template_name='row/reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect=reverse('row:index'))
+
 
 @login_required
 def boat_index(request):
