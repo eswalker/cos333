@@ -6,11 +6,11 @@ function toggle_note(note_header) {
 
 //$( "tr.note_header").hover(toggle_note(this), toggle_note(this));
 
-$( "tr.note_header").hover(
+$( "tbody.note_body").hover(
 	function() {
-		$(this).next().toggle();
+		$(this).children("tr.note_text").toggle();
 	}, function() {
-		$(this).next().toggle();
+		$(this).children("tr.note_text").toggle();
 	}
 );
 
