@@ -3,24 +3,36 @@
 
 {% block content %}
 
-<h1> Hello World </h1>
 
-
-
-<div class="_row">
+<h1>Virtual Erg Room</h1><small>Move each rower to one of the grey rows. Input each rower's time (not split).  Hit submit to upload.</small>
+<div class="_row _row_holder">
+<p>Athlete Bin</p>
 <ul id="sortable0" class="connectedSortable _ergs">
- {% for a in athletes %}<span class="_erg">{{a.name}}</span>{% endfor %}
+ {% for a in athletes %}
+ 	<span class="_erg" >
+ 			<span>{{a.name}} </span>
+ 			 <span> </span>
+
+ 			<span><input class="input-sm _min" type="text" name="min" size="1"/></span>
+ 			<span>:</span>
+ 			<span><input class="input-sm _sec" type="text" name="sec" size="2"/></span>
+
+ 	
+ 	</span>
+  {% endfor %}
 </ul>
 </div>
 
-<br><br>
+<br>
 
-<div class="_row"><ul id="sortable1" class="connectedSortable _ergs"></ul></div>
+<div class="_row"><p>Row 1</p><ul id="sortable1" class="connectedSortable _ergs"></ul></div>
 
 <br><br>
+ <div class="_row"><p>Row 2</p><ul id="sortable2" class="connectedSortable _ergs"></ul></div>
  
-<div class="_row"><ul id="sortable2" class="connectedSortable _ergs"></ul></div>
- 
+ <br>
+
+ <button class="btn btn-primary _add_row">Add Row</button>
 
 
 

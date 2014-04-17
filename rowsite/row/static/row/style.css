@@ -1,12 +1,15 @@
 ._erg {
   background-color:#cccccc;
-  float:left;
+  float:none;
   margin:5px;
   padding:5px;
+  display: inline-block;
+
+
 }
 
 ._ergs {
-  background-color:#eeeeee;
+  background-color:#ffffff;
   float:none;
   padding:20px;
 }
@@ -18,4 +21,12 @@
   height:auto;
   padding:20px;
 }
+
+._row_holder {
+  background-color:#FFC4C1;
+  float:none;
+  height:auto;
+  padding:20px;
+}
+
 
