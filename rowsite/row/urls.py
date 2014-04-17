@@ -68,7 +68,6 @@ urlpatterns = patterns('',
 
     url(r'^piece/(?P<piece_id>\d+)/note/add/$', views.note_add, name='piece_note_add'),
     url(r'^practice/(?P<practice_id>\d+)/note/add/$', views.note_add, name='practice_note_add'),
-    url(r'^note/(?P<id>\d+)/$', views.note_detail, name='note_detail'),
     url(r'^note/(?P<id>\d+)/delete/$', views.note_delete, name='note_delete'),
     url(r'^note/(?P<id>\d+)/edit/$', views.note_edit, name='note_edit'),
 )

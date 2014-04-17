@@ -536,11 +536,12 @@ def note_add(request, piece_id=None, practice_id=None):
     context = {'form':form, 'title':'Add Note'}
     return render(request, 'row/add.html', context) 
 
+"""
 @login_required
 def note_detail(request, id):
     note = get_object_or_404(Note, pk=id)
     context = {'note':note}
-    return render(request, 'row/note/details.html', context)
+    return render(request, 'row/note/details.html', context)"""
 
 @login_required
 def note_edit(request, id):

@@ -35,16 +35,16 @@
 {% if notes %}
   <h2>Notes</h2>
   <table class="table table-bordered">
+    <tbody>
     {% for note in notes %}
-    <tbody class="note_body">
-      <tr >
+      <tr class="note_head">
         <td><b>Subject</b>: {{ note.subject }}</td>
         <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
         <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
       </tr>
       <tr class="note_text" hidden><td colspan="3">{{ note.note }}</td></tr>
+      {% endfor %}
     </tbody>
-    {% endfor %}
   </table>
 {% endif %}
 <a class="btn btn-primary" href="{% url 'row:practice_piece_add' practice_id=practice.id %}?next={{ request.path }}">Add Piece</a>
