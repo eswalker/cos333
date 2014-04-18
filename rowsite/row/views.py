@@ -416,7 +416,7 @@ def user_login(request):
     else:
         form = UserLoginForm()
     context = {'form':form, 'title':'Login'}
-    return render(request, 'row/add.html', context)
+    return render(request, 'row/login.html', context)
 
 from django.contrib.auth import logout
 
