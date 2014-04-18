@@ -18,16 +18,20 @@
   <tr>
     <th>Date</th>
     <th>Name</th>
-    <th>Edit</th>
-    <th>Delete</th>
+    {% if permission %}
+      <th>Edit</th>
+      <th>Delete</th>
+    {% endif %}
   </tr>
 
   {% for piece in pieces %}
     <tr>
       <td>{{ piece.datetime }}</td>
       <td><a href="{% url 'row:piece_detail' piece.id %}">{{ piece.name }}</a></br></td>
-      <td><a class="" href="{% url 'row:piece_edit' piece.id %}?next={{ request.path }}">Edit</a></td>
-      <td><a class="" href="{% url 'row:piece_delete' piece.id %}?next={{ request.path }}">Delete</a></td>
+      {% if permission %}
+        <td><a class="" href="{% url 'row:piece_edit' piece.id %}?next={{ request.path }}">Edit</a></td>
+        <td><a class="" href="{% url 'row:piece_delete' piece.id %}?next={{ request.path }}">Delete</a></td>
+      {% endif %}
     </tr>
   {% endfor %}
 </table>

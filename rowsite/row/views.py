@@ -184,7 +184,8 @@ def piece_detail(request, piece_id):
     lineups = Lineup.objects.filter(piece=piece_id)
     notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')
     permission = coxswain_coach(request.user)
-    context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes, 'permission': permission}
+    is_coach = coach(request.user)
+    context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes, 'permission': permission, 'is_coach': is_coach}
     return render(request, 'row/piece/details.html', context)
 
 @login_required

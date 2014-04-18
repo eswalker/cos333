@@ -18,8 +18,10 @@
     <th>Position</th>
     <th>Boat</th>
     <th>Athletes</th>
-    <th>Edit</th>
-    <th>Delete</th>
+    {% if is_coach %}
+      <th>Edit</th>
+      <th>Delete</th>
+    {% endif %}
   </tr>
 
   {% for lineup in lineups %}
@@ -31,8 +33,10 @@
           <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
         {% endfor %}
       </td>
-      <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
-      <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
+      {% if is_coach %}
+        <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
+        <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
+      {% endif %}
     </tr>
   {% endfor %}
 </table>
@@ -50,8 +54,10 @@
     <th>Pace</th>
     <th>Distance</th>
     <th>Time</th>
-    <th>Edit</th>
-    <th>Delete</th>
+    {% if permission %}
+      <th>Edit</th>
+      <th>Delete</th>
+    {% endif %}
   </tr>
 
   {% for result in results %}
@@ -61,8 +67,10 @@
       <td class="_pace"></td>
       <td class="_distance">{{ result.distance }}</td>
       <td class="_time">{{ result.time }}</td>
-      <td><a class="" href="{% url 'row:result_edit' result.id %}?next={{ request.path }}">Edit</a></td>
-      <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
+      {% if permission %}
+        <td><a class="" href="{% url 'row:result_edit' result.id %}?next={{ request.path }}">Edit</a></td>
+        <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
+      {% endif %}
     </tr>
   {% endfor %}
 </table>
@@ -74,7 +82,7 @@
     <tbody>
     {% for note in notes %}
       <tr class="note_head">
-        <td><b>Subject</b>: {{ note.subject }}</td>
+        <td><b class="note_subject_symbol">+</b><b> Subject</b>: {{ note.subject }}</td>
         <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
         <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
       </tr>
