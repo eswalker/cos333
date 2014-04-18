@@ -86,7 +86,7 @@ $('._submit').click(function() {
 			min = parseInt($(this).children().eq(3).children().eq(0).val());
 			sec = parseFloat($(this).children().eq(5).children().eq(0).val());
 			
-			if (!min || !athleteId || !sec) {
+			if (!athleteId || !(min || sec)) {
 				$(this).removeClass("_erg_valid");
 				$(this).addClass("_erg_error");
 				valid = false;
