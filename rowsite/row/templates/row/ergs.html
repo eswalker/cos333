@@ -5,17 +5,27 @@
 
 
 <h1>Virtual Erg Room</h1><small>Move each rower to one of the grey rows. Input each rower's time (not split).  Hit submit to upload.</small>
+<br><br>
+
+<button class="btn btn-primary _add_row">Add Row</button><span> </span>
+<button class="btn btn-primary _clear">Clear</button><span> </span>
+<button class="btn btn-warning _submit">Submit</button><br><br>
+<span id="distance_box"><span> Distance (m)  </span><span> </span><input id="distance" class="input-md _min" type="text" name="min" size="4"/></span>
+
+<br><br>
+
 <div class="_row _row_holder">
 <p>Athlete Bin</p>
-<ul id="sortable0" class="connectedSortable _ergs">
+<ul id="sortable0" class="connectedSortable _ergs _athlete_bin">
  {% for a in athletes %}
  	<span class="_erg" >
  			<span>{{a.name}} </span>
- 			 <span> </span>
+ 			<span hidden>{{a.id}}</span>
+ 			 <br>
 
- 			<span><input class="input-sm _min" type="text" name="min" size="1"/></span>
+ 			<span><input class="input-md _min" type="text" name="min" size="1"/></span>
  			<span>:</span>
- 			<span><input class="input-sm _sec" type="text" name="sec" size="2"/></span>
+ 			<span><input class="input-md _sec" type="text" name="sec" size="1"/></span>
 
  	
  	</span>
@@ -27,12 +37,11 @@
 
 <div class="_row"><p>Row 1</p><ul id="sortable1" class="connectedSortable _ergs"></ul></div>
 
-<br><br>
- <div class="_row"><p>Row 2</p><ul id="sortable2" class="connectedSortable _ergs"></ul></div>
+<br>
+<div class="_row"><p>Row 2</p><ul id="sortable2" class="connectedSortable _ergs"></ul></div>
  
- <br>
 
- <button class="btn btn-primary _add_row">Add Row</button>
+
 
 
 

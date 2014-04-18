@@ -29,6 +29,9 @@ urlpatterns = patterns('',
     
     url(r'^result/add/$', views.result_add, name='result_add'),
     url(r'^piece/(?P<piece_id>\d+)/result/add/$', views.result_add, name='piece_result_add'),
+    url(r'^piece/(?P<piece_id>\d+)/ergroom/$', views.piece_ergroom, name='piece_ergroom'),
+
+
     url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
     url(r'^result/(?P<id>\d+)/edit/$', views.result_edit, name='result_edit'),
     url(r'^result/(?P<id>\d+)/delete/$', views.result_delete, name='result_delete'),
@@ -65,6 +68,7 @@ urlpatterns = patterns('',
 
     url(r'^json/athletes/$', views.json_athletes, name='json_athletes'),
     url(r'^json/practices/$', views.json_practices, name='json_practices'),
+    url(r'^json/practice/recent$', views.json_recent_practice, name='json_recent_practice'),
     url(r'^json/practice/(?P<id>\d+)/lineups/$', views.json_practice_lineups, name='json_practice_lineups'),
     url(r'^json/boats/$', views.json_boats, name='json_boats'),
     url(r'^json/login/$', views.json_login, name='json_login'),

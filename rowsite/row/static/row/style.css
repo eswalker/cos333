@@ -23,10 +23,21 @@
 }
 
 ._row_holder {
-  background-color:#FFC4C1;
+  background-color:#FFCD3C;
   float:none;
   height:auto;
   padding:20px;
 }
 
+._erg_error {
+  background-color:#FFC4C1;
+}
+
+._erg_valid {
+  background-color:LightGreen;
+}
+
+#distance_box {
+  padding:10px;
+}
 
