@@ -416,7 +416,7 @@ def user_login(request):
     else:
         form = UserLoginForm()
     context = {'form':form, 'title':'Login'}
-    return render(request, 'row/login.html', context)
+    return render(request, 'row/account/login.html', context)
 
 from django.contrib.auth import logout
 
@@ -428,9 +428,9 @@ def user_logout(request):
 
 def user_password_reset(request):
     return password_reset(request,
-        template_name='row/reset.html',
-        email_template_name='row/reset_email.html',
-        subject_template_name='row/reset_subject.txt',
+        template_name='row/account/reset.html',
+        email_template_name='row/account/reset_email.html',
+        subject_template_name='row/account/reset_subject.txt',
         post_reset_redirect=reverse('row:index'))
 
 # This view handles password reset confirmation links.
@@ -439,7 +439,7 @@ def user_password_reset(request):
 def user_reset_confirm(request, uidb64=None, token=None):
     # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
     # and template name, url to redirect after password reset is confirmed.
-    return password_reset_confirm(request, template_name='row/reset_confirm.html',
+    return password_reset_confirm(request, template_name='row/account/reset_confirm.html',
         uidb64=uidb64, token=token, post_reset_redirect=reverse('row:index'))
 
 
