@@ -78,7 +78,7 @@ class PieceForm(forms.ModelForm):
 
 class WeightForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.athlete2 = kwargs.pop("athlete2")
+        self.user_athlete = kwargs.pop("user_athlete")
         super(WeightForm, self).__init__(*args, **kwargs)
 
     athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
@@ -93,8 +93,8 @@ class WeightForm(forms.ModelForm):
 
     def clean_athlete(self):
         athlete = self.cleaned_data["athlete"]
-        if self.athlete2.role == "Coxswain" or self.athlete2.role =="Coach": return athlete
-        if athlete != self.athlete2:
+        if self.user_athlete.role == "Coxswain" or self.user_athlete.role =="Coach": return athlete
+        if athlete != self.user_athlete:
             raise forms.ValidationError("You do not have permission to edit this athlete's weight.")
         return athlete
 

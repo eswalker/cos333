@@ -7,16 +7,12 @@
   <table class="table table-bordered">
   
   <tr>
-    <th>Name</th>
-    <th>Edit</th>
-    
+    <th>Name</th>    
   </tr>
 
   {% for a in coaches %}
     <tr>
-      <td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>
-      <td><a href="{% url 'row:athlete_edit' a.id %}">Edit</a></td>
-     
+      <td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>     
     </tr>
   {% endfor %}
   </table>
@@ -33,9 +29,7 @@
     <th>Name</th>
     <th>Year</th>
     <th>Height</th>
-    <th>Status</th>
-    <th>Edit</th>
-    
+    <th>Status</th>    
   </tr>
 
   {% for a in coxswains %}
@@ -43,9 +37,7 @@
       <td><a href="{% url 'row:athlete_detail' a.id %}">{{ a.name }}</a></td>
       <td>{{ a.year }}</td>
       <td>{{ a.height }}</td>
-      <td>{{ a.status }}</td>
-      <td><a href="{% url 'row:athlete_edit' a.id %}">Edit</a></td>
-     
+      <td>{{ a.status }}</td>     
     </tr>
   {% endfor %}
   </table>
@@ -63,9 +55,7 @@
     <th>Year</th>
     <th>Side</th>
     <th>Height</th>
-    <th>Status</th>
-    <th>Edit</th>
-    
+    <th>Status</th>    
   </tr>
 
   {% for a in rowers %}
@@ -74,9 +64,7 @@
       <td>{{ a.year }}</td>
       <td>{{ a.side }}</td>
       <td>{{ a.height }}</td>
-      <td>{{ a.status }}</td>
-      <td><a href="{% url 'row:athlete_edit' a.id %}">Edit</a></td>
-     
+      <td>{{ a.status }}</td>     
     </tr>
   {% endfor %}
   </table>
@@ -85,7 +73,9 @@
   <p>No rowers are available</p>
 {% endif %}
 
-<a class="btn btn-primary" href="{% url 'row:weight_add' %}">Add Weight</a>
-<a class="btn btn-primary" href="{% url 'row:result_add' %}">Add Result</a>
+{% if permission %}
+  <a class="btn btn-primary" href="{% url 'row:weight_add' %}">Add Weight</a>
+  <a class="btn btn-primary" href="{% url 'row:result_add' %}">Add Result</a>
+{% endif %}
 
 {% endblock %}
