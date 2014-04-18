@@ -2,6 +2,7 @@ from django import forms
 from datetime import datetime
 from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note, Invite
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), help_text="Must contain at least 6 characters and both upper and lowercase letters.")
@@ -24,6 +25,15 @@ class UserLoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    def clean_new_password1(self):
+        password = self.cleaned_data["new_password1"]
+        if len(password) < 6:
+            raise forms.ValidationError('Password is too short')
+        if password.lower() == password or password.upper() == password:
+            raise forms.ValidationError('Password must have lower and uppercase letters')
+        return password
 
 class InviteForm(forms.ModelForm):
     email = forms.EmailField(label="Email")

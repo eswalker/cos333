@@ -43,6 +43,7 @@ urlpatterns = patterns('',
         views.user_reset_confirm, name='reset_confirm'),
 
     url(r'^accounts/reset/', views.user_password_reset, name="reset"),
+    url(r'^accounts/change/', views.user_password_change, name="password_change"),
     
 
 

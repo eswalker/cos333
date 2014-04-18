@@ -17,7 +17,7 @@
 
                 <p class="navbar-text navbar-left">Virtual Boathouse</p>
                 {% if user.is_authenticated %}
-                    <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a></p>
+                    <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a> | <a href="{% url 'row:password_change' %}">Change Password</a></p>
                 {% else %}
                     <p class="navbar-text navbar-right">
                         <a href="{% url 'row:login' %}">Login</a>
