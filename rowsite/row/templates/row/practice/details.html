@@ -38,7 +38,7 @@
     <tbody>
     {% for note in notes %}
       <tr class="note_head">
-        <td><b>Subject</b>: {{ note.subject }}</td>
+        <td><b class="note_subject_symbol">+</b><b> Subject</b>: {{ note.subject }}</td>
         <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
         <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
       </tr>
