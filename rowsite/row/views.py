@@ -6,14 +6,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.contrib.auth.views import password_reset, password_reset_confirm, password_change
 from django.contrib.auth.models import User
 
 from django.core.urlresolvers import reverse
 from django.core import serializers
 
 from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note, Invite
-from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm, NoteForm, InviteForm
+from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm, NoteForm, InviteForm, UserPasswordChangeForm
 
 from row.permissions import user_coxswain_coach, coxswain_coach, coach, user
 
@@ -441,6 +441,12 @@ def user_reset_confirm(request, uidb64=None, token=None):
     # and template name, url to redirect after password reset is confirmed.
     return password_reset_confirm(request, template_name='row/account/reset_confirm.html',
         uidb64=uidb64, token=token, post_reset_redirect=reverse('row:index'))
+
+def user_password_change(request):
+    return password_change(request, template_name='row/add.html',
+        post_change_redirect=reverse('row:index'),
+        password_change_form=UserPasswordChangeForm,
+        extra_context={'title': 'Change Password'})
 
 
 @login_required
