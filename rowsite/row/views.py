@@ -640,6 +640,35 @@ def piece_ergroom(request, piece_id):
 		context = {'title': 'Virtual Boathouse', 'athletes':athletes}
 		return render(request, 'row/ergs.html', context)
 
+
+@csrf_exempt
+def practice_ergroom(request, practice_id):
+	practice = get_object_or_404(Practice, pk=practice_id)
+	if request.method == 'POST':
+		name = request.POST['name']
+		results = request.POST['results'].split(',')
+		print results
+		for i in range(0, len(results)/3):
+			athlete_str = results[i * 3]
+			time_str = results[i * 3 + 1]
+			distance_str = results[i * 3 + 2]
+			try:
+				athlete_id = int(athlete_str)
+				time = int(float(time_str) * 10) / 10.
+				distance = int(distance_str)
+				piece = Piece(practice=practice, name=name, datetime=datetime.now())
+				if (distance > 0 and time > 0):
+					athlete = get_object_or_404(Athlete, pk=athlete_id)
+					result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
+					result.save()
+			except ValueError:
+				raise Http404
+		return practice_detail(request, practice_id)
+	else:	
+		athletes = Athlete.objects.all()
+		context = {'title': 'Virtual Boathouse', 'athletes':athletes}
+		return render(request, 'row/ergs.html', context)
+
 def denied(request):
     context = {'title': 'Permission Denied'}
     return render(request, 'row/denied.html', context)

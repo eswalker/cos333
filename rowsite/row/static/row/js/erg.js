@@ -70,7 +70,8 @@ $('._submit').click(function() {
 	times = [];
 	distances = [];
 
-	distance = parseInt($("#distance").val());
+	distanceString = $("#distance").val();
+	distance = parseInt(distanceString);
 	if (!distance) {
 		valid =false;
 		$("#distance").parent().removeClass("_erg_valid");
@@ -110,20 +111,19 @@ $('._submit').click(function() {
 		}
 		if (s.length > 1)
 			s = s.substr(0,s.length - 1);
-		console.log({results:s});
+		console.log({results:s,name:distanceString});
 		$.post( "", {results : s}, function( data ) {
 			$('._erg').each(function() {
 				$(this).children().eq(3).children().eq(0).val("");
 				$(this).children().eq(5).children().eq(0).val("");
 			});
 
-			var next = getUrlParameter("next");
+			/*var next = getUrlParameter("next");
 			if (next != null) {
 				window.location.href = next;
-			}
+			}*/
   				
-		});
-			
+		});	
 	}
 });
 
