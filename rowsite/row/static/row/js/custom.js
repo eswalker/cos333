@@ -9,6 +9,13 @@ function readableSeconds(secs) {
 	return (mins + ":" + strSec);
 }
 
+function toSeconds(pace) {
+	var fields = pace.split(":");
+	var min = parseInt(fields[0]);
+	var secs = parseFloat(fields[1]);
+	return parseInt(min * 60 + secs);
+}
+
 
 var _distances = []
 var _times = []
