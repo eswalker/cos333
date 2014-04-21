@@ -1,6 +1,10 @@
 var _weights = []
 var _datetimes = []
 
+$( "#_toggle-weight-table" ).click(function() {
+    $( "#_weight-table" ).toggle();
+});
+
 $( '._weight').each(function( index ) {
     _weights.push(parseFloat($(this).text()));
 });
@@ -36,7 +40,7 @@ weight_data.push([old, (1.0 * sum) / n]);
 if (weight_data.length > 1) {
 
     $(function () {
-            $('#_weights-chart').highcharts({
+            $('#_weight-chart').highcharts({
                 chart: {
                     type: 'spline'
                 },
@@ -71,5 +75,9 @@ if (weight_data.length > 1) {
                 }]
             });
         });
+} else {
+    $( "#_weight-chart" ).toggle();
+    $( "#_weight-table" ).toggle();
+    $( "#_toggle-weight-table" ).toggle();
 }
     
