@@ -98,8 +98,6 @@
 {% if permission %}
   {% if piece.practice.workout == "Water" %}
     <a class="btn btn-primary" href="{% url 'row:piece_lineup_add' piece_id=piece.id %}?next={{ request.path }}">Add Lineup</a>
-  {% else %}
-    <a class="btn btn-primary" href="{% url 'row:piece_ergroom' piece_id=piece.id %}?next={{ request.path }}">Erg Room</a>
   {% endif %}
 {% endif %}
 
