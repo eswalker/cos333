@@ -4,13 +4,15 @@
 {% block content %}
 
 
-<h1>Virtual Erg Room</h1><small>Move each rower to one of the grey rows. Input each rower's time (not split).  Hit submit to upload.</small>
+<h1>Virtual Erg Room</h1><small>Move each rower to one of the grey rows. Input each rower's time (not split).  Hit submit piece to upload a new piece. Hit done when finished</small>
 <br><br>
 
 <button class="btn btn-primary _add_row">Add Row</button><span> </span>
 <a class="btn btn-primary" href="{% url 'row:practice_ergroom_timed' practice.id %}">Switch to Timed Piece</a><span> </span>
 <button class="btn btn-primary _clear">Clear</button><span> </span>
-<button class="btn btn-warning _submit">Submit</button><br><br>
+<button class="btn btn-warning _submit">Submit Piece</button><span> </span>
+<a class="btn btn-primary" href="{% url 'row:practice_detail' practice.id %}">Done</a>
+<br><br>
 <span id="distance_box"><span> Distance (m)  </span><span> </span><input id="distance" class="input-md _min" type="text" name="min" size="4"/></span>
 
 <br><br>
