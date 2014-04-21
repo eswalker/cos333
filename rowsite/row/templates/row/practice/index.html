@@ -26,6 +26,7 @@
   <p>No practices are available</p>
 {% endif %}
 
- 
-<a class="btn btn-primary" href="{% url 'row:practice_add' %}">Add Practice</a>
+{% if permission %}
+  <a class="btn btn-primary" href="{% url 'row:practice_add' %}">Add Practice</a>
+{% endif %}
 {% endblock %}

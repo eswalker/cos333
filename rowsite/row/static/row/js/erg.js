@@ -1,4 +1,7 @@
 
+
+
+
 $(function() {
 	$( "#ergs" ).sortable({
 		revert: true
@@ -51,6 +54,63 @@ function add_row(){
 $('._add_row').click(add_row);
 
 
+
+// w3schools
+function setCookie(cname,cvalue,exdays){
+	var d = new Date();d.setTime(d.getTime()+(exdays*24*60*60*1000));
+	var expires = "expires="+d.toGMTString();
+	document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+// w3schools 
+function getCookie(cname){
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0; i<ca.length; i++) { var c = ca[i].trim(); if (c.indexOf(name)==0) return c.substring(name.length,c.length); }
+  	return "";
+}
+
+function storeErgPositions {
+	var cookie = "" + num_rows + ",";
+	$('._erg').each(function() {
+		athleteId = parseInt($(this).children().eq(1).text());
+		cookie += $(this).parent().id + ":" + athleteId + ",";
+	}
+	setCookie("ergPositions", cookie, 365);
+	console.log(getCookie("ergPositions"));
+}
+
+function restoreErgPositions {
+	var cookie = getCookie("ergPositions");
+	data = cookie.split(',');
+	
+	for (i = 1; i < data.length; i++) {
+		data2 = data[i].split(':');
+		if (data2.length == 2) {
+			divId = data2[0];
+			athId = data2[1];
+
+		
+			$('._erg').each(function() {
+				athleteId = $(this).children().eq(1).text();
+				if (athleteId == athId) {
+					$(this).detach();
+					$("#" + divId).append($(this));
+				}
+			}
+		}
+	}
+	$('._erg').each(function() {
+		athleteId = parseInt($(this).children().eq(1).text());
+		cookie += $(this).parent().id + ":" + athleteId + ",";
+	}
+	var element = $('#childNode').detach();
+	$('#parentNode').append(element);
+
+}
+
+
+
 function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
@@ -81,13 +141,16 @@ $('._submit').click(function() {
 		$("#distance").parent().removeClass("_erg_error");
 	}
 
+
+	storeErgPositions();
+
 	$('._erg').each(function() {
 		if (!$(this).parent().hasClass("_athlete_bin")) {
 			athleteId = parseInt($(this).children().eq(1).text());
 			min = parseInt($(this).children().eq(3).children().eq(0).val());
 			sec = parseFloat($(this).children().eq(5).children().eq(0).val());
 			
-			if (!min || !athleteId || !sec) {
+			if (!athleteId || !(min || sec)) {
 				$(this).removeClass("_erg_valid");
 				$(this).addClass("_erg_error");
 				valid = false;
@@ -111,8 +174,12 @@ $('._submit').click(function() {
 		}
 		if (s.length > 1)
 			s = s.substr(0,s.length - 1);
-		console.log({results:s,name:distanceString});
-		$.post( "", {results : s}, function( data ) {
+
+		distanceString += " meters";
+		var posted_data = { results : s , name : distanceString};
+
+		console.log(posted_data);
+		$.post( "", posted_data , function( data ) {
 			$('._erg').each(function() {
 				$(this).children().eq(3).children().eq(0).val("");
 				$(this).children().eq(5).children().eq(0).val("");
@@ -126,6 +193,8 @@ $('._submit').click(function() {
 		});	
 	}
 });
+
+
 
 
 

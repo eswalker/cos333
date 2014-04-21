@@ -20,7 +20,7 @@
     	<td>{{ i.used }}</td>
       {% if i.canceled %}
         <td>Inactive</td>
-        <td></td>
+        <td>N/A</td>
       {% else %}
         <td>Active</td>
       <td><a href="{% url 'row:invite_cancel' i.id %}">Cancel</a></td>

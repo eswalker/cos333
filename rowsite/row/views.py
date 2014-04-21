@@ -65,16 +65,21 @@ def athlete_index(request):
     rowers = Athlete.objects.filter(role="Rower").order_by('name')
     coxswains = Athlete.objects.filter(role="Coxswain").order_by('name')
     coaches = Athlete.objects.filter(role="Coach").order_by('name')
-    context = {'rowers': rowers, 'coxswains': coxswains, 'coaches': coaches}
+    permission = False
+    if not request.user.is_anonymous(): permission = coxswain_coach(request.user)
+    context = {'rowers': rowers, 'coxswains': coxswains, 'coaches': coaches, 'permission': permission}
     return render(request, 'row/athlete/index.html', context)
 
 # Shows athlete details for one athlete
 @login_required
 def athlete_detail(request, athlete_id):
+    user_athlete = Athlete.objects.get(user=request.user)
     athlete = get_object_or_404(Athlete, pk=athlete_id)
+    permission = user_coxswain_coach(user_athlete, athlete)
+    is_athlete = user(user_athlete, athlete)
     weights = Weight.objects.filter(athlete=athlete_id).order_by('datetime')
     results = Result.objects.filter(athlete=athlete_id).order_by('datetime')
-    context = {'athlete':athlete, 'weights':weights, 'results':results}
+    context = {'athlete':athlete, 'weights':weights, 'results':results, 'permission': permission, 'is_athlete': is_athlete}
     return render(request, 'row/athlete/details.html', context)
 
 '''
@@ -105,6 +110,8 @@ def athlete_edit(request, athlete_id=None):
             athlete.height = form.cleaned_data["height"]
             athlete.status = form.cleaned_data["status"]
             athlete.save()
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
         form = AthleteForm(instance=athlete)
@@ -115,7 +122,8 @@ def athlete_edit(request, athlete_id=None):
 @login_required
 def practice_index(request):
     practices = Practice.objects.all().order_by("datetime")
-    context = {'practices': practices}
+    permission = coxswain_coach(request.user)
+    context = {'practices': practices, 'permission': permission}
     return render(request, 'row/practice/index.html', context)
 
 # Shows practice details for one practice
@@ -126,7 +134,8 @@ def practice_detail(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
     notes = Note.objects.filter(practice=practice_id, author=author).order_by('subject')
-    context = {'practice':practice, 'pieces':pieces, 'notes': notes}
+    permission = coxswain_coach(request.user)
+    context = {'practice':practice, 'pieces':pieces, 'notes': notes, 'permission': permission}
     return render(request, 'row/practice/details.html', context)
 
 @login_required
@@ -174,7 +183,8 @@ def piece_detail(request, piece_id):
     results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
     lineups = Lineup.objects.filter(piece=piece_id)
     notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')
-    context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes}
+    permission = coxswain_coach(request.user)
+    context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes, 'permission': permission}
     return render(request, 'row/piece/details.html', context)
 
 @login_required
@@ -188,6 +198,7 @@ def piece_add(request, practice_id=None):
     else:
         if practice_id:
             form = PieceForm(initial={'practice': practice_id})
+            form.fields['practice'].queryset=Practice.objects.filter(id=practice_id)
         else:
             form = PieceForm()
     context = {'form':form, 'title':'Add Piece'}
@@ -229,16 +240,20 @@ def weight_add(request, athlete_id=None):
     athlete2 = Athlete.objects.get(user=request.user)
 
     if request.method == 'POST':
-        form = WeightForm(request.POST, athlete2=athlete2)
+        form = WeightForm(request.POST, user_athlete=athlete2)
         if form.is_valid():
             form.save(commit=True)
             if request.GET and request.GET["next"]:
                 return HttpResponseRedirect(request.GET["next"])
     else:
         if athlete_id == None:
-            form = WeightForm(athlete2=athlete2)
+            form = WeightForm(user_athlete=athlete2)
         else:
-            form = WeightForm(initial={'athlete': athlete_id}, athlete2=athlete2)
+            target_athlete = get_object_or_404(Athlete, id=athlete_id)
+            if not user_coxswain_coach(athlete2, target_athlete):
+                return render(request, 'row/denied.html', {})
+            form = WeightForm(initial={'athlete': athlete_id}, user_athlete=athlete2)
+            form.fields['athlete'].queryset=Athlete.objects.filter(id=athlete_id)
     context = {'form':form, 'title':'Add Weight'}
     return render(request, 'row/add.html', context)
 
@@ -292,8 +307,12 @@ def result_add(request, piece_id=None, athlete_id=None):
     else:
         if piece_id != None:
             form = ResultForm(initial={'piece': piece_id}, athlete2=user_athlete)
+            form.fields['piece'].queryset=Piece.objects.filter(id=piece_id)
+            if not coxswain_coach(user_athlete):
+                form.fields['athlete'].queryset=Athlete.objects.filter(id=user_athlete.id)
         elif athlete_id != None:
             form = ResultForm(initial={'athlete': athlete_id}, athlete2=user_athlete)
+            form.fields['athlete'].queryset=Athlete.objects.filter(id=athlete_id)
         else:
             form = ResultForm(athlete2=user_athlete)
     context = {'form':form, 'title':'Add Result'}
@@ -455,7 +474,8 @@ def user_password_change(request):
 @login_required
 def boat_index(request):
     boats = Boat.objects.all().order_by('seats')
-    context = {'boats': boats}
+    permission = coxswain_coach(request.user)
+    context = {'boats': boats, 'permission': permission}
     return render(request, 'row/boat/index.html', context)
 
 @login_required
@@ -513,6 +533,7 @@ def lineup_add(request, piece_id=None):
             form = LineupForm()
         else:
             form = LineupForm(initial={'piece': piece_id})
+            form.fields['piece'].queryset=Piece.objects.filter(id=piece_id)
     context = {'form':form, 'title':'Add Lineup'}
     return render(request, 'row/add.html', context)
 
@@ -646,7 +667,9 @@ def practice_ergroom(request, practice_id):
 	practice = get_object_or_404(Practice, pk=practice_id)
 	if request.method == 'POST':
 		name = request.POST['name']
-		results = request.POST['results'].split(',')
+		results = request.POST['results'].split(',')				
+		piece = Piece(practice=practice, name=name, datetime=datetime.now())
+		piece.save()
 		print results
 		for i in range(0, len(results)/3):
 			athlete_str = results[i * 3]
@@ -656,7 +679,6 @@ def practice_ergroom(request, practice_id):
 				athlete_id = int(athlete_str)
 				time = int(float(time_str) * 10) / 10.
 				distance = int(distance_str)
-				piece = Piece(practice=practice, name=name, datetime=datetime.now())
 				if (distance > 0 and time > 0):
 					athlete = get_object_or_404(Athlete, pk=athlete_id)
 					result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
@@ -723,7 +745,8 @@ def json_practices(request):
 def json_recent_practice(request):
     data = json_permissions_coaches_and_coxswains(request)
     if not data:
-        data = serializers.serialize('json', Practice.objects.latest('datetime'))
+    	practice =  Practice.objects.latest('datetime')
+        data = '{"id":' + str(practice.id) + '}'
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt

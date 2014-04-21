@@ -1,0 +1,30 @@
+{% extends 'row/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form id="form" method="post" action="">
+  
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+  <table class="table table-bordered">
+        {% for field in form.visible_fields %}
+            <tr>
+                <td>{{ field.label }}</td>
+                <td>{{ field }}</td>                 
+                <td>{{ field.help_text}}</td>
+                {% if field.errors %}
+                    <td class="alert alert-danger">{{ field.errors }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+     <input type="submit" class="btn btn-primary" name="submit" value="Submit" />
+     <a class="btn btn-primary" href="{% url 'row:reset' %}">Forgot Password</a>
+</form>
+
+{% endblock %}

@@ -22,15 +22,19 @@
       <tr>
         <th>Date</th>
         <th>Weight (lbs)</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        {% if permission %}
+          <th>Edit</th>
+          <th>Delete</th>
+        {% endif %}
       </tr>
   		{% for weight in weights %}
   			<tr>
           <td class="_weight-datetime">{{ weight.datetime }}</td>
           <td class="_weight">{{ weight.weight }}</td>
-          <td><a class="" href="{% url 'row:weight_edit' weight.id %}?next={{ request.path }}">Edit</a></td>
-          <td><a class="" href="{% url 'row:weight_delete' weight.id %}?next={{ request.path }}">Delete</a></td>
+          {% if permission %}
+            <td><a class="" href="{% url 'row:weight_edit' weight.id %}?next={{ request.path }}">Edit</a></td>
+            <td><a class="" href="{% url 'row:weight_delete' weight.id %}?next={{ request.path }}">Delete</a></td>
+          {% endif %}
         </tr>
   		{% endfor %}
   	</table>
@@ -48,8 +52,10 @@
         <th>Distance</th>
         <th>Time</th>
         <th>Type</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        {% if permission %}
+          <th>Edit</th>
+          <th>Delete</th>
+        {% endif %}
       </tr>
 
       {% for result in results %}
@@ -61,14 +67,20 @@
           <td class="_distance">{{ result.distance }}</td>
           <td class="_time">{{ result.time }}</td>
           <td>{{ result.piece.practice.workout }}</td>
-          <td><a class="" href="{% url 'row:result_edit' result.id %}?next={{ request.path }}">Edit</a></td>
-          <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
+          {% if permission %}
+            <td><a class="" href="{% url 'row:result_edit' result.id %}?next={{ request.path }}">Edit</a></td>
+            <td><a class="" href="{% url 'row:result_delete' result.id %}?next={{ request.path }}">Delete</a></td>
+          {% endif %}
         </tr>
       {% endfor %}
     </table>
   {% endif %}
-
-    <br><a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}?next={{ request.path }}">Add Result</a>
+  {% if permission %}
+    <br> <a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}?next={{ request.path }}">Add Result</a>
     <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}?next={{ request.path }}">Add Weight</a>
+  {% endif %}
+  {% if is_athlete %}
+      <a class="btn btn-primary" href="{% url 'row:athlete_edit' athlete.id %}?next={{ request.path }}">Edit Profile</a>
+  {% endif %}
 {% endif %}
 {% endblock %}

@@ -16,7 +16,7 @@
 <table class="table table-bordered">
 
   <tr>
-    <th>Date</th>
+    <th></th>
     <th>Name</th>
     <th>Edit</th>
     <th>Delete</th>
@@ -24,10 +24,12 @@
 
   {% for piece in pieces %}
     <tr>
-      <td>{{ piece.datetime }}</td>
+      <td class="_order"></td>
       <td><a href="{% url 'row:piece_detail' piece.id %}">{{ piece.name }}</a></br></td>
+      {% if permission %}
       <td><a class="" href="{% url 'row:piece_edit' piece.id %}?next={{ request.path }}">Edit</a></td>
       <td><a class="" href="{% url 'row:piece_delete' piece.id %}?next={{ request.path }}">Delete</a></td>
+      {% endif %}
     </tr>
   {% endfor %}
 </table>
@@ -38,7 +40,7 @@
     <tbody>
     {% for note in notes %}
       <tr class="note_head">
-        <td><b>Subject</b>: {{ note.subject }}</td>
+        <td><b class="note_subject_symbol">+</b><b> Subject</b>: {{ note.subject }}</td>
         <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
         <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
       </tr>
@@ -48,11 +50,14 @@
   </table>
 {% endif %}
 
+{% if permission %}
   {% if practice.workout == "Water" %}<!-- -->
   {% else %}
-  <a class="btn btn-primary" href="{% url 'row:practice_ergroom' practice_id=practice.id %}?next={{ request.path }}">Erg Room</a>
+    <a class="btn btn-primary" href="{% url 'row:practice_ergroom' practice_id=practice.id %}?next={{ request.path }}">Erg Room</a>
   {% endif %}
 
-<a class="btn btn-primary" href="{% url 'row:practice_piece_add' practice_id=practice.id %}?next={{ request.path }}">Add Piece</a>
+
+  <a class="btn btn-primary" href="{% url 'row:practice_piece_add' practice_id=practice.id %}?next={{ request.path }}">Add Piece</a>
+{% endif %}
 <a class="btn btn-primary" href="{% url 'row:practice_note_add' practice.id %}?next={{ request.path }}">Add Note</a>
 {% endblock %}

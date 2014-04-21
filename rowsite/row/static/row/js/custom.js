@@ -40,6 +40,9 @@ $( '._height').each(function( index ) {
 	$(this).text(feet + "'" + inches + '"');
 });
 
+i = 1;
+$( '._order').each(function( index ) { $(this).text("" + i++)});
+
 
 
 
