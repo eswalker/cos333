@@ -4,14 +4,14 @@
 {% block content %}
 
 
-<h1>Virtual Erg Room</h1><small>Move each rower to one of the grey rows. Input each rower's time (not split).  Hit submit to upload.</small>
+<h1>Virtual Erg Room</h1><small>Move each rower to one of the grey rows. Input each rower's distance (in meters).  Hit submit to upload.</small>
 <br><br>
 
 <button class="btn btn-primary _add_row">Add Row</button><span> </span>
-<a class="btn btn-primary" href="{% url 'row:practice_ergroom_timed' practice.id %}">Switch to Timed Piece</a><span> </span>
+<a class="btn btn-primary" href="{% url 'row:practice_ergroom' practice.id %}">Switch to Distance Piece</a><span> </span>
 <button class="btn btn-primary _clear">Clear</button><span> </span>
 <button class="btn btn-warning _submit">Submit</button><br><br>
-<span id="distance_box"><span> Distance (m)  </span><span> </span><input id="distance" class="input-md _min" type="text" name="min" size="4"/></span>
+<span id="distance_box"><span> Time (min:secs)  </span><span> </span><span id="distance"><input id="in_minute" class="input-md _min" type="text" name="min" size="1"/><span>:</span><input id="in_second" class="input-md _min" type="text" name="min" size="1"/></span></span>
 
 <br><br>
 
@@ -24,9 +24,10 @@
  			<span hidden>{{a.id}}</span>
  			 <br>
 
- 			<span><input class="input-md _min" type="text" name="min" size="1"/></span>
- 			<span>:</span>
- 			<span><input class="input-md _sec" type="text" name="sec" size="1"/></span>
+ 			<span hidden><input class="input-md _min" type="text" name="min" size="1"/></span>
+ 			<span hidden>:</span>
+ 			<span><input class="input-md _sec" type="text" name="sec" size="4"/></span>
+ 			m
 
  	
  	</span>
@@ -49,7 +50,7 @@
 {% load staticfiles %}
 
 <script src="{% static 'row/js/jquery-ui-1.10.4.custom.min.js' %}"></script>
-<script src="{% static 'row/js/erg.js' %}"></script>
+<script src="{% static 'row/js/erg-timed.js' %}"></script>
 
 
 
