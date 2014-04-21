@@ -10,19 +10,27 @@ $( '._weight').each(function( index ) {
 	_weights.push(parseFloat($(this).text()));
 });
 $( '._weight-datetime').each(function( index ) {
-	_datetimes.push($(this).text().substring(0,$(this).text().indexOf(",")));
+	datetime = $(this).text();
+	index = datetime.indexOf(",");
+	index = datetime.indexOf(",", index + 1);
+	datetime = datetime.substring(0, index);
+	ms = Date.parse(datetime);
+	_datetimes.push(ms);
 });
 
 
 	var new_weights = [];
 	var new_dates = [];
+	var for_chart = [];
 	var old = _datetimes[0];
 	var sum = _weights[0];
 	var n = 1;
 	for (var i = 1; i < _datetimes.length; i++) {
 		if (old != _datetimes[i]) {
+			avg_weight = (1.0 * sum) / n;
 			new_dates.push(old);
-			new_weights.push((1.0 * sum) / n);
+			new_weights.push(avg_weight);
+			for_chart.push([old, avg_weight]);
 			sum = _weights[i];
 			n = 1;
 		} else {
