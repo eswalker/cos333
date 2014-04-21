@@ -743,11 +743,14 @@ def json_practices(request):
 
 @csrf_exempt
 def json_recent_practice(request):
-    data = json_permissions_coaches_and_coxswains(request)
-    if not data:
-    	practice =  Practice.objects.latest('datetime')
-        data = '{"id":' + str(practice.id) + '}'
-    return HttpResponse(data, mimetype='application/json')
+	data = json_permissions_coaches_and_coxswains(request)
+	if not data:
+		try:
+			practice =  Practice.objects.filter(workout='Water').latest('datetime')
+			data = '{"id":' + str(practice.id) + '}'
+		except Practice.DoesNotExist:
+			data = json_error("Does not exist")
+	return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
 def json_practice_lineups(request, id):

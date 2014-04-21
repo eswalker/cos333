@@ -34,7 +34,7 @@ $( ".connectedSortable" ).sortable({
 
 num_rows = 3;
 function add_row(){
-	$('#content').append('<br><div class="_row"><p>Row ' + num_rows + '</p><ul id="" class="connectedSortable _ergs"></ul></div>');
+	$('#content').append('<br><div class="_row"><p>Row ' + num_rows + '</p><ul id="sortable' + num_rows + '" class="connectedSortable _ergs"></ul></div>');
 	num_rows += 1;
 	$( "#sortable" ).sortable({
       revert: true
@@ -70,26 +70,29 @@ function getCookie(cname){
   	return "";
 }
 
-function storeErgPositions {
+function storeErgPositions() {
 	var cookie = "" + num_rows + ",";
 	$('._erg').each(function() {
 		athleteId = parseInt($(this).children().eq(1).text());
-		cookie += $(this).parent().id + ":" + athleteId + ",";
-	}
+		cookie += $(this).parent().attr('id') + ":" + athleteId + ",";
+	});
 	setCookie("ergPositions", cookie, 365);
 	console.log(getCookie("ergPositions"));
 }
 
-function restoreErgPositions {
+function restoreErgPositions() {
 	var cookie = getCookie("ergPositions");
+	console.log("COOKIE: " + cookie);
 	data = cookie.split(',');
 	
+	var rows = 3; if (data.length > 1) { rows = parseInt(data[0]); }
+	while(num_rows < rows) { add_row() }
+
 	for (i = 1; i < data.length; i++) {
 		data2 = data[i].split(':');
 		if (data2.length == 2) {
 			divId = data2[0];
 			athId = data2[1];
-
 		
 			$('._erg').each(function() {
 				athleteId = $(this).children().eq(1).text();
@@ -97,18 +100,13 @@ function restoreErgPositions {
 					$(this).detach();
 					$("#" + divId).append($(this));
 				}
-			}
+			});
 		}
 	}
-	$('._erg').each(function() {
-		athleteId = parseInt($(this).children().eq(1).text());
-		cookie += $(this).parent().id + ":" + athleteId + ",";
-	}
-	var element = $('#childNode').detach();
-	$('#parentNode').append(element);
 
 }
 
+restoreErgPositions();
 
 
 function getUrlParameter(sParam) {
@@ -185,6 +183,7 @@ $('._submit').click(function() {
 				$(this).children().eq(5).children().eq(0).val("");
 			});
 
+			alert("Successfully add new piece: " + distanceString + "\n" + "Successfully added " + athletes.length + " erg results");
 			/*var next = getUrlParameter("next");
 			if (next != null) {
 				window.location.href = next;
@@ -200,6 +199,7 @@ $('._submit').click(function() {
 
 
 $('._clear').click(function() {
+	setCookie("ergPositions", "", 365);
     location.reload();
 });
 
