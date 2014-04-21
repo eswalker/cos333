@@ -8,8 +8,10 @@
 	  		<th>Name</th>
 	  		<th>Seats</th>
 	  		<th>Coxed</th>
-	  		<th>Edit</th>
-	  		<th>Delete</th>
+	  		{% if permission %}
+		  		<th>Edit</th>
+		  		<th>Delete</th>
+		  	{% endif %}
 		</tr>
 
 		{% for b in boats %}
@@ -21,8 +23,10 @@
 				{% else %}
 					<td>No</td>
 				{% endif %}
-				<td><a class="" href="{% url 'row:boat_edit' b.id %}">Edit</a></td>
-				<td><a class="" href="{% url 'row:boat_delete' b.id %}">Delete</a></td>
+				{% if permission %}
+					<td><a class="" href="{% url 'row:boat_edit' b.id %}">Edit</a></td>
+					<td><a class="" href="{% url 'row:boat_delete' b.id %}">Delete</a></td>
+				{% endif %}
 			</tr>
 		{% endfor %}
   	</table>

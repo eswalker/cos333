@@ -9,16 +9,20 @@
     <th>Date</th>
     <th>Practice</th>
     <th>Type</th>
-    <th>Edit</th>
-    <th>Delete</th>
+    {% if permission %}
+      <th>Edit</th>
+      <th>Delete</th>
+    {% endif %}
   </tr>
   {% for p in practices %}
     <tr>
     	<td>{{ p.datetime }}</td>
     	<td><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></td>
     	<td>{{ p.workout }}</td>
-      <td><a href="{% url 'row:practice_edit' p.id %}">Edit</a></td>
-      <td><a href="{% url 'row:practice_delete' p.id %}">Delete</a></td>
+      {% if permission %}
+        <td><a href="{% url 'row:practice_edit' p.id %}">Edit</a></td>
+        <td><a href="{% url 'row:practice_delete' p.id %}">Delete</a></td>
+      {% endif %}
     </tr>
   {% endfor %}
   </table>

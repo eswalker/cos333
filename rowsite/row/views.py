@@ -184,7 +184,8 @@ def piece_detail(request, piece_id):
     lineups = Lineup.objects.filter(piece=piece_id)
     notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')
     permission = coxswain_coach(request.user)
-    context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes, 'permission': permission}
+    is_coach = coach(request.user)
+    context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes, 'permission': permission, 'is_coach': is_coach}
     return render(request, 'row/piece/details.html', context)
 
 @login_required
@@ -265,7 +266,7 @@ def weight_edit(request, id):
     if not user_coxswain_coach(user_athlete, athlete):
         return render(request, 'row/denied.html', {})
     if request.method == 'POST':
-        form = WeightForm(request.POST, athlete2=user_athlete)
+        form = WeightForm(request.POST, user_athlete=user_athlete)
         if form.is_valid():
             weight.datetime = form.cleaned_data["datetime"]
             weight.athlete = form.cleaned_data["athlete"]
@@ -275,7 +276,7 @@ def weight_edit(request, id):
                     return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:athlete_index'))
     else:
-        form = WeightForm(instance=weight, athlete2=user_athlete)
+        form = WeightForm(instance=weight, user_athlete=user_athlete)
     context = {'form':form, 'title':'Edit Weight'}
     return render(request, 'row/add.html', context)
 
