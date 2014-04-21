@@ -625,43 +625,11 @@ def note_delete(request, id):
         return HttpResponseRedirect(request.GET["next"])
     return HttpResponseRedirect(reverse('row:practice_index'))
 
-
 @login_required
 def erg(request):
 	athletes = Athlete.objects.all()
 	context = {'title': 'Virtual Boathouse', 'athletes':athletes}
 	return render(request, 'row/ergs.html', context)
-
-@csrf_exempt
-def piece_ergroom(request, piece_id):
-	piece = get_object_or_404(Piece, pk=piece_id)
-	if request.method == 'POST':
-		results = request.POST['results'].split(',')
-		print results
-		for i in range(0, len(results)/3):
-			athlete_str = results[i * 3]
-			time_str = results[i * 3 + 1]
-			distance_str = results[i * 3 + 2]
-			try:
-
-				athlete_id = int(athlete_str)
-				print "hello"
-
-				time = int(float(time_str) * 10) / 10.
-				distance = int(distance_str)
-
-				if (distance > 0 and time > 0):
-					athlete = get_object_or_404(Athlete, pk=athlete_id)
-					result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
-					result.save()
-			except ValueError:
-				raise Http404
-		return piece_detail(request, piece_id)
-	else:	
-		athletes = Athlete.objects.all()
-		context = {'title': 'Virtual Boathouse', 'athletes':athletes}
-		return render(request, 'row/ergs.html', context)
-
 
 @csrf_exempt
 def practice_ergroom(request, practice_id):
@@ -689,8 +657,37 @@ def practice_ergroom(request, practice_id):
 		return practice_detail(request, practice_id)
 	else:	
 		athletes = Athlete.objects.all()
-		context = {'title': 'Virtual Boathouse', 'athletes':athletes}
+		context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice}
 		return render(request, 'row/ergs.html', context)
+
+@csrf_exempt
+def practice_ergroom_timed(request, practice_id):
+	practice = get_object_or_404(Practice, pk=practice_id)
+	if request.method == 'POST':
+		name = request.POST['name']
+		results = request.POST['results'].split(',')				
+		piece = Piece(practice=practice, name=name, datetime=datetime.now())
+		piece.save()
+		print results
+		for i in range(0, len(results)/3):
+			athlete_str = results[i * 3]
+			time_str = results[i * 3 + 1]
+			distance_str = results[i * 3 + 2]
+			try:
+				athlete_id = int(athlete_str)
+				time = int(float(time_str) * 10) / 10.
+				distance = int(distance_str)
+				if (distance > 0 and time > 0):
+					athlete = get_object_or_404(Athlete, pk=athlete_id)
+					result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
+					result.save()
+			except ValueError:
+				raise Http404
+		return practice_detail(request, practice_id)
+	else:	
+		athletes = Athlete.objects.all()
+		context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice}
+		return render(request, 'row/ergs-timed.html', context)
 
 def denied(request):
     context = {'title': 'Permission Denied'}

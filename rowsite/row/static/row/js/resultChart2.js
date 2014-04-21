@@ -1,10 +1,10 @@
 var _paces = [];
 var _athletes = [];
 
-/*
+
 $( "#_toggle-result-table" ).click(function() {
     $( "#_result-table" ).toggle();
-});*/
+});
 
 $( '._pace').each(function( index ) {
 	_paces.push(toSeconds($(this).text()));
@@ -33,6 +33,17 @@ for (var i = 0; i < _keys.length; i++) {
 	_data.push(_results[_keys[i]].length); // frequency as values
 }
 
+
+var _athlete_lists = [];
+for (var i = 0; i < _keys.length; i++) {
+    var list = "";
+    for (var j = 0; j < _results[_keys[i]].length; j++) {
+        list += (_results[_keys[j]] + "<br>");
+    }
+    _athlete_lists[_keys.indexOf(_keys[i])] = list;
+}
+    
+
 $(function () {
         $('#_result-chart2').highcharts({
             chart: {
@@ -45,21 +56,22 @@ $(function () {
                 text: '[what the workout is]'
             },
             xAxis: {
-                categories: _categories
+                categories: _categories,
+                title: {
+                	text: 'Split'
+                }
             },
             yAxis: {
+                allowDecimals: false,
                 min: 0,
                 title: {
                     text: 'Number of Rowers'
                 }
             },
             tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
+                formatter: function() {
+                    return '<b>'+this.x+'</b><br/>'+ _athlete_lists[_categories.indexOf(this.x)];
+                }
             },
             plotOptions: {
                 column: {
