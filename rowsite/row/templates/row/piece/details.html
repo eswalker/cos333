@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if piece %}
-  <h1>{{ piece.name }}</h1>
+  <h1 id='piece_name'>{{ piece.name }}</h1>
   <table class="table table-bordered">
     <tr><td>Practice</td><td><a href="{% url 'row:practice_detail' piece.practice.id %}">{{ piece.practice.name }}</a></td></tr>
     <tr><td>Date</td><td>{{ piece.datetime }}</td></tr>
@@ -45,8 +45,7 @@
  
 {% if results %}
 <h2>Results</h2>
-<canvas id="_result-chart" class="" width="600" height="200"></canvas><br/>
-<!--<div id="_results-chart" style="width:100%; height:400px;"></div>-->
+<div id="_result-chart" style="width:100%; height:400px;"></div>
 <a id="_toggle-result-table" class="btn btn-sm btn-primary">View Results</a>
 <table id="_result-table" class="table table-bordered" hidden>
   <tr>
@@ -63,7 +62,7 @@
 
   {% for result in results %}
     <tr>
-      <td class="_athlete">{{ result.athlete }}</td>
+      <td><a class="_athlete" href="{% url 'row:athlete_detail' result.athlete.id %}"> {{ result.athlete }}</a></td>
       <td>{{ result.datetime }}</td>
       <td class="_pace"></td>
       <td class="_distance">{{ result.distance }}</td>
