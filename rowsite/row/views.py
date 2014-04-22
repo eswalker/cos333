@@ -632,67 +632,67 @@ def note_delete(request, id):
 
 @login_required
 def erg(request):
-	athletes = Athlete.objects.all()
-	context = {'title': 'Virtual Boathouse', 'athletes':athletes}
-	return render(request, 'row/ergs.html', context)
+    athletes = Athlete.objects.all()
+    context = {'title': 'Virtual Boathouse', 'athletes':athletes}
+    return render(request, 'row/ergs.html', context)
 
 @csrf_exempt
 def practice_ergroom(request, practice_id):
-	practice = get_object_or_404(Practice, pk=practice_id)
-	if request.method == 'POST':
-		name = request.POST['name']
-		results = request.POST['results'].split(',')				
-		piece = Piece(practice=practice, name=name, datetime=datetime.now())
-		piece.save()
-		print results
-		for i in range(0, len(results)/3):
-			athlete_str = results[i * 3]
-			time_str = results[i * 3 + 1]
-			distance_str = results[i * 3 + 2]
-			try:
-				athlete_id = int(athlete_str)
-				time = int(float(time_str) * 10) / 10.
-				distance = int(distance_str)
-				if (distance > 0 and time > 0):
-					athlete = get_object_or_404(Athlete, pk=athlete_id)
-					result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
-					result.save()
-			except ValueError:
-				raise Http404
-		return practice_detail(request, practice_id)
-	else:	
-		athletes = Athlete.objects.all()
-		context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice}
-		return render(request, 'row/ergs.html', context)
+    practice = get_object_or_404(Practice, pk=practice_id)
+    if request.method == 'POST':
+        name = request.POST['name']
+        results = request.POST['results'].split(',')                
+        piece = Piece(practice=practice, name=name, datetime=datetime.now())
+        piece.save()
+        print results
+        for i in range(0, len(results)/3):
+            athlete_str = results[i * 3]
+            time_str = results[i * 3 + 1]
+            distance_str = results[i * 3 + 2]
+            try:
+                athlete_id = int(athlete_str)
+                time = int(float(time_str) * 10) / 10.
+                distance = int(distance_str)
+                if (distance > 0 and time > 0):
+                    athlete = get_object_or_404(Athlete, pk=athlete_id)
+                    result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
+                    result.save()
+            except ValueError:
+                raise Http404
+        return practice_detail(request, practice_id)
+    else:    
+        athletes = Athlete.objects.filter(role="Rower")
+        context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice}
+        return render(request, 'row/ergs.html', context)
 
 @csrf_exempt
 def practice_ergroom_timed(request, practice_id):
-	practice = get_object_or_404(Practice, pk=practice_id)
-	if request.method == 'POST':
-		name = request.POST['name']
-		results = request.POST['results'].split(',')				
-		piece = Piece(practice=practice, name=name, datetime=datetime.now())
-		piece.save()
-		print results
-		for i in range(0, len(results)/3):
-			athlete_str = results[i * 3]
-			time_str = results[i * 3 + 1]
-			distance_str = results[i * 3 + 2]
-			try:
-				athlete_id = int(athlete_str)
-				time = int(float(time_str) * 10) / 10.
-				distance = int(distance_str)
-				if (distance > 0 and time > 0):
-					athlete = get_object_or_404(Athlete, pk=athlete_id)
-					result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
-					result.save()
-			except ValueError:
-				raise Http404
-		return practice_detail(request, practice_id)
-	else:	
-		athletes = Athlete.objects.all()
-		context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice}
-		return render(request, 'row/ergs-timed.html', context)
+    practice = get_object_or_404(Practice, pk=practice_id)
+    if request.method == 'POST':
+        name = request.POST['name']
+        results = request.POST['results'].split(',')                
+        piece = Piece(practice=practice, name=name, datetime=datetime.now())
+        piece.save()
+        print results
+        for i in range(0, len(results)/3):
+            athlete_str = results[i * 3]
+            time_str = results[i * 3 + 1]
+            distance_str = results[i * 3 + 2]
+            try:
+                athlete_id = int(athlete_str)
+                time = int(float(time_str) * 10) / 10.
+                distance = int(distance_str)
+                if (distance > 0 and time > 0):
+                    athlete = get_object_or_404(Athlete, pk=athlete_id)
+                    result = Result(athlete=athlete, piece=piece, time=time, distance=distance, datetime=datetime.now())
+                    result.save()
+            except ValueError:
+                raise Http404
+        return practice_detail(request, practice_id)
+    else:
+        athletes = Athlete.objects.filter(role="Rower")
+        context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice}
+        return render(request, 'row/ergs-timed.html', context)
 
 def denied(request):
     context = {'title': 'Permission Denied'}
@@ -746,14 +746,14 @@ def json_practices(request):
 
 @csrf_exempt
 def json_recent_practice(request):
-	data = json_permissions_coaches_and_coxswains(request)
-	if not data:
-		try:
-			practice =  Practice.objects.filter(workout='Water').latest('datetime')
-			data = '{"id":' + str(practice.id) + '}'
-		except Practice.DoesNotExist:
-			data = json_error("Does not exist")
-	return HttpResponse(data, mimetype='application/json')
+    data = json_permissions_coaches_and_coxswains(request)
+    if not data:
+        try:
+            practice =  Practice.objects.filter(workout='Water').latest('datetime')
+            data = '{"id":' + str(practice.id) + '}'
+        except Practice.DoesNotExist:
+            data = json_error("Does not exist")
+    return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
 def json_practice_lineups(request, id):
@@ -763,16 +763,16 @@ def json_practice_lineups(request, id):
             practice = Practice.objects.get(pk=id)
             pieces = Piece.objects.filter(practice=practice)
             try:
-            	lineups = []
-            	for piece in pieces:
-                	lineups.append(Lineup.objects.filter(piece=piece))
+                lineups = []
+                for piece in pieces:
+                    lineups.append(Lineup.objects.filter(piece=piece))
                 data = serializers.serialize('json', lineups)
             except Lineup.DoesNotExist:
                 data = json_error("No lineups for the practice")
         except Practice.DoesNotExist:
             data = json_error("Practice does not exist")
         except Piece.DoesNotExist:
-        	data = json_error("Practice does not have lineups")
+            data = json_error("Practice does not have lineups")
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
