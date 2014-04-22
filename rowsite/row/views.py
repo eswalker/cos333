@@ -145,6 +145,8 @@ def practice_add(request):
         form = PracticeForm(request.POST)
         if form.is_valid():
             practice = form.save(commit=True)
+            if practice.workout == "Erg":
+                return HttpResponseRedirect(reverse('row:practice_ergroom', args=(practice.id,)))
             return HttpResponseRedirect(reverse('row:practice_detail', args=(practice.id,)))
     else:
         now = datetime.now();
