@@ -30,7 +30,7 @@ for (var i = 0; i < _paces.length; i++) {
 }
 
 /* sort the paces */
-_keys.sort();
+_keys.sort(function(a,b){return a-b});
 
 /* prepare the arrays for categories and data */
 var _categories = [];
