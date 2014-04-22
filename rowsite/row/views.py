@@ -759,13 +759,18 @@ def json_practice_lineups(request, id):
     if not data:
         try:
             practice = Practice.objects.get(pk=id)
+            pieces = Piece.objects.filter(practice=practice)
             try:
-                lineups = Lineup.objects.all().filter(practice=practice)
+            	lineups = []
+            	for piece in pieces:
+                	lineups.append(Lineup.objects.filter(piece=piece))
                 data = serializers.serialize('json', lineups)
             except Lineup.DoesNotExist:
                 data = json_error("No lineups for the practice")
         except Practice.DoesNotExist:
             data = json_error("Practice does not exist")
+        except Piece.DoesNotExist:
+        	data = json_error("Practice does not have lineups")
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
