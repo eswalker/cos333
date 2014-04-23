@@ -744,7 +744,6 @@ def json_practices(request):
         data = serializers.serialize('json', Practice.objects.all())
     return HttpResponse(data, mimetype='application/json')
 
-"""
 @csrf_exempt
 def json_recent_practice(request):
     data = json_permissions_coaches_and_coxswains(request)
@@ -754,10 +753,10 @@ def json_recent_practice(request):
             data = '{"id":' + str(practice.id) + '}'
         except Practice.DoesNotExist:
             data = json_error("Does not exist")
-    return HttpResponse(data, mimetype='application/json') """
+    return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
-def json_recent_practice(request):
+def json_recent_lineups(request):
     data = json_permissions_coaches_and_coxswains(request)
     if not data:
         try:
@@ -770,6 +769,7 @@ def json_recent_practice(request):
             data = json_error("Does not exist")
     return HttpResponse(data, mimetype='application/json')
 
+"""
 @csrf_exempt
 def json_practice_lineups(request, id):
     data = json_permissions_coaches_and_coxswains(request)
@@ -788,7 +788,7 @@ def json_practice_lineups(request, id):
             data = json_error("Practice does not exist")
         except Piece.DoesNotExist:
             data = json_error("Practice does not have lineups")
-    return HttpResponse(data, mimetype='application/json')
+    return HttpResponse(data, mimetype='application/json')"""
 
 @csrf_exempt
 def json_boats(request):
