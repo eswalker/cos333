@@ -441,9 +441,14 @@ def user_login(request):
                 if request.GET and request.GET["next"]:
                     return HttpResponseRedirect(request.GET["next"])
                 return HttpResponseRedirect(reverse('row:athlete_index'))
+        else:        
+            form = UserLoginForm()
+            form.fields['username'].initial = username
+            context = {'form':form, 'title':'Invalid account information'}
+
     else:
         form = UserLoginForm()
-    context = {'form':form, 'title':'Login'}
+        context = {'form':form, 'title':'Login'}
     return render(request, 'row/account/login.html', context)
 
 from django.contrib.auth import logout
