@@ -14,12 +14,10 @@ urlpatterns = patterns('',
     url(r'^invite/(?P<id>\d+)/cancel/$', views.invite_cancel, name='invite_cancel'),
     url(r'^invited/(?P<invite_key>\w+)/$', views.invited, name='invited'),
 
-
     url(r'^weight/add/$', views.weight_add, name='weight_add'),
     url(r'^athlete/(?P<athlete_id>\d+)/weight/add/$', views.weight_add, name='athlete_weight_add'),
     url(r'^weight/(?P<id>\d+)/edit/$', views.weight_edit, name='weight_edit'),
     url(r'^weight/(?P<id>\d+)/delete/$', views.weight_delete, name='weight_delete'),
-
 
     url(r'^practice/add/$', views.practice_add, name='practice_add'),
     url(r'^practice/(?P<practice_id>\d+)/$', views.practice_detail, name='practice_detail'),
@@ -31,7 +29,7 @@ urlpatterns = patterns('',
     url(r'^piece/(?P<piece_id>\d+)/result/add/$', views.result_add, name='piece_result_add'),
     url(r'^practice/(?P<practice_id>\d+)/ergroom/$', views.practice_ergroom, name='practice_ergroom'),
     url(r'^practice/(?P<practice_id>\d+)/ergroom/timed$', views.practice_ergroom_timed, name='practice_ergroom_timed'),
-
+    url(r'^practice/(?P<practice_id>\d+)/lineups/$', views.practice_lineups, name='practice_lineups'),
 
     url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
     url(r'^result/(?P<id>\d+)/edit/$', views.result_edit, name='result_edit'),

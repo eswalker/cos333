@@ -1,0 +1,55 @@
+{% extends 'row/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+
+<h1>Make a lineup</h1><small>Move each rower to one of the boats. Hit save to store the lineup. Hit done to return to practice page.</small>
+<br><br>
+
+<button class="btn btn-primary _clear">Reset</button><span> </span>
+<button class="btn btn-warning _submit">Save Lineup</button><span> </span>
+<a class="btn btn-primary _done" href="{% url 'row:practice_detail' practice.id %}">Done</a>
+<br><br>
+
+
+<div class="_row _row_holder" style="">
+	<p>Athlete Bin</p>
+	<ul id="sortable0" class="connectedSortable _ergs _athlete_bin">
+ 		{% for a in athletes %}
+ 			<span class="_erg _athlete" >
+ 				<span>{{a.name}}</span>
+ 				<span hidden>{{a.id}}</span> 	
+ 				<span hidden>{{a.role}}</span>
+ 				<span hidden>{{a.side}}</span>
+ 			</span>
+  		{% endfor %}
+	</ul>
+</div><br>
+
+<div class="_row">
+<ul id="sortable1" class="_ergs">
+	{% for b in boats %}
+		<span class="_erg boat">
+			<span class="boatname">{{b.name}} ({{b.seats}}{% if b.coxed %}+{% else %}-{% endif %})</span>
+			<span hidden>{{b.id}}</span><br>
+			<span class="hull connectedSortable">
+
+			</span>
+			<span hidden>{{b.id}}</span>
+			<span hidden>{{b.seats}}</span>
+			<span hidden>{{b.coxed}}</span>
+		</span>
+	{% endfor %}
+</ul>
+</div>
+
+
+{% load staticfiles %}
+
+<script src="{% static 'row/js/jquery-ui-1.10.4.custom.min.js' %}"></script>
+<script src="{% static 'row/js/lineups.js' %}"></script>
+
+
+
+{% endblock %}

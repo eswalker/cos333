@@ -37,6 +37,45 @@
   background-color:LightGreen;
 }
 
+.hull > ._erg {
+  background-color:#cccccc;
+  float:none;
+  margin:5px;
+  padding:5px;
+  display: block;
+
+}
+
+.hull {
+  background-color:#ffffff;
+  float:left;
+  padding:10px;
+  width:100%;
+}
+
+._boats {
+  background-color:#ffffff;
+  float:left;
+  padding:20px;
+}
+
+._col {
+  background-color:#dddddd;
+  float:left;
+  height:auto;
+  padding:20px;
+}
+
+
+._col_holder {
+  background-color:#FFCD3C;
+  float:none;
+  height:auto;
+  width:200px;
+  padding:20px;
+}
+
+
 #distance_box {
   padding:10px;
 }
@@ -73,3 +112,6 @@ a:active {text-decoration:underline;}
         padding-bottom: 10px;
     }
 }
+
+
+
