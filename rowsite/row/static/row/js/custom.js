@@ -1,4 +1,3 @@
-
 function readableSeconds(secs) {
 	var mins = Math.floor(secs / 60);
 	secs = secs - mins * 60;
@@ -15,7 +14,6 @@ function toSeconds(pace) {
 	var secs = parseFloat(fields[1]);
 	return parseInt(min * 60 + secs);
 }
-
 
 var _distances = []
 var _times = []

@@ -369,7 +369,7 @@ def user_register(request):
             u.set_password(password)
             u.save()
 
-            athlete = athlete_form.save(commit=False)
+            athlete = athlete_form.save(commit=False) #TODO: strip trailing white space
             athlete.user = u
             athlete.api_key = str(uuid.uuid4())
             athlete.role = invite.role
@@ -441,9 +441,14 @@ def user_login(request):
                 if request.GET and request.GET["next"]:
                     return HttpResponseRedirect(request.GET["next"])
                 return HttpResponseRedirect(reverse('row:athlete_index'))
+        else:        
+            form = UserLoginForm()
+            form.fields['username'].initial = username
+            context = {'form':form, 'title':'Invalid account information'}
+
     else:
         form = UserLoginForm()
-    context = {'form':form, 'title':'Login'}
+        context = {'form':form, 'title':'Login'}
     return render(request, 'row/account/login.html', context)
 
 from django.contrib.auth import logout
@@ -768,6 +773,21 @@ def json_recent_practice(request):
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
+def json_recent_lineups(request):
+    data = json_permissions_coaches_and_coxswains(request)
+    if not data:
+        try:
+            data = []
+            practice =  Practice.objects.filter(workout='Water').latest('datetime')
+            piece = Piece.objects.get(practice=practice, name="SENTINEL")
+            lineups = Lineup.objects.filter(piece=piece)
+            data = serializers.serialize('json', lineups)
+        except (Practice.DoesNotExist, Piece.DoesNotExist, Lineup.DoesNotExist):
+            data = json_error("Does not exist")
+    return HttpResponse(data, mimetype='application/json')
+
+"""
+@csrf_exempt
 def json_practice_lineups(request, id):
     data = json_permissions_coaches_and_coxswains(request)
     if not data:
@@ -785,7 +805,7 @@ def json_practice_lineups(request, id):
             data = json_error("Practice does not exist")
         except Piece.DoesNotExist:
             data = json_error("Practice does not have lineups")
-    return HttpResponse(data, mimetype='application/json')
+    return HttpResponse(data, mimetype='application/json')"""
 
 @csrf_exempt
 def json_boats(request):
