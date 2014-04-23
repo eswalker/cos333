@@ -369,7 +369,7 @@ def user_register(request):
             u.set_password(password)
             u.save()
 
-            athlete = athlete_form.save(commit=False)
+            athlete = athlete_form.save(commit=False) #TODO: strip trailing white space
             athlete.user = u
             athlete.api_key = str(uuid.uuid4())
             athlete.role = invite.role
