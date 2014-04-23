@@ -32,10 +32,20 @@
                 {% block sidebar %}
                     <li><a href="/">Home</a></li>
                     <li><a href="/athletes/">Roster</a></li>
-                    <li><a href="/practices/">Practices</a></li>
-                    <li><a href="/practice/add">Add Practice <span class="badge">new</span></a></li>
-                    <li><a href="/boats/">Boats</a></li>
-                    <li><a href="/invites/">Invite</a></li>
+                    {% if not anonymous %}
+                        <li><a href="/practices/">Practices</a></li>
+                        {% if role %}
+                            {% ifnotequal role "Rower" %}
+                                <li><a href="/practice/add">Add Practice <span class="badge">new</span></a></li>
+                            {% endifnotequal %}
+                        {% endif %}
+                        <li><a href="/boats/">Boats</a></li>
+                        {% if role %}
+                            {% ifequal role "Coach" %}
+                                <li><a href="/invites/">Invite</a></li>
+                            {% endifequal %}
+                        {% endif %}
+                    {% endif %}
                 {% endblock %}
             </ul>
         </div>
