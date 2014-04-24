@@ -699,6 +699,18 @@ def practice_ergroom_timed(request, practice_id):
         context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice}
         return render(request, 'row/ergs-timed.html', context)
 
+@csrf_exempt
+def practice_lineups(request, practice_id):
+    practice = get_object_or_404(Practice, pk=practice_id)
+    boats = Boat.objects.all()
+    athletes = Athlete.objects.all()
+    #athletes = Athlete.objects.filter(role="Rower")
+    context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice, 'boats':boats}
+    return render(request, 'row/lineups.html', context)
+
+
+
+
 def denied(request):
     context = {'title': 'Permission Denied'}
     return render(request, 'row/denied.html', context)
