@@ -47,8 +47,8 @@ class Invite(models.Model):
         recipients = []
         recipients.append(self.email)
         sender = "VirtualBoathouse@gmail.com"
-        subject = "You are invited to Virtual Boathouse"
-        message = 'Go to ' + link + ' to register.'
+        subject = "Invitation to join Virtual Boathouse for Princeton Lightweight Crew"
+        message = 'We\'re working on a rowing web application as part of our COS 333 project and would like you to take a look. Please go to ' + link + ' to register.\n\nPlease contact any of us with any questions or concerns.\n\nThanks!\n\nEd Walker, Brian Rosenfeld, Matt Drabick, Sam Jordan'
         
         send_mail(subject, message, sender, recipients, fail_silently=False)
 
