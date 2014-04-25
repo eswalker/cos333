@@ -1,0 +1,51 @@
+SENDING DATA FROM MOBILE APP TO WEB APP
+
+Mobile app already has:
+	-List of athletes and IDs
+	-Most recent practice ID
+	-Start lineups
+
+Web app needs:
+	-Piece
+	-Lineup
+	-One result per lineup -- will be assigned to all of the athletes in the lineup
+
+Steps for sending data to web app (DO THIS FOR EACH PIECE)
+	-Post piece's data json to json/piece/add
+	-For each lineup, post json to json/lineup/add
+	-For each lineup's result, post json to json/result/add
+
+
+/json/piece/add
+POST:
+	api_key
+
+	json in this format:
+		{"pracitce": PRACTICE_ID, "name": #_OF_THE_PIECE (OR DISTANCE) -- your choice on the convention, "datetime": CURRENT_DATETIME}
+
+		ex. {"practice": 6, "name": "2000 meters", "datetime": "2014-04-22T02:39:47.888Z"}
+
+	I will then use this data to create a piece. I will then return that piece's id to you.
+
+/json/lineup/add
+POST:
+	api_key
+
+	json in this format:
+		{"athletes": [ARRAY_OF_ATHLETE_IDs], "position": BOAT'S_POSITION_AS_STRING, "boat": NUMERICAL_ID_OF_BOAT, "piece": PIECE_NUMBER_YOU_JUST_GOT}
+
+		-- most of that should be the same as the original lineup you received; the only differences should be the athlete ID's and piece #
+
+		ex. {"athletes": [4, 5, 10, 11, 14], "position": "1V", "boat": 3, "piece": 10}
+
+	I will use this to create a lineup. You will not receive any data in return.
+
+/json/results/add
+
+	api_key
+
+	json: {"athletes": [ARRAY_OF_ATHLETES_IN_THE_LINEUP], "distance": DISTANCE_METERS, "time": TIME_SECONDS, "piece": PIECE_ID_YOU_GOT, "datetime": CURRENT_DATETIME}
+
+	ex. {"athletes": [1, 2, 3, 4, 5], "distance": 2000, "time": 390, "piece": 2, "datetime": "2014-04-18T21:24:40.809Z"}
+
+	I will use this to create a new result for each athlete in the lineup. You will not receive any data in return.
