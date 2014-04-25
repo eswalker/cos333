@@ -758,7 +758,7 @@ def json_athletes(request):
 def json_practices(request):
     data = json_permissions_coaches_and_coxswains(request)
     if not data:
-        data = serializers.serialize('json', Piece.objects.all())
+        data = serializers.serialize('json', Practice.objects.all())
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
