@@ -35,15 +35,13 @@ RETURNS:
 	err_api_key_required = "Api key required to access this resource"
 	err_invalid_api_key = "Api key does not match any user"
 
-/json/practice/<practice_id>/lineups/
+/json/lineups/recent/
 POST:
 	api_key
 RETURNS
-	[{"pk": 1, "model": "row.lineup", "fields": {"position": "1V", "practice": 1, "athletes": [2], "boat": 1}}]
-	or errors {"error":"err_message"}
-	err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
+	[{"pk": 3, "fields": {"athletes": [4, 5, 10, 11, 14], "position": "1V", "boat": 3, "piece": 10}, "model": "row.lineup"}, {"pk": 4, "fields": {"athletes": [8], "position": "2V", "boat": 1, "piece": 10}, "model": "row.lineup"}, {"pk": 5, "fields": {"athletes": [6, 13], "position": "3V", "boat": 4, "piece": 10}, "model": "row.lineup"}]err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
 	err_api_key_required = "Api key required to access this resource"
 	err_invalid_api_key = "Api key does not match any user"
 EXAMPLE
-	/json/practice/1/lineups/
+	/json/lineups/recent/
 

@@ -21,7 +21,9 @@ import uuid
 import csv
 from hashlib import md5
 
-from datetime import datetime    
+from datetime import datetime  
+
+
 
 
 
@@ -721,11 +723,15 @@ JSON API
 
 '''
 
+import json
+
 def json_error(error):
     return '{ "error":"' + error + '"}'
 err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
 err_api_key_required = "Api key required to access this resource"
 err_invalid_api_key = "Api key does not match any user"
+err_invalid_piece = "Invalid piece"
+err_piece_required = "Piece json required to add a piece"
 
 
 # for testing
@@ -812,6 +818,42 @@ def json_boats(request):
     data = json_permissions_coaches_and_coxswains(request)
     if not data:
         data = serializers.serialize('json', Boat.objects.all())
+    return HttpResponse(data, mimetype='application/json')
+
+@csrf_exempt
+def json_pieces_add(request):
+    data = json_permissions_coaches_and_coxswains(request)
+    if data: return HttpResponse(data, mimetype='application/json')
+
+    if not 'piece' in request.POST:
+        return HttpResponse(json_error(err_piece_required), mimetype='application/json')
+
+    piece_json = json.loads(request.POST['piece'])
+
+    if not 'practice' in piece_json:
+        return HttpResponse(json_error("No practice id found"), mimetype='application/json')
+
+    practice_id = piece_json['practice']
+
+    if not isinstance(practice_id, int):
+        return HttpResponse(json_error("Practice id must be an int"), mimetype='application/json')
+
+    try: practice = Practice.objects.get(id=practice_id)
+    except Practice.DoesNotExist: return HttpResponse(json_error("Invalid practice id"), mimetype='application/json')
+
+    if not 'name' in piece_json:
+        return HttpResponse(json_error("No piece name found"), mimetype='application/json')
+    name = piece_json["name"]
+
+    if not 'datetime' in piece_json:
+        return HttpResponse(json_error("No datetime found"), mimetype='application/json')
+    try: piece_datetime = datetime.fromtimestamp(piece_json["datetime"])
+    except Exception, e: return HttpResponse(json_error("Invalid datetime"), mimetype='application/json')
+
+    piece = Piece(name=name, practice=practice, datetime=piece_datetime)
+    piece.save()
+    data = '{"id":' + str(piece.id) + '}'
+
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
