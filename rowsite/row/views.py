@@ -152,9 +152,8 @@ def practice_add(request):
             return HttpResponseRedirect(reverse('row:practice_detail', args=(practice.id,)))
     else:
         now = datetime.now();
-        time = 'AM' if datetime.hour < 12 else 'PM'
         form = PracticeForm()
-        form.fields['name'].initial=now.strftime("%b %d") + " " + time
+        form.fields['name'].initial=now.strftime("%b %d %p")
     context = {'form':form, 'title':'Add Practice'}
     return render(request, 'row/add.html', context)
 
