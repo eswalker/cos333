@@ -828,7 +828,8 @@ def json_pieces_add(request):
     if not 'piece' in request.POST:
         return HttpResponse(json_error(err_piece_required), mimetype='application/json')
 
-    piece_json = json.loads(request.POST['piece'])
+    try: piece_json = json.loads(request.POST['piece'])
+    except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
 
     if not 'practice' in piece_json:
         return HttpResponse(json_error("No practice id found"), mimetype='application/json')
@@ -853,6 +854,77 @@ def json_pieces_add(request):
     piece = Piece(name=name, practice=practice, datetime=piece_datetime)
     piece.save()
     data = '{"id":' + str(piece.id) + '}'
+
+    return HttpResponse(data, mimetype='application/json')
+
+@csrf_exempt
+def json_lineups_add(request):
+    data = json_permissions_coaches_and_coxswains(request)
+    if data: return HttpResponse(data, mimetype='application/json')
+
+    if not 'lineup' in request.POST:
+        return HttpResponse(json_error("Lineup json required to add a lineup", mimetype='application/json'))
+
+    try: lineup_json = json.loads(request.POST['lineup'])
+    except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
+    if not 'athletes' in lineup_json:
+        return HttpResponse(json_error("No athletes found"), mimetype='application/json')
+
+    athletes = []
+    for athlete_id in lineup_json['athletes']:
+        if not isinstance(athlete_id, int):
+            return HttpResponse(json_error("Athlete ids must be of type int"), mimetype='application/json')
+
+        try: athletes.append(Athlete.objects.get(id=athlete_id))
+        except Athlete.DoesNotExist:
+            return HttpResponse(json_error(athlete_id + " is not a valid athlete id", mimetype='application/json'))
+
+    if not 'position' in lineup_json:
+        return HttpResponse(json_error("No position found"), mimetype='application/json')
+
+    position = lineup_json['position']
+    if not ('\'' + str(position) + '\'') in str(Lineup.position_choices):
+        return HttpResponse(json_error(str(position) + " is not a valid position"), mimetype='application/json')
+
+    if not 'boat' in lineup_json:
+        return HttpResponse(json_error("No boat found"), mimetype='application/json')
+
+    boat_id = lineup_json['boat']
+   
+    if not isinstance(boat_id, int):
+        return HttpResponse(json_error("Boat id must be of type int"), mimetype='application/json')
+
+    try: boat = Boat.objects.get(id=boat_id)
+    except Boat.DoesNotExist:
+        return HttpResponse(json_error(str(boat_id) + " is not a valid boat id"), mimetype='application/json')
+
+    seats = boat.seats
+    coxed = boat.coxed
+    num_athletes = len(athletes)
+
+    if num_athletes != seats + coxed:
+        return HttpResponse(json_error("Boat size and number of athletes do not match"), mimetype='application/json')
+
+    if not 'piece' in lineup_json:
+        return HttpResponse(json_error("No piece found"), mimetype='application/json')
+
+    piece_id = lineup_json['piece']
+
+    if not isinstance(piece_id, int):
+        return HttpResponse(json_error("Piece id must be of type int"), mimetype='application/json')
+
+    try: piece = Piece.objects.get(id=piece_id)
+    except Piece.DoesNotExist:
+        return HttpResponse(json_error(str(piece_id) + " is not a valid piece id"), mimetype='application/json')
+
+
+    lineup = Lineup(position=position, boat=boat, piece=piece)
+    lineup.save()
+    lineup.athletes = athletes
+    lineup.save()
+
+    data = '{"id":' + str(lineup.id) + '}'
 
     return HttpResponse(data, mimetype='application/json')
 
