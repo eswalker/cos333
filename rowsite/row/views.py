@@ -863,7 +863,7 @@ def json_lineups_add(request):
     if data: return HttpResponse(data, mimetype='application/json')
 
     if not 'lineup' in request.POST:
-        return HttpResponse(json_error("Lineup json required to add a lineup", mimetype='application/json'))
+        return HttpResponse(json_error("Lineup json required to add a lineup"), mimetype='application/json')
 
     try: lineup_json = json.loads(request.POST['lineup'])
     except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
@@ -934,7 +934,7 @@ def json_results_add(request):
     if data: return HttpResponse(data, mimetype='application/json')
 
     if not 'result' in request.POST:
-        return HttpResponse(json_error("Result json required to add a result", mimetype='application/json'))
+        return HttpResponse(json_error("Result json required to add a result"), mimetype='application/json')
 
     try: result_json = json.loads(request.POST['result'])
     except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
@@ -949,7 +949,7 @@ def json_results_add(request):
 
         try: athletes.append(Athlete.objects.get(id=athlete_id))
         except Athlete.DoesNotExist:
-            return HttpResponse(json_error(str(athlete_id) + " is not a valid athlete id", mimetype='application/json'))
+            return HttpResponse(json_error(str(athlete_id) + " is not a valid athlete id"), mimetype='application/json')
 
     if not 'piece' in result_json:
         return HttpResponse(json_error("No piece found"), mimetype='application/json')
