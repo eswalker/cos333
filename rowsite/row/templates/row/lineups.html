@@ -3,14 +3,19 @@
 
 {% block content %}
 
+<h1>Make a lineup</h1>
 
-<h1>Make a lineup</h1><small>Move each rower to one of the boats. Hit save to store the lineup. Hit done to return to practice page.</small>
+<small>Move each rower to one of the boats. Hit save to store the lineup. Hit done to return to practice page.</small>
 <br><br>
+
 
 <button class="btn btn-primary _clear">Reset</button><span> </span>
 <button class="btn btn-warning _submit">Save Lineup</button><span> </span>
 <a class="btn btn-primary _done" href="{% url 'row:practice_detail' practice.id %}">Done</a>
 <br><br>
+
+<div id="error" class="bg-danger" style="color:white;padding:10px;margin-bottom:20px" hidden>Error</div>
+<div id="success" class="bg-success" style="color:white;padding:10px;margin-bottom:20px" hidden>Success!</div>
 
 
 <div class="_row _row_holder" style="">

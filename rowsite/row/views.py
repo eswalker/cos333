@@ -701,12 +701,15 @@ def practice_ergroom_timed(request, practice_id):
 
 @csrf_exempt
 def practice_lineups(request, practice_id):
-    practice = get_object_or_404(Practice, pk=practice_id)
-    boats = Boat.objects.all()
-    athletes = Athlete.objects.all()
-    #athletes = Athlete.objects.filter(role="Rower")
-    context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice, 'boats':boats}
-    return render(request, 'row/lineups.html', context)
+    if request.method == 'POST':
+        results = request.POST['results'].split(',')
+    else:
+        practice = get_object_or_404(Practice, pk=practice_id)
+        boats = Boat.objects.all()
+        athletes = Athlete.objects.all()
+        #athletes = Athlete.objects.filter(role="Rower")
+        context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice, 'boats':boats}
+        return render(request, 'row/lineups.html', context)
 
 
 

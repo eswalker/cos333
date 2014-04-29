@@ -75,6 +75,10 @@
   padding:20px;
 }
 
+._athlete{
+  cursor: move;
+}
+
 
 #distance_box {
   padding:10px;

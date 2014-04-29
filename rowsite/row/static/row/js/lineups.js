@@ -9,8 +9,13 @@ $( ".connectedSortable" ).sortable({
 
 
 $('.boat').click(function(){ $(this).children().eq(3).toggle(); });
+
+function resetError() { $('#error').text("").hide(); }
+function resetSuccess() { $('#success').hide();}
+
 $('._clear').click(function() {
-	
+	resetSuccess();
+		resetError();
 	$('._athlete').each(function() {
 		$(this).detach();
 		$("#sortable0").append($(this));
@@ -18,7 +23,15 @@ $('._clear').click(function() {
 
 	setCookie("lineup","",365);
 
+	$('.boat').each(function() {		
+		$(this).removeClass('_erg_valid');
+		$(this).removeClass('_erg_error');
+
+	});
+
 });
+
+
 
 
 
@@ -89,37 +102,94 @@ $('._submit').click(function(){
 	storeLineups();
 
 	var resultString = "";
+	var allBoatsValid = true;
+
+	$('#error').text('').hide();
+	$('#success').hide();
 
 	$('.boat').each(function() {
 		boatId = parseInt($(this).children().eq(4).text());
 		boatSeats = parseInt($(this).children().eq(5).text());
 		boatCoxed = ($(this).children().eq(6).text() == "True");
+		boatName = $(this).children(".boatname").text();
+
+		console.log(boatName);
 
 		numChildren = $(this).children().eq(3).children().length;
 		expSeats = boatSeats;
 		if (boatCoxed)
 			expSeats += 1;
 
+		var numPorts = 0; var numStarboards = 0; var numBoth = 0; var numCoxswains = 0;
+		$(this).children('.hull').children('._athlete').each(function(){
+			var side = $(this).children().eq(3).text();
+			var role = $(this).children().eq(2).text();
+			if (role == "Rower") {
+				if (side == "Port")
+					numPorts += 1;
+				else if (side == "Starboard")
+					numStarboards += 1;
+				else if (side == "Both")
+					numBoth += 1;
+			} else if (role = "Coxswain")
+				numCoxswains += 1;
+		});
+
+		var correctNumRowers = false;
+		var correctNumPorts = false;
+		var correctNumStarboards = false;
+		var coxswainCorrectPosition = false;
+		var validBoatId = false;
+
+		if (boatId)
+			validBoatId = true;
+		if (numChildren == expSeats)
+			correctNumRowers = true;
+		if (!boatCoxed ||  $(this).children().eq(3).children().eq(0).children().eq(2).text() == 'Coxswain') 
+			coxswainCorrectPosition = true;
+		if (numPorts + numBoth >= Math.floor(expSeats/2))
+			correctNumPorts = true;
+		if (numStarboards + numBoth >= Math.floor(expSeats/2))
+			correctNumStarboards = true;
+
+		if (numChildren == 0) { $(this).removeClass('_erg_valid').removeClass('_erg_error'); }
+		else {
 		
+			
+			if (!validBoatId) $('#error').append('Invalid boat id for ' + boatName + ".<br>").show();
+			if (!correctNumRowers) $('#error').append('Incorrect number of rowers in ' + boatName + ".<br>").show();
+			else {
+				if (!coxswainCorrectPosition) $('#error').append('Invalid coxswain position for ' + boatName + ".<br>").show();
+				if (!correctNumPorts) $('#error').append('Too few ports in ' + boatName + ".<br>").show();
+				if (!correctNumStarboards) $('#error').append('Too few starboards in ' + boatName + ".<br>").show();
+			}
 
-		if (boatId && numChildren == expSeats && (!boatCoxed || $(this).children().eq(3).children().eq(0).children().eq(2).text() == 'Coxswain')) {
-			$(this).removeClass('_erg_error');
-			$(this).addClass('_erg_valid');	
+			if (!(validBoatId && coxswainCorrectPosition && correctNumRowers && correctNumStarboards && correctNumPorts)) {
+				allBoatsValid = false;
+				$(this).removeClass('_erg_valid').addClass('_erg_error');	
+			} else {
+				$(this).removeClass('_erg_error').addClass('_erg_valid');
+				resultString += boatId + ",";
+				$(this).children().eq(3).children().each(function(){
+					resultString += $(this).children().eq(1).text() + ",";
+				});
+				resultString += ";";	
+			}
 
-			resultString += boatId + ",";
-			$(this).children().eq(3).children().each(function(){
-				resultString += $(this).children().eq(1).text() + ",";
-			});
-			resultString += ";";		
-		} else if (numChildren != 0) {
-			$(this).removeClass('_erg_valid');
-			$(this).addClass('_erg_error');
-		} else {
-			$(this).removeClass('_erg_valid');
-			$(this).removeClass('_erg_error');
+		
 		}
 
 	});
+
+	if (allBoatsValid) {
+
+		var posted_data = { results : resultString };
+
+		console.log(posted_data);
+		$.post( "", posted_data , function( data ) {
+			$('#success').show();
+		});	
+	}
 	console.log(resultString);
 
 });
