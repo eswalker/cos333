@@ -650,14 +650,13 @@ def practice_ergroom(request, practice_id):
         results = request.POST['results'].split(',')                
         piece = Piece(practice=practice, name=name, datetime=datetime.now())
         piece.save()
-        print results
         for i in range(0, len(results)/3):
             athlete_str = results[i * 3]
             time_str = results[i * 3 + 1]
             distance_str = results[i * 3 + 2]
             try:
                 athlete_id = int(athlete_str)
-                time = int(float(time_str) * 10) / 10.
+                time = int(float(time_str) * 1000)
                 distance = int(distance_str)
                 if (distance > 0 and time > 0):
                     athlete = get_object_or_404(Athlete, pk=athlete_id)
@@ -679,14 +678,13 @@ def practice_ergroom_timed(request, practice_id):
         results = request.POST['results'].split(',')                
         piece = Piece(practice=practice, name=name, datetime=datetime.now())
         piece.save()
-        print results
         for i in range(0, len(results)/3):
             athlete_str = results[i * 3]
             time_str = results[i * 3 + 1]
             distance_str = results[i * 3 + 2]
             try:
                 athlete_id = int(athlete_str)
-                time = int(float(time_str) * 10) / 10.
+                time = int(float(time_str) * 1000)
                 distance = int(distance_str)
                 if (distance > 0 and time > 0):
                     athlete = get_object_or_404(Athlete, pk=athlete_id)
@@ -702,13 +700,28 @@ def practice_ergroom_timed(request, practice_id):
 
 @csrf_exempt
 def practice_lineups(request, practice_id):
+    practice = get_object_or_404(Practice, pk=practice_id)
     if request.method == 'POST':
-        results = request.POST['results'].split(',')
+        results = request.POST['results'].split(';')
+        piece = Piece(datetime=datetime.now(), practice=practice, name='SENTINEL')
+        piece.save()
+        for i in range(0, len(results) - 1):
+            data = results.split(',')
+            boat_id = int(data[0])
+            try: 
+                boat = Boat.objects.get(pk=boat_id)
+                athletes = []
+                for j in range(1, len(data)):
+                    athletes.append(int(data[j]))
+                lineup = Lineup(datetime=datetime.now(), piece=piece, boat=boat, athletes=athletes)
+                lineup.save()
+            except Boat.DoesNotExist:
+                raise Http404
+        return practice_detail(request, practice_id)
     else:
-        practice = get_object_or_404(Practice, pk=practice_id)
         boats = Boat.objects.all()
         athletes = Athlete.objects.all()
-        #athletes = Athlete.objects.filter(role="Rower")
+        athletes = Athlete.objects.filter(role="Rower",)
         context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice, 'boats':boats}
         return render(request, 'row/lineups.html', context)
 

@@ -8,7 +8,7 @@ $( ".connectedSortable" ).sortable({
 
 
 
-$('.boat').click(function(){ $(this).children().eq(3).toggle(); });
+/*$('.boat').click(function(){ $(this).children().eq(3).toggle(); });*/
 
 function resetError() { $('#error').text("").hide(); }
 function resetSuccess() { $('#success').hide();}
