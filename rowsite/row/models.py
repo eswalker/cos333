@@ -42,7 +42,6 @@ class Invite(models.Model):
         return delta < ( 7 * 3600 * 24)
 
     def send_invite(self):
-        
         link = "https://cos333.herokuapp.com/invited/" + self.invite_key + "/"
         recipients = []
         recipients.append(self.email)

@@ -22,6 +22,11 @@ function secondsToWatts(pace) {
 var _distances = []
 var _times = []
 
+$( '._time').each(function() { 
+	var org = $(this).text();
+	$(this).text(org.substring(0, org.length-3) + '.' + org.substring(org.length-3, org.length-2) );
+});
+
 $( '._time').each(function( index ) {
 	_times.push($(this).text());
 });

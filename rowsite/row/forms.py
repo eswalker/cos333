@@ -109,6 +109,10 @@ class ResultForm(forms.ModelForm):
         self.athlete2 = kwargs.pop("athlete2")
         super(ResultForm, self).__init__(*args, **kwargs)
 
+    def clean_time(self):
+        time = self.cleaned_data["time"]
+        return time * 1000
+
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
     distance = forms.IntegerField(help_text="Distance", label="Distance")
     time = forms.IntegerField(help_text="Time (in seconds)", label="Time")

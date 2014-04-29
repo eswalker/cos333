@@ -3,14 +3,19 @@
 
 {% block content %}
 
+<h1>Make a lineup</h1>
 
-<h1>Make a lineup</h1><small>Move each rower to one of the boats. Hit save to store the lineup. Hit done to return to practice page.</small>
+<small>Move each rower to one of the boats. Hit save to store the lineup. Hit done to return to practice page.</small>
 <br><br>
+
 
 <button class="btn btn-primary _clear">Reset</button><span> </span>
 <button class="btn btn-warning _submit">Save Lineup</button><span> </span>
 <a class="btn btn-primary _done" href="{% url 'row:practice_detail' practice.id %}">Done</a>
 <br><br>
+
+<div id="error" class="bg-danger" style="color:white;padding:10px;margin-bottom:20px" hidden>Error</div>
+<div id="success" class="bg-success" style="color:white;padding:10px;margin-bottom:20px" hidden>Success!</div>
 
 
 <div class="_row _row_holder" style="">
@@ -31,8 +36,21 @@
 <ul id="sortable1" class="_ergs">
 	{% for b in boats %}
 		<span class="_erg boat">
-			<span class="boatname">{{b.name}} ({{b.seats}}{% if b.coxed %}+{% else %}-{% endif %})</span>
-			<span hidden>{{b.id}}</span><br>
+			<span class="boatname">{{b.name}} ({{b.seats}}{% if b.coxed %}+{% else %}-{% endif %})</span><br>
+			<span class="position">
+				<select class="dropdown">
+				  	<option>Mixed</option>
+  					<option>1V</option>
+  					<option>2V</option>
+  					<option>3V</option>
+  					<option>4V</option>
+  					<option>5V</option>
+  					<option>1F</option>
+  					<option>2F</option>
+				</select>
+				<br>
+			</span>
+			
 			<span class="hull connectedSortable">
 
 			</span>
