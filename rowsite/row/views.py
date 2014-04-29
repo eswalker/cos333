@@ -186,8 +186,16 @@ def practice_delete(request, id):
 def piece_detail(request, piece_id):
     author = Athlete.objects.get(user=request.user)
     piece = get_object_or_404(Piece, pk=piece_id)
-    results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
     lineups = Lineup.objects.filter(piece=piece_id)
+    
+    if piece.practice.workout == "Erg":
+        results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
+    else:
+        results = {}
+        for lineup in lineups:
+            athlete = lineup.athletes.all()[0];
+            results[lineup.position] = Result.objects.get(piece=piece_id, athlete=athlete)
+
     notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')
     permission = coxswain_coach(request.user)
     is_coach = coach(request.user)
@@ -557,7 +565,7 @@ def lineup_edit(request, id):
         form = LineupForm(request.POST)
         if form.is_valid():
             lineup.position = form.cleaned_data["position"]
-            lineup.practice = form.cleaned_data["practice"]
+            lineup.piece = form.cleaned_data["piece"]
             lineup.boat = form.cleaned_data["boat"]
             lineup.athletes = form.cleaned_data["athletes"]
             lineup.save()
