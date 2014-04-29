@@ -1014,6 +1014,59 @@ def json_results_add(request):
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
+def json_notes_add(request):
+    data = json_permissions_coaches_and_coxswains(request)
+    if data: return HttpResponse(data, mimetype='application/json')
+
+    author = Athlete.objects.get(api_key=request.POST['api_key'])
+
+    if not 'note' in request.POST:
+        return HttpResponse(json_error("Note json required to add a note"), mimetype='application/json')
+
+    try: note_json = json.loads(request.POST['note'])
+    except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
+    if not 'id' in note_json:
+        return HttpResponse(json_error("No id found"), mimetype='application/json')
+    target_id = note_json['id']
+    if not isinstance(target_id, int):
+        return HttpResponse(json_error("Id must be of type int"), mimetype='application/json')
+
+    if not 'subject' in note_json:
+        return HttpResponse(json_error("No subject found"), mimetype='application/json')
+    subject = note_json['subject']
+
+    if not 'text' in note_json:
+        return HttpResponse(json_error("No text found"), mimetype='application/json')
+    text = note_json['text']
+
+    note = Note(author=author, subject=subject, note=text)
+
+    if not 'type' in note_json:
+        return HttpResponse(json_error("No type found"), mimetype='application/json')  
+    note_type = note_json['type']
+
+    if note_type == 'practice':
+        try: practice = Practice.objects.get(id=target_id)
+        except Practice.DoesNotExist:
+            return HttpResponse(json_error(str(target_id) + " is not a valid practice id"), mimetype='application/json')
+        note = Note(author=author, subject=subject, note=text, practice=practice)
+    
+    elif note_type == 'piece':
+        try: piece = Piece.objects.get(id=target_id)
+        except Piece.DoesNotExist:
+            return HttpResponse(json_error(str(target_id) + " is not a valid piece id"), mimetype='application/json')
+        note = Note(author=author, subject=subject, note=text, piece=piece)
+
+    else: return HttpResponse(json_error("Invalid type"), mimetype='application/json') 
+
+    note.save()
+
+    data = '{"id":' + str(note.id) + '}'
+    return HttpResponse(data, mimetype='application/json')
+
+
+@csrf_exempt
 def json_login(request):
     data = None
     if request.method == 'POST':

@@ -50,3 +50,14 @@ POST:
 	ex. {"athletes": [1, 2, 3, 4, 5], "distance": 2000, "time": 390, "piece": 2, "datetime": 1398549251}
 
 	I will use this to create a new result for each athlete in the lineup. You will not receive any data in return.
+
+/json/notes/add
+
+	api_key
+
+	json in this format (called "note"):
+		{"type": "practice" or "piece", "id": ID_OF_PIECE_OR_PRACTICE, "subject": STRING, "text": STRING}
+
+	ex. {"type": "practice", "id": 1, "subject": "Weather", "text": "There was a strong wind from the East. Temperature of 75 degrees."}
+
+	I will use this to create a new note. You will receive the note's id in return. This will be the confirmation that it was successful.

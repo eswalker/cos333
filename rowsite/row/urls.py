@@ -77,6 +77,7 @@ urlpatterns = patterns('',
     url(r'^json/pieces/add$', views.json_pieces_add, name='json_pieces_add'),
     url(r'^json/lineups/add$', views.json_lineups_add, name='json_lineups_add'),
     url(r'^json/results/add$', views.json_results_add, name='json_results_add'),
+    url(r'^json/notes/add$', views.json_notes_add, name='json_notes_add'),
 
     url(r'^athletes/csv/$', views.athlete_index_csv, name='athlete_index_csv'),
 
