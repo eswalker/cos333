@@ -189,7 +189,8 @@ def piece_detail(request, piece_id):
     lineups = Lineup.objects.filter(piece=piece_id)
     
     if piece.practice.workout == "Erg":
-        results = Result.objects.filter(piece=piece_id).order_by('distance', 'time')
+        results = Result.objects.filter(piece=piece_id).order_by('distance').reverse()
+        results = results.order_by('time').reverse()
     else:
         results = {}
         for lineup in lineups:
