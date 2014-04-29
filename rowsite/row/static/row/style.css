@@ -1,5 +1,6 @@
 ._erg {
   background-color:#cccccc;
+  color:black;
   float:none;
   margin:5px;
   padding:5px;
@@ -23,7 +24,8 @@
 }
 
 ._row_holder {
-  background-color:#FFCD3C;
+  background-color:#222222;
+  color:white;
   float:none;
   height:auto;
   padding:20px;
@@ -122,6 +124,10 @@ a:active {text-decoration:underline;}
   font-weight: bold;
 }
 
+.navbar-stacked > li {
+  margin-bottom:10px;
+}
+
 select {
 
       border: 0 !important;  /*Removes border*/
@@ -143,7 +149,7 @@ select option {
   text-align: center;
 }
 
-input[type="text"] {
+input, textarea {
   outline: none;
   padding: 5px;
   padding-left:15px;
@@ -154,7 +160,7 @@ input[type="text"] {
   border-radius: 3px;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus , textarea:focus {
   border-color: blue;
 
 }
@@ -180,7 +186,6 @@ table a:hover {
 }
 table {
   font-size:14px;
-  text-shadow: 1px 1px 0px #fff;
   background:#eaebec;
   border:#ccc 1px solid;
 
@@ -221,9 +226,22 @@ table tr.even td {
   background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f6f6f6));
   background: -moz-linear-gradient(top,  #f8f8f8,  #f6f6f6);
 }
-table tr:hover td {
+table.recordtable tr:hover td {
   background: #f2f2f2;
   background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
   background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);  
 }
+.alert-danger{
+  background:red;
+  color:white;
+}
+ul
+{
+list-style-type: none;
+padding: 0px;
+margin: 0px;
+}
 
+.btn-default:hover {
+  background:#000000 !important;
+}

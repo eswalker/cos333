@@ -13,7 +13,7 @@
         {% block header %}
         <nav class="navbar navbar-default " role="navigation">
             <div class="container container-fluid">
-
+                <img id="logo"/>
                 <p class="navbar-text navbar-left">Virtual Boathouse</p>
                 {% if user.is_authenticated %}
                     <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a> | <a href="{% url 'row:password_change' %}">Change Password</a></p>
@@ -27,22 +27,23 @@
         {% endblock %}
     </div>
     <div id="sidebar" class="col-md-2">
-        <div class="well">
-            <ul class="nav navbar navbar-stacked sidebar-navbar-collapse">
+        <div class="btn-group input-group btn-group-justified" data-toggle="buttons">
+            <ul class="nav navbar navbar-stacked  sidebar sidebar-navbar sidebar-navbar-collapse">
                 {% block sidebar %}
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/athletes/">Roster</a></li>
+                    <li><a class="btn btn-default" href="/">Home</a></li>
+                    <li><a class="btn btn-default" href="/athletes/">Roster</a></li>
                     {% if not anonymous %}
-                        <li><a href="/practices/">Practices</a></li>
+                        <li><a class="btn btn-default" href="/practices/">Practices</a></li>
                         {% if role %}
                             {% ifnotequal role "Rower" %}
-                                <li><a href="/practice/add">Add Practice <span class="badge">new</span></a></li>
+                                <li><a class="btn btn-default" href="/practice/add">Add Erg Practice</a></li>
+                                <li><a class="btn btn-default" href="/practice/add">Add Water Practice <span class="badge">soon</span></a></li>
                             {% endifnotequal %}
                         {% endif %}
-                        <li><a href="/boats/">Boats</a></li>
+                        <li><a class="btn btn-default" href="/boats/">Boats</a></li>
                         {% if role %}
                             {% ifequal role "Coach" %}
-                                <li><a href="/invites/">Invite</a></li>
+                                <li><a class="btn btn-default" href="/invites/">Invite</a></li>
                             {% endifequal %}
                         {% endif %}
                     {% endif %}

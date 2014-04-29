@@ -196,6 +196,7 @@ $('._submit').click(function() {
 
 
 
+$('._switch').click(function(){ storeErgPositions(); });
 
 
 

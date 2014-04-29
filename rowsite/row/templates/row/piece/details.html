@@ -12,7 +12,7 @@
 
 {% if lineups %}
 <h2>Lineups</h2>
-<table class="table table-bordered">
+<table class="table table-bordered recordtable">
 
   <tr>
     <th>Position</th>
@@ -47,7 +47,7 @@
 <h2>Results</h2>
 <div id="_result-chart" style="width:100%; height:400px;"></div>
 <a id="_toggle-result-table" class="btn btn-sm btn-primary">View Results</a>
-<table id="_result-table" class="table table-bordered" hidden>
+<table id="_result-table" class="table table-bordered recordtable" hidden>
   <tr>
     <th>Athlete</th>
     <th>Date</th>
@@ -80,7 +80,7 @@
 
 {% if notes %}
   <h2>Notes</h2>
-  <table class="table table-bordered">
+  <table class="table table-bordered recordtable">
     <tbody>
     {% for note in notes %}
       <tr class="note_head">

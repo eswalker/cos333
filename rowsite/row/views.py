@@ -706,14 +706,16 @@ def practice_lineups(request, practice_id):
         piece = Piece(datetime=datetime.now(), practice=practice, name='SENTINEL')
         piece.save()
         for i in range(0, len(results) - 1):
-            data = results.split(',')
+            data = results[i].split(',')
             boat_id = int(data[0])
             try: 
                 boat = Boat.objects.get(pk=boat_id)
                 athletes = []
-                for j in range(1, len(data)):
+                for j in range(1, len(data) - 1):
                     athletes.append(int(data[j]))
-                lineup = Lineup(datetime=datetime.now(), piece=piece, boat=boat, athletes=athletes)
+                lineup = Lineup(piece=piece, boat=boat, position="1V")
+                lineup.save()
+                lineup.athletes = athletes
                 lineup.save()
             except Boat.DoesNotExist:
                 raise Http404

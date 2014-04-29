@@ -195,7 +195,7 @@ $('._submit').click(function() {
 
 
 
-
+$('._switch').click(function(){ storeErgPositions();});
 
 
 $('._clear').click(function() {
