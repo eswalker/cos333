@@ -1,7 +1,6 @@
 var _paces = [];
 var _athletes = [];
 
-
 $( "#_toggle-result-table" ).click(function() {
     $( "#_result-table" ).toggle();
 });
