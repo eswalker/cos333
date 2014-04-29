@@ -50,6 +50,7 @@
         <th>Practice</th>
         <th>Piece</th>
         <th>Pace</th>
+        <th>Watts</th>
         <th>Distance</th>
         <th>Time</th>
         <th>Type</th>
@@ -65,6 +66,7 @@
           <td><a href="{% url 'row:practice_detail' result.piece.practice.id %}">{{ result.piece.practice.name }}</a></td>
           <td><a href="{% url 'row:piece_detail' result.piece.id %}">{{ result.piece.name }}</a></td>
           <td class="_pace"></td>
+          <td class="_watts"></td>
           <td class="_distance">{{ result.distance }}</td>
           <td class="_time">{{ result.time }}</td>
           <td>{{ result.piece.practice.workout }}</td>

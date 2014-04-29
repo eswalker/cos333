@@ -52,6 +52,7 @@
     <th>Athlete</th>
     <th>Date</th>
     <th>Pace</th>
+    <th>Watts</th>
     <th>Distance</th>
     <th>Time</th>
     {% if permission %}
@@ -65,6 +66,7 @@
       <td><a class="_athlete" href="{% url 'row:athlete_detail' result.athlete.id %}"> {{ result.athlete }}</a></td>
       <td>{{ result.datetime }}</td>
       <td class="_pace"></td>
+      <td class="_watts"></td>
       <td class="_distance">{{ result.distance }}</td>
       <td class="_time">{{ result.time }}</td>
       {% if permission %}

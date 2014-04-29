@@ -21,7 +21,9 @@ import uuid
 import csv
 from hashlib import md5
 
-from datetime import datetime    
+from datetime import datetime  
+
+
 
 
 
@@ -150,9 +152,8 @@ def practice_add(request):
             return HttpResponseRedirect(reverse('row:practice_detail', args=(practice.id,)))
     else:
         now = datetime.now();
-        time = 'AM' if datetime.hour < 12 else 'PM'
         form = PracticeForm()
-        form.fields['name'].initial=now.strftime("%b %d") + " " + time
+        form.fields['name'].initial=now.strftime("%b %d %p")
     context = {'form':form, 'title':'Add Practice'}
     return render(request, 'row/add.html', context)
 
@@ -724,11 +725,15 @@ JSON API
 
 '''
 
+import json
+
 def json_error(error):
     return '{ "error":"' + error + '"}'
 err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
 err_api_key_required = "Api key required to access this resource"
 err_invalid_api_key = "Api key does not match any user"
+err_invalid_piece = "Invalid piece"
+err_piece_required = "Piece json required to add a piece"
 
 
 # for testing
@@ -815,6 +820,173 @@ def json_boats(request):
     data = json_permissions_coaches_and_coxswains(request)
     if not data:
         data = serializers.serialize('json', Boat.objects.all())
+    return HttpResponse(data, mimetype='application/json')
+
+@csrf_exempt
+def json_pieces_add(request):
+    data = json_permissions_coaches_and_coxswains(request)
+    if data: return HttpResponse(data, mimetype='application/json')
+
+    if not 'piece' in request.POST:
+        return HttpResponse(json_error(err_piece_required), mimetype='application/json')
+
+    try: piece_json = json.loads(request.POST['piece'])
+    except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
+    if not 'practice' in piece_json:
+        return HttpResponse(json_error("No practice id found"), mimetype='application/json')
+
+    practice_id = piece_json['practice']
+
+    if not isinstance(practice_id, int):
+        return HttpResponse(json_error("Practice id must be an int"), mimetype='application/json')
+
+    try: practice = Practice.objects.get(id=practice_id)
+    except Practice.DoesNotExist: return HttpResponse(json_error("Invalid practice id"), mimetype='application/json')
+
+    if not 'name' in piece_json:
+        return HttpResponse(json_error("No piece name found"), mimetype='application/json')
+    name = piece_json["name"]
+
+    if not 'datetime' in piece_json:
+        return HttpResponse(json_error("No datetime found"), mimetype='application/json')
+    try: piece_datetime = datetime.fromtimestamp(piece_json["datetime"])
+    except Exception, e: return HttpResponse(json_error("Invalid datetime"), mimetype='application/json')
+
+    piece = Piece(name=name, practice=practice, datetime=piece_datetime)
+    piece.save()
+    data = '{"id":' + str(piece.id) + '}'
+
+    return HttpResponse(data, mimetype='application/json')
+
+@csrf_exempt
+def json_lineups_add(request):
+    data = json_permissions_coaches_and_coxswains(request)
+    if data: return HttpResponse(data, mimetype='application/json')
+
+    if not 'lineup' in request.POST:
+        return HttpResponse(json_error("Lineup json required to add a lineup"), mimetype='application/json')
+
+    try: lineup_json = json.loads(request.POST['lineup'])
+    except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
+    if not 'athletes' in lineup_json:
+        return HttpResponse(json_error("No athletes found"), mimetype='application/json')
+
+    athletes = []
+    for athlete_id in lineup_json['athletes']:
+        if not isinstance(athlete_id, int):
+            return HttpResponse(json_error("Athlete ids must be of type int"), mimetype='application/json')
+
+        try: athletes.append(Athlete.objects.get(id=athlete_id))
+        except Athlete.DoesNotExist:
+            return HttpResponse(json_error(str(athlete_id) + " is not a valid athlete id", mimetype='application/json'))
+
+    if not 'position' in lineup_json:
+        return HttpResponse(json_error("No position found"), mimetype='application/json')
+
+    position = lineup_json['position']
+    if not ('\'' + str(position) + '\'') in str(Lineup.position_choices):
+        return HttpResponse(json_error(str(position) + " is not a valid position"), mimetype='application/json')
+
+    if not 'boat' in lineup_json:
+        return HttpResponse(json_error("No boat found"), mimetype='application/json')
+
+    boat_id = lineup_json['boat']
+   
+    if not isinstance(boat_id, int):
+        return HttpResponse(json_error("Boat id must be of type int"), mimetype='application/json')
+
+    try: boat = Boat.objects.get(id=boat_id)
+    except Boat.DoesNotExist:
+        return HttpResponse(json_error(str(boat_id) + " is not a valid boat id"), mimetype='application/json')
+
+    seats = boat.seats
+    coxed = boat.coxed
+    num_athletes = len(athletes)
+
+    if num_athletes != seats + coxed:
+        return HttpResponse(json_error("Boat size and number of athletes do not match"), mimetype='application/json')
+
+    if not 'piece' in lineup_json:
+        return HttpResponse(json_error("No piece found"), mimetype='application/json')
+
+    piece_id = lineup_json['piece']
+
+    if not isinstance(piece_id, int):
+        return HttpResponse(json_error("Piece id must be of type int"), mimetype='application/json')
+
+    try: piece = Piece.objects.get(id=piece_id)
+    except Piece.DoesNotExist:
+        return HttpResponse(json_error(str(piece_id) + " is not a valid piece id"), mimetype='application/json')
+
+
+    lineup = Lineup(position=position, boat=boat, piece=piece)
+    lineup.save()
+    lineup.athletes = athletes
+    lineup.save()
+
+    data = '{"id":' + str(lineup.id) + '}'
+
+    return HttpResponse(data, mimetype='application/json')
+
+@csrf_exempt
+def json_results_add(request):
+    data = json_permissions_coaches_and_coxswains(request)
+    if data: return HttpResponse(data, mimetype='application/json')
+
+    if not 'result' in request.POST:
+        return HttpResponse(json_error("Result json required to add a result"), mimetype='application/json')
+
+    try: result_json = json.loads(request.POST['result'])
+    except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
+    if not 'athletes' in result_json:
+        return HttpResponse(json_error("No athletes found"), mimetype='application/json')
+
+    athletes = []
+    for athlete_id in result_json['athletes']:
+        if not isinstance(athlete_id, int):
+            return HttpResponse(json_error("Athlete ids must be of type int"), mimetype='application/json')
+
+        try: athletes.append(Athlete.objects.get(id=athlete_id))
+        except Athlete.DoesNotExist:
+            return HttpResponse(json_error(str(athlete_id) + " is not a valid athlete id"), mimetype='application/json')
+
+    if not 'piece' in result_json:
+        return HttpResponse(json_error("No piece found"), mimetype='application/json')
+
+    piece_id = result_json['piece']
+
+    if not isinstance(piece_id, int):
+        return HttpResponse(json_error("Piece id must be of type int"), mimetype='application/json')
+
+    try: piece = Piece.objects.get(id=piece_id)
+    except Piece.DoesNotExist:
+        return HttpResponse(json_error(str(piece_id) + " is not a valid piece id"), mimetype='application/json')
+
+    if not 'datetime' in result_json:
+        return HttpResponse(json_error("No datetime found"), mimetype='application/json')
+    try: result_datetime = datetime.fromtimestamp(result_json["datetime"])
+    except Exception, e: return HttpResponse(json_error("Invalid datetime"), mimetype='application/json')
+
+    if not 'distance' in result_json:
+        return HttpResponse(json_error("No distance found"), mimetype='application/json')
+    distance = result_json['distance']
+    if not isinstance(distance, int):
+        return HttpResponse(json_error("Distance must be of type int"), mimetype='application/json')
+
+    if not 'time' in result_json:
+        return HttpResponse(json_error("No time found"), mimetype='application/json')
+    time = result_json['time']
+    if not isinstance(time, int):
+        return HttpResponse(json_error("Time must be of type int"), mimetype='application/json')
+
+    for athlete in athletes:
+        result = Result(athlete=athlete, distance=distance, time=time, piece=piece, datetime=result_datetime)
+        result.save()
+
+    data = '{"success": True}'
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt

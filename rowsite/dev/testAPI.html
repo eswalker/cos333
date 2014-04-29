@@ -19,8 +19,8 @@ api_key: <input type="text" name="api_key">
 <input type="submit" value="Submit">
 </form>
 
-<p> /json/practice/1/lineups </p>
-<form name="input" action="https://cos333.herokuapp.com/json/practice/1/lineups/" method="post">
+<p> /json/lineups/recent </p>
+<form name="input" action="http://cos333.herokuapp.com/json/lineups/recent" method="post">
 api_key: <input type="text" name="api_key">
 <input type="submit" value="Submit">
 </form>
@@ -31,6 +31,26 @@ api_key: <input type="text" name="api_key">
 <input type="submit" value="Submit">
 </form>
 
+<p> /json/pieces/add </p>
+<form name="input" action="http://cos333.herokuapp.com/json/pieces/add" method="post">
+api_key: <input type="text" name="api_key">
+piece: <input type="text" name="piece">
+<input type="submit" value="Submit">
+</form>
+
+<p> /json/lineup/add </p>
+<form name="input" action="http://cos333.herokuapp.com/json/lineups/add" method="post">
+api_key: <input type="text" name="api_key">
+lineup: <input type="text" name="lineup">
+<input type="submit" value="Submit">
+</form>
+
+<p> /json/results/add </p>
+<form name="input" action="http://cos333.herokuapp.com/json/results/add" method="post">
+api_key: <input type="text" name="api_key">
+result: <input type="text" name="result">
+<input type="submit" value="Submit">
+</form>
 
 
 <h1> ON LOCALHOST </h1>
@@ -65,11 +85,6 @@ api_key: <input type="text" name="api_key">
 <input type="submit" value="Submit">
 </form>
 
-<p> /json/practice/1/lineups </p>
-<form name="input" action="http://localhost:8000/json/practice/1/lineups/" method="post">
-api_key: <input type="text" name="api_key">
-<input type="submit" value="Submit">
-</form>
 
 <p> /json/boats/ </p>
 <form name="input" action="http://localhost:8000/json/boats/" method="post">
@@ -77,6 +92,23 @@ api_key: <input type="text" name="api_key">
 <input type="submit" value="Submit">
 </form>
 
+<p> /json/pieces/add </p>
+<form name="input" action="http://localhost:8000/json/pieces/add" method="post">
+api_key: <input type="text" name="api_key">
+piece: <input type="text" name="piece">
+<input type="submit" value="Submit">
+</form>
 
+<p> /json/lineup/add </p>
+<form name="input" action="http://localhost:8000/json/lineups/add" method="post">
+api_key: <input type="text" name="api_key">
+lineup: <input type="text" name="lineup">
+<input type="submit" value="Submit">
+</form>
 
-
+<p> /json/results/add </p>
+<form name="input" action="http://localhost:8000/json/results/add" method="post">
+api_key: <input type="text" name="api_key">
+result: <input type="text" name="result">
+<input type="submit" value="Submit">
+</form>

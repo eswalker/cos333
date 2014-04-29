@@ -56,6 +56,9 @@ class AthleteForm(forms.ModelForm):
             raise forms.ValidationError('Height must be between 30 and 100 inches.')
         return height
 
+    def clean_name(self):
+        return self.cleaned_data["name"].rstrip()
+
     class Meta:
         model = Athlete
         fields = ('name', 'side', 'year', 'height', 'status')

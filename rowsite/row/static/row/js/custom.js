@@ -15,6 +15,10 @@ function toSeconds(pace) {
 	return parseInt(min * 60 + secs);
 }
 
+function secondsToWatts(pace) {
+	return 2.80 / (Math.pow(pace, 3));
+}
+
 var _distances = []
 var _times = []
 
@@ -26,10 +30,17 @@ $( '._distance').each(function( index ) {
 });
 
 var _x = 0
+var _y = 0
 $( '._pace').each(function( index ) {
 	var pace =  _times[_x] / _distances[_x] * 500;
 	$(this).text(readableSeconds(pace));
 	_x = _x + 1;
+});
+
+$( '._watts').each(function( index ) {
+	var pace = (_times[_y] / _distances[_y]);
+	$(this).text(secondsToWatts(pace).toFixed(1));
+	_y = _y + 1;
 });
 
 
