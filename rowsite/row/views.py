@@ -84,6 +84,11 @@ def athlete_detail(request, athlete_id):
     context = {'athlete':athlete, 'weights':weights, 'results':results, 'permission': permission, 'is_athlete': is_athlete}
     return render(request, 'row/athlete/details.html', context)
 
+@login_required
+def my_profile(request):
+    user_athlete = Athlete.objects.get(user=request.user)
+    return athlete_detail(request, user_athlete.id)
+
 '''
 @login_required
 def athlete_delete(request, id):
@@ -753,12 +758,16 @@ def practice_lineups(request, practice_id):
         for i in range(0, len(results) - 1):
             data = results[i].split(',')
             boat_id = int(data[0])
+            boat_position = data[1]
+            boat_tuple = (boat_position, boat_position)
+            if not boat_tuple in Lineup.position_choices:
+                raise Http404
             try: 
                 boat = Boat.objects.get(pk=boat_id)
                 athletes = []
-                for j in range(1, len(data) - 1):
+                for j in range(2, len(data) - 1):
                     athletes.append(int(data[j]))
-                lineup = Lineup(piece=piece, boat=boat, position="1V")
+                lineup = Lineup(piece=piece, boat=boat, position=boat_position)
                 lineup.save()
                 lineup.athletes = athletes
                 lineup.save()
@@ -768,7 +777,7 @@ def practice_lineups(request, practice_id):
     else:
         boats = Boat.objects.all()
         athletes = Athlete.objects.all()
-        athletes = Athlete.objects.filter(role="Rower",)
+        athletes = Athlete.objects.filter(role="Rower",status="Active") | Athlete.objects.filter(role="Coxswain",status="Active")
         context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice, 'boats':boats}
         return render(request, 'row/lineups.html', context)
 

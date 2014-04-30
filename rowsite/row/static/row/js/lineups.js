@@ -31,6 +31,14 @@ $('._clear').click(function() {
 
 });
 
+$('._athlete').each(function(){
+	var side = $(this).children().eq(3).text();
+	var role = $(this).children().eq(2).text();
+	side = side.substring(0,1);
+	if (role == 'Coxswain')
+		side = 'Cox';
+	$(this).children().eq(0).append(' (' + side + ')');
+});
 
 
 
@@ -55,8 +63,9 @@ function storeLineups() {
 	$('._athlete').each(function() {
 		if($(this).parent().hasClass("hull")) {
 			boatId = $(this).parent().parent().children().eq(4).text();
+			boatPosition = $(this).parent().parent().children('.position').children('.dropdown').find(":selected").text();
 			athleteId = $(this).children().eq(1).text();
-			cookie += boatId + ":" + athleteId + ",";
+			cookie += boatId + ":" + boatPosition + ':' + athleteId + ",";
 		}
 	});
 	setCookie("lineup", cookie, 365);
@@ -73,9 +82,10 @@ function restoreErgPositions() {
 
 		data2 = data[i].split(':');
 
-		if (data2.length == 2) {
+		if (data2.length == 3) {
 			boatId = data2[0];
-			athleteId = data2[1];
+			boatPosition = data2[1];
+			athleteId = data2[2];
 		
 			$('._athlete').each(function() {
 				athlete = $(this);
@@ -85,6 +95,8 @@ function restoreErgPositions() {
 					if (bId == boatId && aId == athleteId) {
 						athlete.detach();
 						$(this).children().eq(3).append(athlete);
+						var query = 'option:contains(' + boatPosition + ')';
+						$(this).children('.position').children('.dropdown').children(query).attr('selected','selected');
 					}	
 
 				});
@@ -112,8 +124,7 @@ $('._submit').click(function(){
 		boatSeats = parseInt($(this).children().eq(5).text());
 		boatCoxed = ($(this).children().eq(6).text() == "True");
 		boatName = $(this).children(".boatname").text();
-
-		console.log(boatName);
+		boatPosition = $(this).children('.position').children('.dropdown').find(":selected").text();
 
 		numChildren = $(this).children().eq(3).children().length;
 		expSeats = boatSeats;
@@ -147,9 +158,9 @@ $('._submit').click(function(){
 			correctNumRowers = true;
 		if (!boatCoxed ||  $(this).children().eq(3).children().eq(0).children().eq(2).text() == 'Coxswain') 
 			coxswainCorrectPosition = true;
-		if (numPorts + numBoth >= Math.floor(expSeats/2))
+		if (numPorts + numBoth >= Math.floor(boatSeats/2))
 			correctNumPorts = true;
-		if (numStarboards + numBoth >= Math.floor(expSeats/2))
+		if (numStarboards + numBoth >= Math.floor(boatSeats/2))
 			correctNumStarboards = true;
 
 		if (numChildren == 0) { $(this).removeClass('_erg_valid').removeClass('_erg_error'); }
@@ -169,7 +180,7 @@ $('._submit').click(function(){
 				$(this).removeClass('_erg_valid').addClass('_erg_error');	
 			} else {
 				$(this).removeClass('_erg_error').addClass('_erg_valid');
-				resultString += boatId + ",";
+				resultString += boatId + "," + boatPosition + ",";
 				$(this).children().eq(3).children().each(function(){
 					resultString += $(this).children().eq(1).text() + ",";
 				});
@@ -184,10 +195,14 @@ $('._submit').click(function(){
 	if (allBoatsValid) {
 
 		var posted_data = { results : resultString };
+		var numBoats = resultString.split(';').length - 1;
 
 		console.log(posted_data);
 		$.post( "", posted_data , function( data ) {
-			$('#success').show();
+			if (numBoats >= 2)
+				$('#success').text("Success! You added " + numBoats + " boats.").show();
+			else
+				$('#success').text("Success! You added " + numBoats + " boat.").show();
 		});	
 	}
 	console.log(resultString);

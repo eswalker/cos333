@@ -130,11 +130,11 @@ a:active {text-decoration:underline;}
 
 select {
 
-      border: 0 !important;  /*Removes border*/
+      border: 0 ;  /*Removes border*/
       -webkit-appearance: none;  /*Removes default chrome and safari style*/
       -moz-appearance: none; /* Removes Default Firefox style*/
       background: url('http://jonathanphz.tk/dropdown_arrow.png') no-repeat;  /*Adds background-image*/
-      background-position: 80px 8px;  /*Position of the background-image*/
+      background-position: 185px 10px;  /*Position of the background-image*/
       width: 100px; /*Width of select dropdown to give space for arrow image*/
       height: 20px;/*fix for mac input height*/
       text-indent: 0.01px; /* Removes default arrow from firefox*/
@@ -143,10 +143,23 @@ select {
       /*My custom style for fonts*/
 
       color: #1455a2;
+      width:200px;
+      border: 1px solid #ddd;
+      border-color: #66aaFF;
+      padding:5px;
+      height:30px;
   
 }
 select option {
   text-align: center;
+}
+
+.dropdown {
+  padding:0px;
+  height:20px;
+  border:0px;
+  background-position: 80px 8px;
+  width: 100px; 
 }
 
 input, textarea {
@@ -164,6 +177,7 @@ input[type="text"]:focus , textarea:focus {
   border-color: blue;
 
 }
+
 
 td {
   display:table-cell; 
@@ -242,6 +256,17 @@ padding: 0px;
 margin: 0px;
 }
 
+.btn {
+box-shadow: 1px 1px 5px #888888;
+}
+
 .btn-default:hover {
   background:#000000 !important;
+}
+.darklink {
+  color:lightblue;
+}
+.darklink:hover {
+  color:lightblue;
+  text-decoration: underline;
 }

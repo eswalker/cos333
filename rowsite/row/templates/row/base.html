@@ -16,10 +16,10 @@
                 <img id="logo"/>
                 <p class="navbar-text navbar-left">Virtual Boathouse</p>
                 {% if user.is_authenticated %}
-                    <p class="navbar-text navbar-right">User: {{ user.username }} | <a href="{% url 'row:logout' %}">Logout</a> | <a href="{% url 'row:password_change' %}">Change Password</a></p>
+                    <p class="navbar-text navbar-right">User: {{ user.username }} | <a class="darklink" href="{% url 'row:logout' %}">Logout</a> | <a class="darklink" href="{% url 'row:password_change' %}">Change Password</a></p>
                 {% else %}
                     <p class="navbar-text navbar-right">
-                        <a href="{% url 'row:login' %}">Login</a>
+                        <a class="darklink" href="{% url 'row:login' %}">Login</a>
                     </p>
                 {% endif %}
             </div>
@@ -31,13 +31,16 @@
             <ul class="nav navbar navbar-stacked  sidebar sidebar-navbar sidebar-navbar-collapse">
                 {% block sidebar %}
                     <li><a class="btn btn-default" href="/">Home</a></li>
+                     {% if not anonymous %}
+                        <li><a class="btn btn-default" href="/profile/">My Profile</a></li>
+                     {% endif %}
                     <li><a class="btn btn-default" href="/athletes/">Roster</a></li>
                     {% if not anonymous %}
                         <li><a class="btn btn-default" href="/practices/">Practices</a></li>
                         {% if role %}
                             {% ifnotequal role "Rower" %}
                                 <li><a class="btn btn-default" href="/practice/erg/add">Add Erg Practice</a></li>
-                                <li><a class="btn btn-default" href="/practice/water/add">Add Water Practice <span class="badge">soon</span></a></li>
+                                <li><a class="btn btn-default" href="/practice/water/add">Add Water Practice</a></li>
                             {% endifnotequal %}
                         {% endif %}
                         <li><a class="btn btn-default" href="/boats/">Boats</a></li>
