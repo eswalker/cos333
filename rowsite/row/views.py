@@ -84,6 +84,11 @@ def athlete_detail(request, athlete_id):
     context = {'athlete':athlete, 'weights':weights, 'results':results, 'permission': permission, 'is_athlete': is_athlete}
     return render(request, 'row/athlete/details.html', context)
 
+@login_required
+def my_profile(request):
+    user_athlete = Athlete.objects.get(user=request.user)
+    return athlete_detail(request, user_athlete.id)
+
 '''
 @login_required
 def athlete_delete(request, id):
@@ -758,7 +763,7 @@ def practice_lineups(request, practice_id):
     else:
         boats = Boat.objects.all()
         athletes = Athlete.objects.all()
-        athletes = Athlete.objects.filter(role="Rower",)
+        athletes = Athlete.objects.filter(role="Rower",status="Active") | Athlete.objects.filter(role="Coxswain",status="Active")
         context = {'title': 'Virtual Boathouse', 'athletes':athletes, 'practice':practice, 'boats':boats}
         return render(request, 'row/lineups.html', context)
 

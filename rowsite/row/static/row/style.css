@@ -263,3 +263,10 @@ box-shadow: 1px 1px 5px #888888;
 .btn-default:hover {
   background:#000000 !important;
 }
+.darklink {
+  color:lightblue;
+}
+.darklink:hover {
+  color:lightblue;
+  text-decoration: underline;
+}

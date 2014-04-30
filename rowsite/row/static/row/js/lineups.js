@@ -31,6 +31,14 @@ $('._clear').click(function() {
 
 });
 
+$('._athlete').each(function(){
+	var side = $(this).children().eq(3).text();
+	var role = $(this).children().eq(2).text();
+	side = side.substring(0,1);
+	if (role == 'Coxswain')
+		side = 'Cox';
+	$(this).children().eq(0).append(' (' + side + ')');
+});
 
 
 
@@ -150,9 +158,9 @@ $('._submit').click(function(){
 			correctNumRowers = true;
 		if (!boatCoxed ||  $(this).children().eq(3).children().eq(0).children().eq(2).text() == 'Coxswain') 
 			coxswainCorrectPosition = true;
-		if (numPorts + numBoth >= Math.floor(expSeats/2))
+		if (numPorts + numBoth >= Math.floor(boatSeats/2))
 			correctNumPorts = true;
-		if (numStarboards + numBoth >= Math.floor(expSeats/2))
+		if (numStarboards + numBoth >= Math.floor(boatSeats/2))
 			correctNumStarboards = true;
 
 		if (numChildren == 0) { $(this).removeClass('_erg_valid').removeClass('_erg_error'); }
@@ -187,10 +195,14 @@ $('._submit').click(function(){
 	if (allBoatsValid) {
 
 		var posted_data = { results : resultString };
+		var numBoats = resultString.split(';').length - 1;
 
 		console.log(posted_data);
 		$.post( "", posted_data , function( data ) {
-			$('#success').show();
+			if (numBoats >= 2)
+				$('#success').text("Success! You added " + numBoats + " boats.").show();
+			else
+				$('#success').text("Success! You added " + numBoats + " boat.").show();
 		});	
 	}
 	console.log(resultString);
