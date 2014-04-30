@@ -942,14 +942,20 @@ def json_lineups_add(request):
     if not 'athletes' in lineup_json:
         return HttpResponse(json_error("No athletes found"), mimetype='application/json')
 
+    num_coxswains = 0;
     athletes = []
     for athlete_id in lineup_json['athletes']:
         if not isinstance(athlete_id, int):
             return HttpResponse(json_error("Athlete ids must be of type int"), mimetype='application/json')
 
-        try: athletes.append(Athlete.objects.get(id=athlete_id))
+        try:
+            athlete = Athlete.objects.get(id=athlete_id)
+            athletes.append(athlete)
+            if athlete.role == "Coxswain": num_coxswains = num_coxswains + 1
+            elif athlete.role == "Coach":
+                 return HttpResponse(json_error("Athlete " + str(athlete_id) + " is a coach"), mimetype='application/json')
         except Athlete.DoesNotExist:
-            return HttpResponse(json_error(str(athlete_id) + " is not a valid athlete id", mimetype='application/json'))
+            return HttpResponse(json_error(str(athlete_id) + " is not a valid athlete id"), mimetype='application/json')
 
     if not 'position' in lineup_json:
         return HttpResponse(json_error("No position found"), mimetype='application/json')
@@ -976,6 +982,12 @@ def json_lineups_add(request):
 
     if num_athletes != seats + coxed:
         return HttpResponse(json_error("Boat size and number of athletes do not match"), mimetype='application/json')
+
+    if coxed:
+        if num_coxswains == 0:
+            return HttpResponse(json_error("Boat requires a coxswain"), mimetype='application/json')
+        if num_coxswains > 1:
+            return HttpResponse(json_error("Lineup cannot have more than one coxswain"), mimetype='application/json')
 
     if not 'piece' in lineup_json:
         return HttpResponse(json_error("No piece found"), mimetype='application/json')
