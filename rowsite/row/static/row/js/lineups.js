@@ -55,8 +55,9 @@ function storeLineups() {
 	$('._athlete').each(function() {
 		if($(this).parent().hasClass("hull")) {
 			boatId = $(this).parent().parent().children().eq(4).text();
+			boatPosition = $(this).parent().parent().children('.position').children('.dropdown').find(":selected").text();
 			athleteId = $(this).children().eq(1).text();
-			cookie += boatId + ":" + athleteId + ",";
+			cookie += boatId + ":" + boatPosition + ':' + athleteId + ",";
 		}
 	});
 	setCookie("lineup", cookie, 365);
@@ -73,9 +74,10 @@ function restoreErgPositions() {
 
 		data2 = data[i].split(':');
 
-		if (data2.length == 2) {
+		if (data2.length == 3) {
 			boatId = data2[0];
-			athleteId = data2[1];
+			boatPosition = data2[1];
+			athleteId = data2[2];
 		
 			$('._athlete').each(function() {
 				athlete = $(this);
@@ -85,6 +87,8 @@ function restoreErgPositions() {
 					if (bId == boatId && aId == athleteId) {
 						athlete.detach();
 						$(this).children().eq(3).append(athlete);
+						var query = 'option:contains(' + boatPosition + ')';
+						$(this).children('.position').children('.dropdown').children(query).attr('selected','selected');
 					}	
 
 				});
@@ -112,8 +116,7 @@ $('._submit').click(function(){
 		boatSeats = parseInt($(this).children().eq(5).text());
 		boatCoxed = ($(this).children().eq(6).text() == "True");
 		boatName = $(this).children(".boatname").text();
-
-		console.log(boatName);
+		boatPosition = $(this).children('.position').children('.dropdown').find(":selected").text();
 
 		numChildren = $(this).children().eq(3).children().length;
 		expSeats = boatSeats;
@@ -169,7 +172,7 @@ $('._submit').click(function(){
 				$(this).removeClass('_erg_valid').addClass('_erg_error');	
 			} else {
 				$(this).removeClass('_erg_error').addClass('_erg_valid');
-				resultString += boatId + ",";
+				resultString += boatId + "," + boatPosition + ",";
 				$(this).children().eq(3).children().each(function(){
 					resultString += $(this).children().eq(1).text() + ",";
 				});

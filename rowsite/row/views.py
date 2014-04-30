@@ -719,12 +719,16 @@ def practice_lineups(request, practice_id):
         for i in range(0, len(results) - 1):
             data = results[i].split(',')
             boat_id = int(data[0])
+            boat_position = data[1]
+            boat_tuple = (boat_position, boat_position)
+            if not boat_tuple in Lineup.position_choices:
+                raise Http404
             try: 
                 boat = Boat.objects.get(pk=boat_id)
                 athletes = []
-                for j in range(1, len(data) - 1):
+                for j in range(2, len(data) - 1):
                     athletes.append(int(data[j]))
-                lineup = Lineup(piece=piece, boat=boat, position="1V")
+                lineup = Lineup(piece=piece, boat=boat, position=boat_position)
                 lineup.save()
                 lineup.athletes = athletes
                 lineup.save()
