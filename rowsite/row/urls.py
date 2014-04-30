@@ -19,12 +19,15 @@ urlpatterns = patterns('',
     url(r'^weight/(?P<id>\d+)/edit/$', views.weight_edit, name='weight_edit'),
     url(r'^weight/(?P<id>\d+)/delete/$', views.weight_delete, name='weight_delete'),
 
-    url(r'^practice/add/$', views.practice_add, name='practice_add'),
+    #url(r'^practice/add/$', views.practice_add, name='practice_add'),
     url(r'^practice/(?P<practice_id>\d+)/$', views.practice_detail, name='practice_detail'),
     url(r'^practices/$', views.practice_index, name='practice_index'),
     url(r'^practice/(?P<id>\d+)/edit/$', views.practice_edit, name='practice_edit'),
     url(r'^practice/(?P<id>\d+)/delete/$', views.practice_delete, name='practice_delete'),
     
+    url(r'^practice/erg/add/$', views.practice_erg_add, name='practice_erg_add'),
+    url(r'^practice/water/add/$', views.practice_water_add, name='practice_water_add'),
+
     url(r'^result/add/$', views.result_add, name='result_add'),
     url(r'^piece/(?P<piece_id>\d+)/result/add/$', views.result_add, name='piece_result_add'),
     url(r'^practice/(?P<practice_id>\d+)/ergroom/$', views.practice_ergroom, name='practice_ergroom'),

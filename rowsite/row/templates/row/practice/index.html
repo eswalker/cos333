@@ -31,6 +31,7 @@
 {% endif %}
 
 {% if permission %}
-  <a class="btn btn-primary" href="{% url 'row:practice_add' %}">Add Practice</a>
+  <a class="btn btn-primary" href="{% url 'row:practice_erg_add' %}">Add Erg Practice</a>
+  <a class="btn btn-primary" href="{% url 'row:practice_water_add' %}">Add Water Practice</a>
 {% endif %}
 {% endblock %}

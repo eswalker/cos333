@@ -140,7 +140,7 @@ def practice_detail(request, practice_id):
     context = {'practice':practice, 'pieces':pieces, 'notes': notes, 'permission': permission}
     return render(request, 'row/practice/details.html', context)
 
-@login_required
+"""@login_required
 @user_passes_test(coxswain_coach, login_url="/denied/")
 def practice_add(request):
     if request.method == 'POST':
@@ -155,7 +155,27 @@ def practice_add(request):
         form = PracticeForm()
         form.fields['name'].initial=now.strftime("%b %d %p")
     context = {'form':form, 'title':'Add Practice'}
-    return render(request, 'row/add.html', context)
+    return render(request, 'row/add.html', context)"""
+
+@login_required
+@user_passes_test(coxswain_coach, login_url="/denied/")
+def practice_erg_add(request):
+
+    name=datetime.now().strftime("%b %d %p")
+    practice = Practice(datetime=datetime.now(), name=name, workout="Erg")
+    practice.save()
+
+    return HttpResponseRedirect(reverse('row:practice_ergroom', args=(practice.id,)))
+
+@login_required
+@user_passes_test(coxswain_coach, login_url="/denied/")
+def practice_water_add(request):
+
+    name=datetime.now().strftime("%b %d %p")
+    practice = Practice(datetime=datetime.now(), name=name, workout="Water")
+    practice.save()
+
+    return HttpResponseRedirect(reverse('row:practice_lineups', args=(practice.id,)))
 
 @login_required
 @user_passes_test(coxswain_coach, login_url="/denied/")
