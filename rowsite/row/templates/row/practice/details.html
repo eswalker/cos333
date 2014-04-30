@@ -8,7 +8,6 @@
     <tr><td>Date</td><td>{{ practice.datetime }}</td></tr>
     <tr><td>Type</td><td>{{ practice.workout }}</td></tr>
   </table>
-
 {% endif %}
 
 {% if pieces %}
@@ -36,6 +35,43 @@
   {% endfor %}
 </table>
 {% endif %}
+
+{% if lineups %}
+<h2>Initial Lineups</h2>
+<table class="table table-bordered recordtable">
+
+  <tr>
+    <th>Position</th>
+    <th>Boat</th>
+    <th>Athletes</th>
+     {% if role %}
+        {% ifequal role "Coach" %}
+          <th>Edit</th>
+          <th>Delete</th>
+        {% endifequal %}
+    {% endif %}
+  </tr>
+
+  {% for lineup in lineups %}
+    <tr>
+      <td>{{ lineup.position }}</td>
+      <td><a href="{% url 'row:boat_index' %}">{{ lineup.boat }}</a></br></td>
+      <td>
+        {% for athlete in lineup.athletes.all %}
+          <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
+        {% endfor %}
+      </td>
+      {% if role %}
+        {% ifequal role "Coach" %}
+          <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
+          <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
+        {% endifequal %}
+      {% endif %}
+    </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
 {% if notes %}
   <h2>Notes</h2>
   <table class="table table-bordered recordtable">

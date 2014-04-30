@@ -134,10 +134,23 @@ def practice_detail(request, practice_id):
     author = Athlete.objects.get(user=request.user)
 
     practice = get_object_or_404(Practice, pk=practice_id)
-    pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
+
+    all_practice_pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
+    pieces = all_practice_pieces.exclude(name='SENTINEL')
+
+    # What if there is more than one SENTINEL?
+    try:
+        sentinels = all_practice_pieces.filter(name='SENTINEL').order_by('id')
+        if sentinels:
+            sentinel =  sentinels[0]
+            lineups = Lineup.objects.filter(piece=sentinel)
+        else: lineups = None
+    except Piece.DoesNotExist, MultipleObjectsReturned: lineups = None
+
+
     notes = Note.objects.filter(practice=practice_id, author=author).order_by('subject')
     permission = coxswain_coach(request.user)
-    context = {'practice':practice, 'pieces':pieces, 'notes': notes, 'permission': permission}
+    context = {'practice':practice, 'pieces':pieces, 'notes': notes, 'permission': permission, 'lineups': lineups}
     return render(request, 'row/practice/details.html', context)
 
 """@login_required
@@ -258,6 +271,7 @@ def piece_edit(request, id):
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
         form = PieceForm(instance=piece)
+        form.fields['practice'].queryset=Practice.objects.filter(workout=piece.practice.workout)
     context = {'form':form, 'title':'Edit Piece'}
     return render(request, 'row/add.html', context)
 

@@ -10,39 +10,6 @@
   </table>
 {% endif %}
 
-{% if lineups %}
-<h2>Lineups</h2>
-<table class="table table-bordered recordtable">
-
-  <tr>
-    <th>Position</th>
-    <th>Boat</th>
-    <th>Athletes</th>
-    {% if is_coach %}
-      <th>Edit</th>
-      <th>Delete</th>
-    {% endif %}
-  </tr>
-
-  {% for lineup in lineups %}
-    <tr>
-      <td>{{ lineup.position }}</td>
-      <td><a href="{% url 'row:boat_index' %}">{{ lineup.boat }}</a></br></td>
-      <td>
-        {% for athlete in lineup.athletes.all %}
-          <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
-        {% endfor %}
-      </td>
-      {% if is_coach %}
-        <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
-        <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
-      {% endif %}
-    </tr>
-  {% endfor %}
-</table>
-{% endif %}
-
- 
 {% if results %}
 <h2>Results</h2>
   {% ifequal piece.practice.workout "Erg" %}
@@ -97,6 +64,38 @@
     {% endfor %}
     </table>
   {% endifequal %}
+{% endif %}
+
+{% if lineups %}
+<h2>Lineups</h2>
+<table class="table table-bordered recordtable">
+
+  <tr>
+    <th>Position</th>
+    <th>Boat</th>
+    <th>Athletes</th>
+    {% if is_coach %}
+      <th>Edit</th>
+      <th>Delete</th>
+    {% endif %}
+  </tr>
+
+  {% for lineup in lineups %}
+    <tr>
+      <td>{{ lineup.position }}</td>
+      <td><a href="{% url 'row:boat_index' %}">{{ lineup.boat }}</a></br></td>
+      <td>
+        {% for athlete in lineup.athletes.all %}
+          <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
+        {% endfor %}
+      </td>
+      {% if is_coach %}
+        <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
+        <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+</table>
 {% endif %}
 
 {% if notes %}
