@@ -11,8 +11,10 @@ def user_coxswain_coach(athlete1, athlete2):
 	return False
 
 def coxswain_coach(user):
-	role = Athlete.objects.get(user=user).role
-	if role == "Coxswain" or role == "Coach": return True
+	try:
+		role = Athlete.objects.get(user=user).role
+		if role == "Coxswain" or role == "Coach": return True
+	except Athlete.DoesNotExist: pass
 	return False
 
 def coach(user):

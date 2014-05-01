@@ -7,5 +7,8 @@ def add_role(request):
 	if request.user.is_anonymous():
 		return {'anonymous': 'anonymous'}
 	else:
-		athlete = Athlete.objects.get(user=request.user)
+		try:
+			athlete = Athlete.objects.get(user=request.user)
+		except Athlete.DoesNotExist:
+			return {'anonymous': 'anonymous'}
 		return {'role': athlete.role,}

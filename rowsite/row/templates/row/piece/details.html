@@ -85,7 +85,7 @@
       <td>{{ lineup.position }}</td>
       <td><a href="{% url 'row:boat_index' %}">{{ lineup.boat }}</a></br></td>
       <td>
-        {% for athlete in lineup.athletes.all %}
+        {% for athlete in lineup.getAthletes %}
           <a href="{% url 'row:athlete_detail' athlete.id %}">{{ athlete.name }}</a></br>
         {% endfor %}
       </td>

@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import serializers
 
-from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note, Invite
+from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note, Invite, Seat
 from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm, NoteForm, InviteForm, UserPasswordChangeForm
 
 from row.permissions import user_coxswain_coach, coxswain_coach, coach, user
@@ -765,11 +765,12 @@ def practice_lineups(request, practice_id):
             try: 
                 boat = Boat.objects.get(pk=boat_id)
                 athletes = []
-                for j in range(2, len(data) - 1):
-                    athletes.append(int(data[j]))
                 lineup = Lineup(piece=piece, boat=boat, position=boat_position)
                 lineup.save()
-                lineup.athletes = athletes
+                for j in range(2, len(data) - 1):
+                    athlete = Athlete.objects.get(id=int(data[j]))
+                    seat = Seat(athlete=athlete, lineup=lineup, number=(j-1))
+                    seat.save()
                 lineup.save()
             except Boat.DoesNotExist:
                 raise Http404
