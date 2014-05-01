@@ -108,7 +108,7 @@
         <td><a href="{% url 'row:note_edit' note.id %}?next={{ request.path }}">Edit</a></td>
         <td><a href="{% url 'row:note_delete' note.id %}?next={{ request.path }}">Delete</a></td>
       </tr>
-      <tr class="note_text" hidden><td colspan="3">{{ note.note }}</td></tr>
+      <tr class="note_text" hidden><td colspan="3">{{ note.note|linebreaks }}</td></tr>
       {% endfor %}
     </tbody>
   </table>
