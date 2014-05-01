@@ -163,7 +163,8 @@ class Lineup(models.Model):
         ('Mixed', 'Mixed'),
     )
 
-    piece = models.ForeignKey(Piece)
+    practice = models.ForeignKey(Practice, null=True)
+    piece = models.ForeignKey(Piece, null=True)
     boat = models.ForeignKey(Boat)
     position = models.CharField(max_length=10, choices=position_choices)
     athletes = models.ManyToManyField(Athlete, through='Seat')
