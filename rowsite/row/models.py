@@ -151,7 +151,6 @@ class Boat(models.Model):
     def __unicode__(self):
         return self.name
 
-
 class Lineup(models.Model):
     position_choices = (
         ('1V', '1V'),
@@ -164,13 +163,24 @@ class Lineup(models.Model):
         ('Mixed', 'Mixed'),
     )
 
-    piece = models.ForeignKey(Piece)
+    practice = models.ForeignKey(Practice, null=True)
+    piece = models.ForeignKey(Piece, null=True)
     boat = models.ForeignKey(Boat)
     position = models.CharField(max_length=10, choices=position_choices)
-    athletes = models.ManyToManyField(Athlete)
+    athletes = models.ManyToManyField(Athlete, through='Seat')
 
     def __unicode__(self):
         return self.position + " " + str(self.boat)
+
+    def getAthletes(self):
+        print str(self.athletes.all())
+        print str(self.athletes.all().order_by('seat__number'))
+        return self.athletes.all().order_by('seat__number')
+
+class Seat(models.Model):
+    athlete = models.ForeignKey(Athlete)
+    lineup = models.ForeignKey(Lineup)
+    number = models.PositiveIntegerField()
 
 class Note(models.Model):
     subject = models.CharField(max_length=50)
