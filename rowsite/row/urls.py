@@ -59,8 +59,8 @@ urlpatterns = patterns('',
     url(r'^boat/(?P<id>\d+)/edit/$', views.boat_edit, name='boat_edit'),
     url(r'^boat/(?P<id>\d+)/delete/$', views.boat_delete, name='boat_delete'),
 
-    url(r'^lineup/add/$', views.lineup_add, name='lineup_add'),
-    url(r'^piece/(?P<piece_id>\d+)/lineup/add/$', views.lineup_add, name='piece_lineup_add'),
+    #url(r'^lineup/add/$', views.lineup_add, name='lineup_add'),
+    #url(r'^piece/(?P<piece_id>\d+)/lineup/add/$', views.lineup_add, name='piece_lineup_add'),
     url(r'^lineup/(?P<id>\d+)/edit/$', views.lineup_edit, name='lineup_edit'),
     url(r'^lineup/(?P<id>\d+)/delete/$', views.lineup_delete, name='lineup_delete'),
 
@@ -86,8 +86,8 @@ urlpatterns = patterns('',
 
     url(r'^athletes/csv/$', views.athlete_index_csv, name='athlete_index_csv'),
 
-    url(r'^piece/add/$', views.piece_add, name='piece_add'),
-    url(r'^practice/(?P<practice_id>\d+)/piece/add/$', views.piece_add, name='practice_piece_add'),
+    #url(r'^piece/add/$', views.piece_add, name='piece_add'),
+    #url(r'^practice/(?P<practice_id>\d+)/piece/add/$', views.piece_add, name='practice_piece_add'),
     url(r'^piece/(?P<id>\d+)/edit/$', views.piece_edit, name='piece_edit'),
     url(r'^piece/(?P<id>\d+)/delete/$', views.piece_delete, name='piece_delete'),
     url(r'^piece/(?P<piece_id>\d+)/$', views.piece_detail, name='piece_detail'),
