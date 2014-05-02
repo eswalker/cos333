@@ -62,7 +62,7 @@ def invite_cancel(request, id):
 def athlete_index(request):
     rowers = Athlete.objects.filter(role="Rower").order_by('name')
     coxswains = Athlete.objects.filter(role="Coxswain").order_by('name')
-    coaches = Athlete.objects.filter(role="Coach").order_by('name')
+    coaches = Athlete.objects.filter(role="Coach").exclude(name="COACH").order_by('name')
     permission = False
     if not request.user.is_anonymous(): permission = coxswain_coach(request.user)
     context = {'rowers': rowers, 'coxswains': coxswains, 'coaches': coaches, 'permission': permission}
