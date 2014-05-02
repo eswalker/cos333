@@ -45,3 +45,10 @@ RETURNS
 EXAMPLE
 	/json/lineups/recent/
 
+
+/json/lineup/athletes/
+POST:
+	api_key
+	{"id": LINEUP_ID}
+RETURN
+	[6, 2, 3, 4, 5]

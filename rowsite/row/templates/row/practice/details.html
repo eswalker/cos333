@@ -91,7 +91,7 @@
 {% if permission %}
   {% if practice.workout == "Water" %}<a class="btn btn-primary" href="{% url 'row:practice_lineups' practice_id=practice.id %}">Add Lineups</a>
   {% else %}
-    <a class="btn btn-primary" href="{% url 'row:practice_ergroom' practice_id=practice.id %}?next={{ request.path }}">Add Piece (Erg Room, Recommended)</a>
+    <a class="btn btn-primary" href="{% url 'row:practice_ergroom' practice_id=practice.id %}?next={{ request.path }}">Add Piece</a>
   {% endif %}
 {% endif %}
 <a class="btn btn-primary" href="{% url 'row:practice_note_add' practice.id %}?next={{ request.path }}">Add Note</a>

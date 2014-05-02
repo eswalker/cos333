@@ -844,6 +844,43 @@ def json_recent_lineups(request):
             data = json_error("Does not exist")
     return HttpResponse(data, mimetype='application/json')
 
+@csrf_exempt
+def json_lineup_athletes(request):
+    data = json_permissions_coaches_and_coxswains(request)
+
+    if not 'id' in request.POST:
+        return HttpResponse(json_error("Missing lineup id json"), mimetype='application/json')
+
+    try: id_json = json.loads(request.POST['id'])
+    except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
+    if not 'id' in id_json:
+        return HttpResponse(json_error("Missing lineup id in json"), mimetype='application/json')
+
+    lineup_id = id_json['id']
+
+    if not isinstance(lineup_id, int):
+        return HttpResponse(json_error("Lineup id must be of type int"), mimetype='application/json')
+
+    try: lineup = Lineup.objects.get(id=lineup_id)
+    except Lineup.DoesNotExist:
+        return HttpResponse(json_error(str(lineup_id) + " is not a valid lineup id"), mimetype='application/json')
+
+    try:
+        athletes = []
+        seats = Seat.objects.filter(lineup=lineup)
+        for seat in seats.all():
+            athletes.append(seat.athlete.id)
+            data = json.dumps(athletes)
+    except Seat.DoesNotExist:
+        data = json_error("Lineup is empty")
+
+    return HttpResponse(data, mimetype='application/json')
+
+
+
+
+
 """
 @csrf_exempt
 def json_practice_lineups(request, id):
