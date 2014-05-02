@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import serializers
 
-from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note, Invite
+from row.models import Athlete, Weight, Practice, Piece, Result, Boat, Lineup, Note, Invite, Seat
 from row.forms import UserForm, UserLoginForm, AthleteForm, PracticeForm, PieceForm, WeightForm, ResultForm, BoatForm, LineupForm, NoteForm, InviteForm, UserPasswordChangeForm
 
 from row.permissions import user_coxswain_coach, coxswain_coach, coach, user
@@ -137,22 +137,9 @@ def practice_index(request):
 @login_required
 def practice_detail(request, practice_id):
     author = Athlete.objects.get(user=request.user)
-
     practice = get_object_or_404(Practice, pk=practice_id)
-
-    all_practice_pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
-    pieces = all_practice_pieces.exclude(name='SENTINEL')
-
-    # What if there is more than one SENTINEL?
-    try:
-        sentinels = all_practice_pieces.filter(name='SENTINEL').order_by('id')
-        if sentinels:
-            sentinel =  sentinels[0]
-            lineups = Lineup.objects.filter(piece=sentinel)
-        else: lineups = None
-    except Piece.DoesNotExist, MultipleObjectsReturned: lineups = None
-
-
+    pieces = Piece.objects.filter(practice=practice_id).order_by('datetime')
+    lineups = Lineup.objects.filter(practice=practice_id)
     notes = Note.objects.filter(practice=practice_id, author=author).order_by('subject')
     permission = coxswain_coach(request.user)
     context = {'practice':practice, 'pieces':pieces, 'notes': notes, 'permission': permission, 'lineups': lineups}
@@ -753,8 +740,6 @@ def practice_lineups(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     if request.method == 'POST':
         results = request.POST['results'].split(';')
-        piece = Piece(datetime=datetime.now(), practice=practice, name='SENTINEL')
-        piece.save()
         for i in range(0, len(results) - 1):
             data = results[i].split(',')
             boat_id = int(data[0])
@@ -765,11 +750,12 @@ def practice_lineups(request, practice_id):
             try: 
                 boat = Boat.objects.get(pk=boat_id)
                 athletes = []
-                for j in range(2, len(data) - 1):
-                    athletes.append(int(data[j]))
-                lineup = Lineup(piece=piece, boat=boat, position=boat_position)
+                lineup = Lineup(practice=practice, boat=boat, position=boat_position)
                 lineup.save()
-                lineup.athletes = athletes
+                for j in range(2, len(data) - 1):
+                    athlete = Athlete.objects.get(id=int(data[j]))
+                    seat = Seat(athlete=athlete, lineup=lineup, number=(j-1))
+                    seat.save()
                 lineup.save()
             except Boat.DoesNotExist:
                 raise Http404
