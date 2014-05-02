@@ -95,9 +95,4 @@
   {% endif %}
 {% endif %}
 <a class="btn btn-primary" href="{% url 'row:practice_note_add' practice.id %}?next={{ request.path }}">Add Note</a>
-{% if permission %}
-  <a class="btn btn-primary" href="{% url 'row:practice_piece_add' practice_id=practice.id %}?next={{ request.path }}">Add Piece (Manually)</a>
-{% endif %}
-
-
 {% endblock %}

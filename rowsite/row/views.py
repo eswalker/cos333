@@ -226,8 +226,8 @@ def piece_detail(request, piece_id):
     context = {'piece':piece, 'lineups':lineups, 'results':results, 'notes': notes, 'permission': permission, 'is_coach': is_coach}
     return render(request, 'row/piece/details.html', context)
 
-@login_required
-"""@user_passes_test(coxswain_coach, login_url="/denied/")
+"""@login_required
+@user_passes_test(coxswain_coach, login_url="/denied/")
 def piece_add(request, practice_id=None):
     if request.method == 'POST':
         form = PieceForm(request.POST)
