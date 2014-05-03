@@ -61,7 +61,7 @@ urlpatterns = patterns('',
 
     #url(r'^lineup/add/$', views.lineup_add, name='lineup_add'),
     #url(r'^piece/(?P<piece_id>\d+)/lineup/add/$', views.lineup_add, name='piece_lineup_add'),
-    url(r'^lineup/(?P<id>\d+)/edit/$', views.lineup_edit, name='lineup_edit'),
+    #url(r'^lineup/(?P<id>\d+)/edit/$', views.lineup_edit, name='lineup_edit'),
     url(r'^lineup/(?P<id>\d+)/delete/$', views.lineup_delete, name='lineup_delete'),
 
     url(r'^erg', views.erg, name='erg'),

@@ -75,7 +75,6 @@
     <th>Boat</th>
     <th>Athletes</th>
     {% if is_coach %}
-      <th>Edit</th>
       <th>Delete</th>
     {% endif %}
   </tr>
@@ -90,7 +89,6 @@
         {% endfor %}
       </td>
       {% if is_coach %}
-        <td><a class="" href="{% url 'row:lineup_edit' lineup.id %}?next={{ request.path }}">Edit</a></td>
         <td><a class="" href="{% url 'row:lineup_delete' lineup.id %}?next={{ request.path }}">Delete</a></td>
       {% endif %}
     </tr>

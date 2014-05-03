@@ -580,7 +580,7 @@ def lineup_add(request, piece_id=None):
             form = LineupForm(initial={'piece': piece_id})
             form.fields['piece'].queryset=Piece.objects.filter(id=piece_id)
     context = {'form':form, 'title':'Add Lineup'}
-    return render(request, 'row/add.html', context)"""
+    return render(request, 'row/add.html', context)
 
 @login_required
 @user_passes_test(coach, login_url='/denied/')
@@ -600,7 +600,7 @@ def lineup_edit(request, id):
     else:
         form = LineupForm(instance=lineup)
     context = {'form':form, 'title':'Edit Boat'}
-    return render(request, 'row/add.html', context)
+    return render(request, 'row/add.html', context)"""
 
 @login_required
 @user_passes_test(coach, login_url='/denied/')
@@ -767,7 +767,7 @@ def practice_lineups(request, practice_id):
         if old_lineups_array:
             for old_lineup in old_lineups_array:
                 old_lineup.delete()
-                
+
         return practice_detail(request, practice_id)
     else:
         boats = Boat.objects.all()
