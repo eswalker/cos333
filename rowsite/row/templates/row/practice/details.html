@@ -89,7 +89,8 @@
 {% endif %}
 
 {% if permission %}
-  {% if practice.workout == "Water" %}<a class="btn btn-primary" href="{% url 'row:practice_lineups' practice_id=practice.id %}">Add Lineups</a>
+  {% if  "Water" %}<a class="btn btn-primary" href="{% url 'row:practice_lineups' practice_id=practice.id %}">
+    {% if lineups %}Edit{% else %}Add{% endif %} Lineups</a>
   {% else %}
     <a class="btn btn-primary" href="{% url 'row:practice_ergroom' practice_id=practice.id %}?next={{ request.path }}">Add Piece</a>
   {% endif %}

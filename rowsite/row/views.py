@@ -735,6 +735,13 @@ def practice_ergroom_timed(request, practice_id):
 def practice_lineups(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     if request.method == 'POST':
+
+        # get old lineups
+        old_lineups_array = []
+        old_lineups = Lineup.objects.filter(practice=practice)
+        for old_lineup in old_lineups:
+            old_lineups_array.append(old_lineup)
+
         results = request.POST['results'].split(';')
         for i in range(0, len(results) - 1):
             data = results[i].split(',')
@@ -755,6 +762,12 @@ def practice_lineups(request, practice_id):
                 lineup.save()
             except Boat.DoesNotExist:
                 raise Http404
+
+        # delete old lineups
+        if old_lineups_array:
+            for old_lineup in old_lineups_array:
+                old_lineup.delete()
+                
         return practice_detail(request, practice_id)
     else:
         boats = Boat.objects.all()
