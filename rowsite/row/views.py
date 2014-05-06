@@ -332,7 +332,7 @@ def weight_delete(request, id):
         return HttpResponseRedirect(request.GET["next"])
     return HttpResponseRedirect(reverse('row:athlete_index'))
 
-# Adds a new result
+"""# Adds a new result
 @login_required
 def result_add(request, piece_id=None, athlete_id=None):
     user_athlete = Athlete.objects.get(user=request.user)
@@ -356,7 +356,7 @@ def result_add(request, piece_id=None, athlete_id=None):
         else:
             form = ResultForm(athlete2=user_athlete)
     context = {'form':form, 'title':'Add Result'}
-    return render(request, 'row/add.html', context)
+    return render(request, 'row/add.html', context)"""
 
 @login_required
 def result_edit(request, id):

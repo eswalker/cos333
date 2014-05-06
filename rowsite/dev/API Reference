@@ -39,7 +39,7 @@ RETURNS:
 POST:
 	api_key
 RETURNS
-	[{"pk": 3, "fields": {"athletes": [4, 5, 10, 11, 14], "position": "1V", "boat": 3, "piece": 10}, "model": "row.lineup"}, {"pk": 4, "fields": {"athletes": [8], "position": "2V", "boat": 1, "piece": 10}, "model": "row.lineup"}, {"pk": 5, "fields": {"athletes": [6, 13], "position": "3V", "boat": 4, "piece": 10}, "model": "row.lineup"}]err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
+	[{"pk": 3, "fields": {"position": "1V", "boat": 3, "piece": 10}, "model": "row.lineup"}, {"pk": 4, "fields": {"position": "2V", "boat": 1, "piece": 10}, "model": "row.lineup"}, {"pk": 5, "fields": {"position": "3V", "boat": 4, "piece": 10}, "model": "row.lineup"}]err_coach_cox_permissions = "Only coaches and coxswains can access this resource"
 	err_api_key_required = "Api key required to access this resource"
 	err_invalid_api_key = "Api key does not match any user"
 EXAMPLE

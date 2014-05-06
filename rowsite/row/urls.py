@@ -30,13 +30,13 @@ urlpatterns = patterns('',
     url(r'^practice/erg/add/$', views.practice_erg_add, name='practice_erg_add'),
     url(r'^practice/water/add/$', views.practice_water_add, name='practice_water_add'),
 
-    url(r'^result/add/$', views.result_add, name='result_add'),
-    url(r'^piece/(?P<piece_id>\d+)/result/add/$', views.result_add, name='piece_result_add'),
+    #url(r'^result/add/$', views.result_add, name='result_add'),
+    #url(r'^piece/(?P<piece_id>\d+)/result/add/$', views.result_add, name='piece_result_add'),
     url(r'^practice/(?P<practice_id>\d+)/ergroom/$', views.practice_ergroom, name='practice_ergroom'),
     url(r'^practice/(?P<practice_id>\d+)/ergroom/timed$', views.practice_ergroom_timed, name='practice_ergroom_timed'),
     url(r'^practice/(?P<practice_id>\d+)/lineups/$', views.practice_lineups, name='practice_lineups'),
 
-    url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
+    #url(r'^athlete/(?P<athlete_id>\d+)/result/add/$', views.result_add, name='athlete_result_add'),
     url(r'^result/(?P<id>\d+)/edit/$', views.result_edit, name='result_edit'),
     url(r'^result/(?P<id>\d+)/delete/$', views.result_delete, name='result_delete'),
 

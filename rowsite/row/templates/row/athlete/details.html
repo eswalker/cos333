@@ -79,8 +79,7 @@
     </table>
   {% endif %}
   {% if permission %}
-    <br> <a class="btn btn-primary" href="{% url 'row:athlete_result_add' athlete_id=athlete.id %}?next={{ request.path }}">Add Result</a>
-    <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}?next={{ request.path }}">Add Weight</a>
+    <br> <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}?next={{ request.path }}">Add Weight</a>
   {% endif %}
   {% if is_athlete %}
       <a class="btn btn-primary" href="{% url 'row:athlete_edit' athlete.id %}?next={{ request.path }}">Edit Profile</a>

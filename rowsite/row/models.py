@@ -173,8 +173,6 @@ class Lineup(models.Model):
         return self.position + " " + str(self.boat)
 
     def getAthletes(self):
-        print str(self.athletes.all())
-        print str(self.athletes.all().order_by('seat__number'))
         return self.athletes.all().order_by('seat__number')
 
 class Seat(models.Model):
