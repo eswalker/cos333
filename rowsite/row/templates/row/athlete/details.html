@@ -78,6 +78,7 @@
       {% endfor %}
     </table>
   {% endif %}
+  <br>
   {% if permission %}
     <br> <a class="btn btn-primary" href="{% url 'row:athlete_weight_add' athlete.id %}?next={{ request.path }}">Add Weight</a>
   {% endif %}
