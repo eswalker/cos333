@@ -884,7 +884,7 @@ def json_lineup_athletes(request):
         seats = Seat.objects.filter(lineup=lineup)
         for seat in seats.all():
             athletes.append(seat.athlete.id)
-            data = json.dumps(athletes)
+        data = json.dumps({"athletes": athletes})
     except Seat.DoesNotExist:
         data = json_error("Lineup is empty")
 

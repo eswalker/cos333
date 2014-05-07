@@ -49,6 +49,6 @@ EXAMPLE
 /json/lineup/athletes/
 POST:
 	api_key
-	{"id": LINEUP_ID}
+	id {"id": LINEUP_ID}
 RETURN
-	[6, 2, 3, 4, 5]
+	{"athletes": [6, 2, 3, 4, 5]}
