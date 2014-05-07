@@ -823,7 +823,7 @@ def json_permissions_coaches_and_coxswains(request):
 @csrf_exempt
 def json_athletes(request):
     athletes = Athlete.objects.all()
-    data = serializers.serialize('json', athletes)
+    data = serializers.serialize('json', athletes, fields=('user','name','side','role','year','status','height'))
     return HttpResponse(data, mimetype='application/json')
 
 @csrf_exempt
