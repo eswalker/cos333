@@ -226,7 +226,7 @@ def piece_detail(request, piece_id):
         for lineup in lineups:
             if lineup.athletes.all():
                 seats = lineup.seats.all().order_by(number)[0];
-                athlete = seat.athlete
+                athlete = seats.athlete
                 try:
                     identifier = lineup.position + " (" + athlete.name + ")"
                     results[identifier] = Result.objects.get(piece=piece_id, athlete=athlete)
