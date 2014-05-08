@@ -866,6 +866,9 @@ def json_lineup_athletes(request):
     try: id_json = json.loads(request.POST['id'])
     except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
 
+    if isinstance(id_json, int):
+        return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
     if not 'id' in id_json:
         return HttpResponse(json_error("Missing lineup id in json"), mimetype='application/json')
 
@@ -880,7 +883,7 @@ def json_lineup_athletes(request):
 
     try:
         athletes = []
-        seats = Seat.objects.filter(lineup=lineup)
+        seats = Seat.objects.filter(lineup=lineup).order_by('number')
         for seat in seats.all():
             athletes.append(seat.athlete.id)
         data = json.dumps({"athletes": athletes})
