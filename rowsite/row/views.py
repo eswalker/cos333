@@ -225,7 +225,8 @@ def piece_detail(request, piece_id):
         results = {}
         for lineup in lineups:
             if lineup.athletes.all():
-                seat = Seat.objects.filter(lineup=lineup).order_by('number')[0];
+                seat_number = (1 if lineup.boat.coxed else 0)
+                seat = Seat.objects.filter(lineup=lineup).order_by('number')[seat_number];
                 athlete = seat.athlete
                 try:
                     identifier = lineup.position + " (" + athlete.name + ")"
