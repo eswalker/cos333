@@ -227,7 +227,7 @@ def piece_detail(request, piece_id):
             if lineup.athletes.all():
                 athlete = lineup.athletes.all()[0];
                 try:
-                    results[lineup.position] = Result.objects.get(piece=piece_id, athlete=athlete)
+                    results[athlete.name] = Result.objects.get(piece=piece_id, athlete=athlete)
                 except Result.DoesNotExist: pass
 
     notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')
