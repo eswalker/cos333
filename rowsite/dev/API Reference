@@ -13,7 +13,7 @@ RETURNS:
 POST:
 	api_key
 RETURNS:
-	[{"pk": 1, "model": "row.athlete", "fields": {"status": "Retired", "name": "Ed Walker", "height": 72, "user": 2, "year": "Jr", "api_key": "5bec9c35-3286-4ec0-aea1-bca5de541de0", "side": "Port"}}, {"pk": 2, "model": "row.athlete", "fields": {"status": "Retired", "name": "Brian Rosenfeld", "height": 66, "user": 3, "year": "So", "api_key": "c5bd1b79-5f74-496f-8289-49954b9f0161", "side": "Coxswain"}}]
+	[{"pk": 1, "model": "row.athlete", "fields": {"status": "Retired", "name": "Ed Walker", "height": 72, "user": 2, "year": "Jr", "side": "Port"}}, {"pk": 2, "model": "row.athlete", "fields": {"status": "Retired", "name": "Brian Rosenfeld", "height": 66, "user": 3, "year": "So", "side": "Coxswain"}}]
 
 /json/practices/
 POST:

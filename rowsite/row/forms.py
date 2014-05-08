@@ -66,7 +66,7 @@ class AthleteForm(forms.ModelForm):
 class PracticeForm(forms.ModelForm):
 	name = forms.CharField(max_length=20, help_text="What was the practice?", label="Name")
 	datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
-	workout = forms.ChoiceField(choices=Practice.workout_choices, help_text="Erg or Water", label="Type")
+	workout = forms.ChoiceField(widget=forms.HiddenInput(), choices=Practice.workout_choices, help_text="Erg or Water", label="Type")
     
 	class Meta:
    		model = Practice
@@ -74,7 +74,7 @@ class PracticeForm(forms.ModelForm):
 class PieceForm(forms.ModelForm):
     name = forms.CharField(max_length=20, help_text="What was the piece?", label="Name")
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
-    practice = forms.ModelChoiceField(queryset=Practice.objects.all(), help_text="Choose a practice", label="Practice")
+    practice = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Practice.objects.all(), help_text="Choose a practice", label="Practice")
 
     class Meta:
         model = Piece

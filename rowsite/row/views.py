@@ -187,7 +187,6 @@ def practice_edit(request, id):
         if form.is_valid():
             practice.name = form.cleaned_data["name"]
             practice.datetime = form.cleaned_data["datetime"]
-            practice.workout = form.cleaned_data["workout"]
             practice.save()
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
