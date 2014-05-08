@@ -394,6 +394,8 @@ def result_edit(request, id):
             result.piece = form.cleaned_data["piece"]
             result.time = form.cleaned_data["time"]
             result.save()
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
         form = ResultForm(instance=result, athlete2=user_athlete)
