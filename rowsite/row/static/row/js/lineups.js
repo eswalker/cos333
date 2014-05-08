@@ -47,7 +47,7 @@ $('._athlete').each(function(){
 function setCookie(cname,cvalue,exdays){
 	var d = new Date();d.setTime(d.getTime()+(exdays*24*60*60*1000));
 	var expires = "expires="+d.toGMTString();
-	document.cookie = cname + "=" + cvalue + "; " + expires;
+	document.cookie = cname + "=" + cvalue + ";" + expires + ';path=/';
 }
 
 // w3schools 
@@ -200,9 +200,9 @@ $('._submit').click(function(){
 		console.log(posted_data);
 		$.post( "", posted_data , function( data ) {
 			if (numBoats >= 2)
-				$('#success').text("Success! You added " + numBoats + " boats.").show();
+				$('#success').text("Success! You added " + numBoats + " boats. Now go to the Android app to complete the practice.").show();
 			else
-				$('#success').text("Success! You added " + numBoats + " boat.").show();
+				$('#success').text("Success! You added " + numBoats + " boat. Now go to the Android app to complete the practice.").show();
 		});	
 	}
 	console.log(resultString);
