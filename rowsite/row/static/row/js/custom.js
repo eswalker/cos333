@@ -67,7 +67,7 @@ $( '._order').each(function( index ) { $(this).text("" + i++)});
 $( '#id_time').each(function( index ) {
 	val = $(this).val()
 	if (val) {
-		$(this).val($(this).val() / 1000)
+		$(this).val(readableSeconds($(this).val() / 1000))
 	}
 })
 
