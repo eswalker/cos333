@@ -169,7 +169,7 @@ def practice_erg_add(request):
     return HttpResponseRedirect(reverse('row:practice_ergroom', args=(practice.id,)))
 
 @login_required
-@user_passes_test(coxswain_coach, login_url="/denied/")
+@user_passes_test(coach, login_url="/denied/")
 def practice_water_add(request):
 
     name=datetime.now().strftime("%b %d %p")
@@ -182,12 +182,17 @@ def practice_water_add(request):
 @user_passes_test(coxswain_coach, login_url="/denied/")
 def practice_edit(request, id):
     practice = get_object_or_404(Practice, pk=id)
+
+    if practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
+
     if request.method == 'POST':
         form = PracticeForm(request.POST)
         if form.is_valid():
             practice.name = form.cleaned_data["name"]
             practice.datetime = form.cleaned_data["datetime"]
-            practice.workout = form.cleaned_data["workout"]
             practice.save()
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
@@ -199,6 +204,11 @@ def practice_edit(request, id):
 @user_passes_test(coxswain_coach, login_url="/denied/")
 def practice_delete(request, id):
     practice = get_object_or_404(Practice, pk=id)
+
+    if practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
     practice.delete()
     return HttpResponseRedirect(reverse('row:practice_index'))
 
@@ -247,6 +257,11 @@ def piece_add(request, practice_id=None):
 @user_passes_test(coxswain_coach, login_url="/denied/")
 def piece_edit(request, id):
     piece = get_object_or_404(Piece, pk=id)
+
+    if piece.practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
     if request.method == 'POST':
         form = PieceForm(request.POST)
         if form.is_valid():
@@ -267,6 +282,11 @@ def piece_edit(request, id):
 @user_passes_test(coxswain_coach, login_url='/denied/')
 def piece_delete(request, id):
     piece = get_object_or_404(Piece, pk=id)
+
+    if piece.practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
     piece.delete()
     if request.GET and request.GET["next"]:
         return HttpResponseRedirect(request.GET["next"])
@@ -332,7 +352,7 @@ def weight_delete(request, id):
         return HttpResponseRedirect(request.GET["next"])
     return HttpResponseRedirect(reverse('row:athlete_index'))
 
-"""# Adds a new result
+# Adds a new result
 @login_required
 def result_add(request, piece_id=None, athlete_id=None):
     user_athlete = Athlete.objects.get(user=request.user)
@@ -356,7 +376,7 @@ def result_add(request, piece_id=None, athlete_id=None):
         else:
             form = ResultForm(athlete2=user_athlete)
     context = {'form':form, 'title':'Add Result'}
-    return render(request, 'row/add.html', context)"""
+    return render(request, 'row/add.html', context)
 
 @login_required
 def result_edit(request, id):
@@ -374,6 +394,8 @@ def result_edit(request, id):
             result.piece = form.cleaned_data["piece"]
             result.time = form.cleaned_data["time"]
             result.save()
+            if request.GET and request.GET["next"]:
+                return HttpResponseRedirect(request.GET["next"])
             return HttpResponseRedirect(reverse('row:practice_index'))
     else:
         form = ResultForm(instance=result, athlete2=user_athlete)
@@ -867,6 +889,9 @@ def json_lineup_athletes(request):
     try: id_json = json.loads(request.POST['id'])
     except ValueError: return HttpResponse(json_error("Invalid json"), mimetype='application/json')
 
+    if isinstance(id_json, int):
+        return HttpResponse(json_error("Invalid json"), mimetype='application/json')
+
     if not 'id' in id_json:
         return HttpResponse(json_error("Missing lineup id in json"), mimetype='application/json')
 
@@ -881,7 +906,7 @@ def json_lineup_athletes(request):
 
     try:
         athletes = []
-        seats = Seat.objects.filter(lineup=lineup)
+        seats = Seat.objects.filter(lineup=lineup).order_by('number')
         for seat in seats.all():
             athletes.append(seat.athlete.id)
         data = json.dumps({"athletes": athletes})

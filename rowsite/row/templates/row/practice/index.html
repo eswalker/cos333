@@ -20,8 +20,18 @@
     	<td><a href="{% url 'row:practice_detail' p.id %}">{{ p.name }}</a></td>
     	<td>{{ p.workout }}</td>
       {% if permission %}
-        <td><a href="{% url 'row:practice_edit' p.id %}">Edit</a></td>
-        <td><a href="{% url 'row:practice_delete' p.id %}">Delete</a></td>
+        {% ifequal p.workout "Water" %}
+          {% ifequal role "Coach" %}
+            <td><a href="{% url 'row:practice_edit' p.id %}">Edit</a></td>
+            <td><a href="{% url 'row:practice_delete' p.id %}">Delete</a></td>
+          {% else %}
+            <td>N/A</td>
+            <td>N/A</td>
+          {% endifequal %}
+        {% else %}
+          <td><a href="{% url 'row:practice_edit' p.id %}">Edit</a></td>
+          <td><a href="{% url 'row:practice_delete' p.id %}">Delete</a></td>
+        {% endifequal %}
       {% endif %}
     </tr>
   {% endfor %}
@@ -32,6 +42,8 @@
 
 {% if permission %}
   <a class="btn btn-primary" href="{% url 'row:practice_erg_add' %}">Add Erg Practice</a>
-  <a class="btn btn-primary" href="{% url 'row:practice_water_add' %}">Add Water Practice</a>
+  {% ifequal role "Coach" %}
+    <a class="btn btn-primary" href="{% url 'row:practice_water_add' %}">Add Water Practice</a>
+  {% endifequal %}
 {% endif %}
 {% endblock %}
