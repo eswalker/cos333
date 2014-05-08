@@ -114,5 +114,10 @@
   <br><br>
 {% endif %}
 
+{% if permission %}
+  {% ifequal piece.practice.workout "Erg" %}
+  <a class="btn btn-primary" href="{% url 'row:piece_result_add' piece.id %}?next={{ request.path }}">Add Result</a>
+  {% endifequal %}
+{% endif %}
 <a class="btn btn-primary" href="{% url 'row:piece_note_add' piece.id %}?next={{ request.path }}">Add Note</a>
 {% endblock %}

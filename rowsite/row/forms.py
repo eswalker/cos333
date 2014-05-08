@@ -84,7 +84,7 @@ class WeightForm(forms.ModelForm):
         self.user_athlete = kwargs.pop("user_athlete")
         super(WeightForm, self).__init__(*args, **kwargs)
 
-    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
+    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all().exclude(name="COACH").order_by('name'), help_text="Choose an athlete", label="Athlete")
     weight = forms.DecimalField(help_text="Weight in lbs", decimal_places=1, label="Weight")
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the weigh-in? (Ex. 3/29/14 8:30)", label="Datetime")
 
@@ -116,8 +116,8 @@ class ResultForm(forms.ModelForm):
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
     distance = forms.IntegerField(help_text="Distance", label="Distance")
     time = forms.IntegerField(help_text="Time (in seconds)", label="Time")
-    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all(), help_text="Choose an athlete", label="Athlete")
-    piece = forms.ModelChoiceField(queryset=Piece.objects.all(), help_text="Choose a piece", label="Piece")
+    athlete = forms.ModelChoiceField(queryset=Athlete.objects.all().exclude(name="COACH").order_by('name'), help_text="Choose an athlete", label="Athlete")
+    piece = forms.ModelChoiceField(widget=forms.HiddenInput, queryset=Piece.objects.all(), help_text="Choose a piece", label="Piece")
 
     class Meta:
         model = Result
