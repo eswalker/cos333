@@ -169,7 +169,7 @@ def practice_erg_add(request):
     return HttpResponseRedirect(reverse('row:practice_ergroom', args=(practice.id,)))
 
 @login_required
-@user_passes_test(coxswain_coach, login_url="/denied/")
+@user_passes_test(coach, login_url="/denied/")
 def practice_water_add(request):
 
     name=datetime.now().strftime("%b %d %p")
@@ -182,6 +182,12 @@ def practice_water_add(request):
 @user_passes_test(coxswain_coach, login_url="/denied/")
 def practice_edit(request, id):
     practice = get_object_or_404(Practice, pk=id)
+
+    if practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
+
     if request.method == 'POST':
         form = PracticeForm(request.POST)
         if form.is_valid():
@@ -198,6 +204,11 @@ def practice_edit(request, id):
 @user_passes_test(coxswain_coach, login_url="/denied/")
 def practice_delete(request, id):
     practice = get_object_or_404(Practice, pk=id)
+
+    if practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
     practice.delete()
     return HttpResponseRedirect(reverse('row:practice_index'))
 
@@ -246,6 +257,11 @@ def piece_add(request, practice_id=None):
 @user_passes_test(coxswain_coach, login_url="/denied/")
 def piece_edit(request, id):
     piece = get_object_or_404(Piece, pk=id)
+
+    if piece.practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
     if request.method == 'POST':
         form = PieceForm(request.POST)
         if form.is_valid():
@@ -266,6 +282,11 @@ def piece_edit(request, id):
 @user_passes_test(coxswain_coach, login_url='/denied/')
 def piece_delete(request, id):
     piece = get_object_or_404(Piece, pk=id)
+
+    if piece.practice.workout == 'Water':
+        if not coach(request.user):
+            return render(request, 'row/denied.html', {})
+
     piece.delete()
     if request.GET and request.GET["next"]:
         return HttpResponseRedirect(request.GET["next"])

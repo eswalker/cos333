@@ -17,20 +17,20 @@
   <tr>
     <th>Order</th>
     <th>Name</th>
-    {% if permission %}
+    {% ifequal role "Coach" %}
       <th>Edit</th>
       <th>Delete</th>
-    {% endif %}
+    {% endifequal %}
   </tr>
 
   {% for piece in pieces %}
     <tr>
       <td class="_order"></td>
       <td><a href="{% url 'row:piece_detail' piece.id %}">{{ piece.name }}</a></br></td>
-      {% if permission %}
+      {% ifequal role "Coach" %}
         <td><a class="" href="{% url 'row:piece_edit' piece.id %}?next={{ request.path }}">Edit</a></td>
         <td><a class="" href="{% url 'row:piece_delete' piece.id %}?next={{ request.path }}">Delete</a></td>
-      {% endif %}
+      {% endifequal %}
     </tr>
   {% endfor %}
 </table>
@@ -77,8 +77,11 @@
 {% endif %}
 
 {% if permission %}
-  {% ifequal practice.workout "Water" %}<a class="btn btn-primary" href="{% url 'row:practice_lineups' practice_id=practice.id %}">
-    {% if lineups %}Edit{% else %}Add{% endif %} Lineups</a>
+  {% ifequal practice.workout "Water" %}
+    {% ifequal role "Coach" %}
+      <a class="btn btn-primary" href="{% url 'row:practice_lineups' practice_id=practice.id %}">
+      {% if lineups %}Edit{% else %}Add{% endif %} Lineups</a>
+    {% endifequal %}
   {% else %}
     <a class="btn btn-primary" href="{% url 'row:practice_ergroom' practice_id=practice.id %}?next={{ request.path }}">Add Piece</a>
   {% endifequal %}

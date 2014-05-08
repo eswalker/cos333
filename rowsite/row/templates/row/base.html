@@ -40,8 +40,10 @@
                         {% if role %}
                             {% ifnotequal role "Rower" %}
                                 <li><a class="btn btn-default" href="/practice/erg/add">Add Erg Practice</a></li>
-                                <li><a class="btn btn-default" href="/practice/water/add">Add Water Practice</a></li>
                             {% endifnotequal %}
+                            {% ifequal role "Coach" %}
+                                <li><a class="btn btn-default" href="/practice/water/add">Add Water Practice</a></li>
+                            {% endifequal %}
                         {% endif %}
                         <li><a class="btn btn-default" href="/boats/">Boats</a></li>
                         {% if role %}
