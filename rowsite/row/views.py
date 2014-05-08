@@ -225,7 +225,7 @@ def piece_detail(request, piece_id):
         results = {}
         for lineup in lineups:
             if lineup.athletes.all():
-                athlete = lineup.athletes.all()[0];
+                athlete = lineup.athletes.all().order_by(seat__number)[0];
                 try:
                     results[athlete.name] = Result.objects.get(piece=piece_id, athlete=athlete)
                 except Result.DoesNotExist: pass
