@@ -1,20 +1,9 @@
-SENDING DATA FROM MOBILE APP TO WEB APP
-
-Mobile app already has:
-	-List of athletes and IDs
-	-Most recent practice ID
-	-Start lineups
-
-Web app needs:
-	-Piece
-	-Lineup
-	-One result per lineup -- will be assigned to all of the athletes in the lineup
 
 Steps for sending data to web app (DO THIS FOR EACH PIECE)
 	-Post piece's data json to json/piece/add
+	-Post piece's notes to json/notes/add
 	-For each lineup, post json to json/lineup/add
 	-For each lineup's result, post json to json/result/add
-
 
 /json/pieces/add
 POST:
