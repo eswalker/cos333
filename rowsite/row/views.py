@@ -225,9 +225,12 @@ def piece_detail(request, piece_id):
         results = {}
         for lineup in lineups:
             if lineup.athletes.all():
-                athlete = lineup.athletes.all()[0];
+                seat_number = (1 if lineup.boat.coxed else 0)
+                seat = Seat.objects.filter(lineup=lineup).order_by('number')[seat_number];
+                athlete = seat.athlete
                 try:
-                    results[lineup.position] = Result.objects.get(piece=piece_id, athlete=athlete)
+                    identifier = lineup.position + " (" + athlete.name + ")"
+                    results[identifier] = Result.objects.get(piece=piece_id, athlete=athlete)
                 except Result.DoesNotExist: pass
 
     notes = Note.objects.filter(piece=piece_id, author=author).order_by('subject')

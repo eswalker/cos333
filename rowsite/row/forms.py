@@ -115,7 +115,7 @@ class ResultForm(forms.ModelForm):
 
     datetime = forms.DateTimeField(initial=datetime.now(), help_text="When was the practice? (Ex. 3/29/14 8:30)", label="Datetime")
     distance = forms.IntegerField(help_text="Distance", label="Distance")
-    time = forms.IntegerField(help_text="Time (in seconds)", label="Time")
+    time = forms.CharField(help_text="Total time (mm:ss)", label="Time")
     athlete = forms.ModelChoiceField(queryset=Athlete.objects.all().exclude(name="COACH").order_by('name'), help_text="Choose an athlete", label="Athlete")
     piece = forms.ModelChoiceField(widget=forms.HiddenInput, queryset=Piece.objects.all(), help_text="Choose a piece", label="Piece")
 
@@ -134,6 +134,17 @@ class ResultForm(forms.ModelForm):
         if athlete != self.athlete2:
             raise forms.ValidationError("You do not have permission to edit this athlete's result.")
         return athlete
+
+    def clean_time(self):
+        try:
+            time = self.cleaned_data["time"]
+            fields = time.split(":")
+            min = int(fields[0])
+            secs = float(fields[1])
+            return int(min * 60 + secs) * 1000
+        except Exception, e:
+            raise forms.ValidationError("Invalid time")
+
 
 class BoatForm(forms.ModelForm):
     name = forms.CharField(max_length=20, help_text="What is the boat's name?", label="Name")
