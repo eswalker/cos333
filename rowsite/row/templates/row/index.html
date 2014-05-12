@@ -23,5 +23,66 @@
 <a href="http://princeton.edu/~eswalker/virtualboathouse/api.txt">API Reference</a><br>
 <a href="http://princeton.edu/~eswalker/virtualboathouse/presentation.pdf">Demo Presentation</a><br>
 
+  <style>
+    /* Prevents slides from flashing */
+    #slides {
+      display:none;
+    }
+
+    #slides .slidesjs-navigation {
+      margin-top:3px;
+    }
+
+    #slides .slidesjs-previous {
+      margin-right: 5px;
+      float: left;
+    }
+
+    #slides .slidesjs-next {
+      margin-right: 5px;
+      float: left;
+    }
+
+    .slidesjs-pagination {
+      margin: 6px 0 0;
+      float: right;
+      list-style: none;
+    }
+
+    .slidesjs-pagination li {
+      float: left;
+      margin: 0 1px;
+    }
+
+    .slidesjs-pagination li a {
+      display: block;
+      width: 13px;
+      height: 0;
+      padding-top: 13px;
+      background-image: url(http://www.slidesjs.com/examples/standard/img/pagination.png);
+      background-position: 0 0;
+      float: left;
+      overflow: hidden;
+    }
+
+  </style>
+
+   <script>
+    $(function(){
+      $("#slides").slidesjs({
+        width: 940,
+        height: 500
+      });
+    });
+  </script>
+
+  <h2>Screen Shots</h2>
+  {% load staticfiles %}
+  <div id="slides">
+	<img src="{% static 'row/img/ergroom.png' %}">
+    <img src="{% static 'row/img/piece.png' %}">
+    <img src="{% static 'row/img/lineupboard.png' %}">
+    <img src="{% static 'row/img/profile.jpg' %}">
+  </div>
 
 {% endblock %}
